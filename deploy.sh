@@ -62,18 +62,24 @@ gcloud pubsub topics create form-submissions
 #printf 'y\n' | gcloud pubsub topics set-iam-policy projects/spreadform/topics/form-submissions form-submissions.policy.json
 #rm form-submissions.policy.json 
 
-# Pubsub subscriptions
+# Google sheets function
 
-gcloud pubsub subscriptions describe sheets || \
-gcloud pubsub subscriptions create sheets --topic form-submissions
+cd $base/sheets
+env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
+options="--region=europe-west2 --memory=256MB --trigger-topic form-submissions --allow-unauthenticated"
 
-# Web form
+gcloud functions deploy sheets --runtime=python37 ${env_vars} ${options} #--service-account=${service_account}
+
+cd $base
+
+# Web form function
 
 cd $base/form
-env_vars="--set-env-vars=[SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name]"
 options="--region=europe-west2 --memory=256MB --trigger-http --allow-unauthenticated"
 
-gcloud functions deploy form --runtime=nodejs10 ${env_vars} ${options} --entry-point=form #--service-account=${service_account}
+gcloud functions deploy form --runtime=nodejs10 ${options} #--service-account=${service_account}
+
+cd $base
 
 # Report back
 
