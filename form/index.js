@@ -17,7 +17,7 @@ exports.form = (req, res) => {
     // Send message
     // TODO dump to the console in case of error
     const pubSubClient = new PubSub();
-    const dataBuffer = Buffer.from(data);
+    const dataBuffer = Buffer.from(message);
     const customAttributes = {'timestamp': Date.now()}
     const messageId = pubSubClient
       .topic('form-submissions')
