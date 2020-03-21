@@ -19,7 +19,8 @@ exports.form = async(req, res) => {
       
       const pubSubClient = new PubSub();
       const dataBuffer = Buffer.from(message);
-      const timestamp = Date.now().toString()
+      const date = new Date()
+      const timestamp = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
       const customAttributes = {'timestamp': timestamp}
       const messageId = await pubSubClient
         .topic('form-submissions')
