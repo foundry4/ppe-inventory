@@ -62,6 +62,11 @@ echo "{
 printf 'y\n' | gcloud pubsub topics set-iam-policy projects/spreadform/topics/form-submissions form-submissions.policy.json
 rm form-submissions.policy.json 
 
+# Pubsub subscriptions
+
+gcloud pubsub subscriptions describe sheets || \
+gcloud pubsub subscriptions create sheets --topic form-submissions
+
 # Web form
 
 cd $base/form
