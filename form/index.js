@@ -27,8 +27,8 @@ exports.form = async(req, res) => {
       res.status(200).send(`POST: ${message} -> ${messageId}\n`)
 
     } catch(error) {
-      console.error(`Backup json: ${message}`)
-      return next(error)
+      console.error(new Error(`Backup json: ${message}`))
+      console.error("Error publishing message to pubsub", error)
     }
 
   } else {
