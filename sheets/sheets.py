@@ -13,6 +13,14 @@ def get_header_row(sheet_id, worksheet_name):
 
 def get_row_count(sheet_id, worksheet_name):
     
+    # NB Ideally we'd only request A:A, but
+    # If there are existing rows with a blank 
+    # in the A column these will get overwritten.
+    # We don't want that, so we request the 
+    # whole sheet, just in case.
+    # We're aiming for the timestamp to be in 
+    # column A, but it could get moved so it's 
+    # not guaranteed.
     cell_range = f"{worksheet_name}"
     return len(get_cells(sheet_id, cell_range))
 
