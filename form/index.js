@@ -26,6 +26,7 @@ exports.form = async(req, res) => {
         .publish(dataBuffer, customAttributes)
       console.log(`Message ${messageId} published (${customAttributes["timestamp"]}).`)
       res.status(200).send(`POST: ${message} -> ${messageId}\n`)
+      console.log(`Backup json: ${message}`)
 
     } catch(error) {
       console.error(new Error(`Backup json: ${message}`))
