@@ -103,4 +103,5 @@ cd $base
 # Report back
 
 # echo "Please grant edit permissions on the spreadsheet to ${service_account} (https://docs.google.com/spreadsheets/d/${sheet_id})"
-echo "Please grant edit permissions on the spreadsheet to ${project_id}@appspot.gserviceaccount.com (https://docs.google.com/spreadsheets/d/${sheet_id})"
+gcloud functions describe form --region=europe-west2 | grep url
+echo "*** Please grant edit permissions on the spreadsheet to ${project_id}@appspot.gserviceaccount.com (https://docs.google.com/spreadsheets/d/${sheet_id})"
