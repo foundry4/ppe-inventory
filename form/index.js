@@ -15,15 +15,22 @@ exports.form = (req, res) => {
     let message = JSON.stringify(req.body)
 
     // Send message
-    // TODO dump to the console in case of error
-    const pubSubClient = new PubSub();
-    const dataBuffer = Buffer.from(message);
-    const customAttributes = {'timestamp': Date.now()}
-    const messageId = pubSubClient
-      .topic('form-submissions')
-      .publish(dataBuffer, customAttributes)
-    console.log(`Message ${messageId} published.`)
-    res.status(200).send(`POST: ${message} -> ${messageId}\n`)
+    try {
+      
+      const pubSubClient = new PubSub();
+      const dataBuffer = Buffer.from(message);
+      const customAttributes = {'timestamp': Date.now()}
+      const messageId = pubSubClient
+        .topic('form-submissions')
+        .publish(dataBuffer, customAttributes)
+      console.log(`Message ${messageId} published (${customAttributes["timestamp"]}).`)
+      res.status(200).send(`POST: ${message} -> ${messageId}\n`)
+
+    } catch(error) {
+      console.error(error);
+      console.log(`Backup json: ${message}`)
+    }
+
   } else {
     res.status(200).send('GET: Hello World!')
   }
