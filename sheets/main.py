@@ -21,9 +21,9 @@ def sheets(event, context):
     #print(f"context: {context}")
 
     # Process attributes
-    attributes = event.get('attributes')
+    print(f"Attributes: {event.get('attributes')}")
     if 'attibutes' in event and 'timestamp' in event['attributes']:
-        timestamp = attributes.get('timestamp')
+        timestamp = event['attributes']['timestamp']
     else:
         print("Generating timestamp")
         timestamp = str(round(time.time()))
