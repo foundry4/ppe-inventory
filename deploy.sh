@@ -9,8 +9,8 @@ if [ ! -f "account.txt" ]; then
     echo "Please create a file called account.txt containing your GCP login email."
     EXIT=yes
 fi
-if [ ! -f "project.txt" ]; then
-    echo "Please create a file called project.txt containing your GCP project ID."
+if [ ! -f "project_id.txt" ]; then
+    echo "Please create a file called project_id.txt containing your GCP project ID."
     EXIT=yes
 fi
 if [ ! -f "sheet-id.txt" ]; then
@@ -30,9 +30,9 @@ fi
 base=$PWD
 
 account=$(cat account.txt)
-project=$(cat project.txt)
+project_id=$(cat project_id.txt)
 gcloud config set account $account
-gcloud config set project $project
+gcloud config set project $project_id
 
 sheet_id=$(cat sheet-id.txt)
 worksheet_name=$(cat worksheet-name.txt)
@@ -40,9 +40,9 @@ worksheet_name=$(cat worksheet-name.txt)
 # Service account - less privilege, but more complex
 
 #service_account_name=functions
-#gcloud iam service-accounts describe ${service_account_name}@${project}.iam.gserviceaccount.com || \
+#gcloud iam service-accounts describe ${service_account_name}@${project_id}.iam.gserviceaccount.com || \
 #gcloud iam service-accounts create ${service_account_name} --display-name "Funcitons" --description "Service accout for spreadform functions"
-#service_account=${service_account_name}@${project}.iam.gserviceaccount.com
+#service_account=${service_account_name}@${project_id}.iam.gserviceaccount.com
 
 # Pubsub topic
 
@@ -74,3 +74,7 @@ env_vars="--set-env-vars=[SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name]"
 options="--region=europe-west2 --memory=256MB --trigger-http --allow-unauthenticated"
 
 gcloud functions deploy form --runtime=nodejs10 ${env_vars} ${options} --entry-point=form #--service-account=${service_account}
+
+# Report back
+
+echo "Please grant edit permissions on the spreadsheet to ${project_id}@appspot.gserviceaccount.com (https://docs.google.com/spreadsheets/d/${sheet_id})"
