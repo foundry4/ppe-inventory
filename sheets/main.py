@@ -37,6 +37,8 @@ def sheets(event, context):
         # Update header row if needed
         header = get_header_row(sheet_id, worksheet_name)
         update = False
+        if not 'timestamp' in header:
+            header.append('timestamp')
         for key in message:
             if not key in header:
                 header.append(key)
