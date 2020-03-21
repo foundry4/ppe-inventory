@@ -1,32 +1,55 @@
 import os
 import json 
 from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from google.oauth2 import service_account
 
 
+def get_header_row(sheet_id, worksheet_name):
 
-def update_sheet(spreadsheet_table, sheet_id, cell_range):
+    cell_range = f"{worksheet_name}!1:1"
+    return get_cells(sheet_id, cell_range)[0]
+
+
+def get_row_count(sheet_id, worksheet_name):
+    
+    cell_range = f"{worksheet_name}"
+    return len(get_cells(sheet_id, cell_range))
+
+
+def get_cells(sheet_id, cell_range):
 
     # Get a Google Sheets client
     sheets = sheets_client()
 
-    # Get the current data
-    print(f"spreadsheetId: {sheet_id}")
-    print(f"range: {cell_range}")
+    # Get the requested data
     result = sheets.values().get(spreadsheetId=sheet_id,
                                  range=cell_range).execute()
-    values = result.get('values', [])
+    return result.get('values', [])
 
-    # Update the data table
-    overwrite_data(values, spreadsheet_table)
+
+def update_header_row(spreadsheet_row, sheet_id, worksheet_name):
+    cell_range = f"{worksheet_name}!1:1"
+    update_sheet([spreadsheet_row], sheet_id, cell_range)
+
+
+def update_row(row, row_index, sheet_id, worksheet_name):
+    cell_range = f"{worksheet_name}!{row_index}:{row_index}"
+    print(f"Updating row {cell_range}")
+    update_sheet([row], sheet_id, cell_range)
+
+
+def update_sheet(data_table, sheet_id, cell_range):
+
+    # Get a Google Sheets client
+    sheets = sheets_client()
 
     # Write the updated table to the spreadsheet
     sheets.values().update(spreadsheetId=sheet_id,
                            range=cell_range,
                            valueInputOption='USER_ENTERED',
                            body={
-                               'values': values,
+                               'values': data_table,
                                'majorDimension': 'ROWS'
                            }).execute()
 

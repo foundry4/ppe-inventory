@@ -4,7 +4,7 @@ import os
 import time
 import base64
 from operator import itemgetter
-from sheets import update_sheet
+from sheets import update_sheet, get_header_row, get_row_count, update_header_row, update_row
 
 
 # Sheets config
@@ -31,18 +31,26 @@ def sheets(event, context):
 
     # Process message data
     if 'data' in event:
-        message = base64.b64decode(event['data']).decode('utf-8')
+        json_string = base64.b64decode(event['data']).decode('utf-8')
+        message = json.loads(json_string)
 
-    print(f"{timestamp}: {message}")
-
-    table = []
-    header = ["id", "message"]
-    table.append(header)
-    spreadsheet_row = [timestamp, message]
-    table.append(spreadsheet_row)
-
-    # Update the spreadsheet
-    update_sheet(table, sheet_id, worksheet_name)
-
-    print("Sheet update sent.")
+        # Update header row if needed
+        header = get_header_row(sheet_id, worksheet_name)
+        update = False
+        for key in message:
+            if not key in header:
+                header.append(key)
+                update = True
+        if update:
+            print("New columns found. Updating header row: {header}")
+            update_header_row(header, sheet_id, worksheet_name)
+        
+        # Build row values
+        row = []
+        for key in header:
+            row.append(message.get(key) or "")
+        row_index = get_row_count(sheet_id, worksheet_name) + 1
+        print(f"New row index is: {row_index}")
+        update_row(row, row_index, sheet_id, worksheet_name)
+        print("Sheet update sent.")
 
