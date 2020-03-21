@@ -4,4 +4,4 @@
 set -euxo pipefail
 
 DATE=$(date +"%Y%m%d%H%M")
-curl -X POST -d "test=David&timestamp=$DATE" https://europe-west2-spreadform.cloudfunctions.net/form
+curl -X POST -d "name=David&company=Carboni.io&submitted-at=$DATE" https://europe-west2-loans-271821.cloudfunctions.net/form
