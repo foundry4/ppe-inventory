@@ -22,7 +22,7 @@ def sheets(event, context):
 
     # Process attributes
     print(f"Attributes: {event.get('attributes')}")
-    if 'attibutes' in event and 'timestamp' in event['attributes']:
+    if 'attributes' in event and 'timestamp' in event['attributes']:
         timestamp = event['attributes']['timestamp']
     else:
         print("Generating timestamp")
