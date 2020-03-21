@@ -37,6 +37,23 @@ gcloud config set project $project_id
 sheet_id=$(cat sheet-id.txt)
 worksheet_name=$(cat worksheet-name.txt)
 
+# Enable APIs
+
+functions_enabled=$(gcloud services list | grep cloudfunctions.googleapis.com)
+if [ -z "$(gcloud services list | grep cloudfunctions.googleapis.com)" ]
+then
+  gcloud services enable cloudfunctions.googleapis.com
+else
+  echo "Functions API is enabled."
+fi
+
+if [ -z "$(gcloud services list | grep sheets.googleapis.com)" ]
+then
+  gcloud services enable sheets.googleapis.com
+else
+  echo "Sheets API is enabled."
+fi
+
 # Service account - less privilege, but more complex
 
 #service_account_name=functions
@@ -63,12 +80,14 @@ gcloud pubsub topics create form-submissions
 #rm form-submissions.policy.json 
 
 # Google sheets function
+# NB: limited to 1 instance to avoid race conditions when updating the spreadsheet
 
 cd $base/sheets
 env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
-options="--region=europe-west2 --memory=256MB --trigger-topic form-submissions --allow-unauthenticated"
+concurrency=" --max-instances=1"
+options="--region=europe-west2 --memory=256MB --trigger-topic=form-submissions --allow-unauthenticated"
 
-gcloud functions deploy sheets --runtime=python37 ${env_vars} ${options} #--service-account=${service_account}
+gcloud functions deploy sheets --runtime=python37 ${env_vars} ${concurrency} ${options} #--service-account=${service_account}
 
 cd $base
 
@@ -83,4 +102,5 @@ cd $base
 
 # Report back
 
+# echo "Please grant edit permissions on the spreadsheet to ${service_account} (https://docs.google.com/spreadsheets/d/${sheet_id})"
 echo "Please grant edit permissions on the spreadsheet to ${project_id}@appspot.gserviceaccount.com (https://docs.google.com/spreadsheets/d/${sheet_id})"
