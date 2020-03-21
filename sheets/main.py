@@ -50,7 +50,10 @@ def sheets(event, context):
         # Build row values
         row = []
         for key in header:
-            row.append(message.get(key) or "")
+            if key=='timestamp':
+                row.append(timestamp)
+            else:
+                row.append(message.get(key) or "")
         row_index = get_row_count(sheet_id, worksheet_name) + 1
         print(f"New row index is: {row_index}")
         update_row(row, row_index, sheet_id, worksheet_name)
