@@ -28,7 +28,7 @@ exports.form = (req, res) => {
 
     } catch(error) {
       console.error(error);
-      console.log(`Backup json: ${message}`)
+      console.error(`Backup json: ${message}`)
     }
 
   } else {
