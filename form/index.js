@@ -8,7 +8,7 @@ const {PubSub} = require('@google-cloud/pubsub')
  * @param {!express:Request} req HTTP request context.
  * @param {!express:Response} res HTTP response context.
  */
-exports.form = (req, res) => {
+exports.form = async(req, res) => {
   if (req.method === 'POST') {
 
     // Data to publish
@@ -20,15 +20,15 @@ exports.form = (req, res) => {
       const pubSubClient = new PubSub();
       const dataBuffer = Buffer.from(message);
       const customAttributes = {'timestamp': Date.now()}
-      const messageId = pubSubClient
+      const messageId = await pubSubClient
         .topic('form-submissions')
         .publish(dataBuffer, customAttributes)
       console.log(`Message ${messageId} published (${customAttributes["timestamp"]}).`)
       res.status(200).send(`POST: ${message} -> ${messageId}\n`)
 
     } catch(error) {
-      console.error(error);
       console.error(`Backup json: ${message}`)
+      return next(error)
     }
 
   } else {
