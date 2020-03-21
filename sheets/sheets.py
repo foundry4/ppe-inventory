@@ -8,7 +8,11 @@ from google.oauth2 import service_account
 def get_header_row(sheet_id, worksheet_name):
 
     cell_range = f"{worksheet_name}!1:1"
-    return get_cells(sheet_id, cell_range)[0]
+    cells = get_cells(sheet_id, cell_range)
+    if len(cells)>0:
+        return cells[0]
+    else:
+        return []
 
 
 def get_row_count(sheet_id, worksheet_name):
