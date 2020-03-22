@@ -5,6 +5,21 @@ from google.auth.transport.requests import Request
 from google.oauth2 import service_account
 
 
+def sheets_client():
+    service_account_key = os.getenv('GOOGLE_SHEETS_KEY')
+    if service_account_key:
+        key = json.loads(service_account_key)
+        credentials = service_account.Credentials.from_service_account_info(
+            key)
+        service = build('sheets', 'v4', credentials=credentials)
+    else:
+        # We're expecting the service account to be available in GCF
+        service = build('sheets', 'v4', cache_discovery=False)
+    return service.spreadsheets()
+
+# Get a Google Sheets client
+sheets = sheets_client()
+
 def get_header_row(sheet_id, worksheet_name):
 
     cell_range = f"{worksheet_name}!1:1"
@@ -31,9 +46,6 @@ def get_row_count(sheet_id, worksheet_name):
 
 def get_cells(sheet_id, cell_range):
 
-    # Get a Google Sheets client
-    sheets = sheets_client()
-
     # Get the requested data
     result = sheets.values().get(spreadsheetId=sheet_id,
                                  range=cell_range).execute()
@@ -52,9 +64,6 @@ def update_row(row, row_index, sheet_id, worksheet_name):
 
 
 def update_sheet(data_table, sheet_id, cell_range):
-
-    # Get a Google Sheets client
-    sheets = sheets_client()
 
     # Write the updated table to the spreadsheet
     sheets.values().update(spreadsheetId=sheet_id,
@@ -89,16 +98,3 @@ def overwrite_data(old_table, new_table):
                 else:
                     # Append more cells to the row
                     old_row.append(new_row[c])
-
-
-def sheets_client():
-    service_account_key = os.getenv('GOOGLE_SHEETS_KEY')
-    if service_account_key:
-        key = json.loads(service_account_key)
-        credentials = service_account.Credentials.from_service_account_info(
-            key)
-        service = build('sheets', 'v4', credentials=credentials)
-    else:
-        # We're expecting the service account to be available in GCF
-        service = build('sheets', 'v4', cache_discovery=False)
-    return service.spreadsheets()
