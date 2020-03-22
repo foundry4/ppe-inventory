@@ -10,19 +10,19 @@ If Google Forms works for you, I'd advise you to use that. If you prefer to have
 
 ## Setup
 
-### Set up you web form and Google sheet
+### Set up your web form and Google sheet
 
- * Host an HTML web form somewhere that works for you (a form page, a confirmation page and an error page). These can be static files.
- * A Google sheet (note the sheet ID and the name of a worksheet in it that you want to use)
+ * Host an HTML web form somewhere that works for you (a form page, a confirmation page and an error page). These can be static files
+ * A Google spreadsheet. Make a note the sheet ID and the name of the worksheet in it that you want to use
 
 ### Create a Google cloud project
 
  * Create a [Google Cloud (GCP)](https://cloud.google.com/) account if you don't have one already (new accounts get [free credit](https://cloud.google.com/free))
- * Create a project in your account (and note the project ID)
+ * Create a project in your account and make a note of the project ID
 
 ### Create configuration files
 
-You'll now need to create some files in the root directory of this repo to configure Spreadform. These are one-line text files:
+You'll now need to create some files in the root directory of this repo to configure your Spreadform deployment. These are one-line text files:
 
  * **account.txt**: your GCP login email address, e.g. `user@example.com`
  * **project_id.txt**: your GCP project ID that you noted above, e.g. `spreadform-123456`
@@ -35,8 +35,8 @@ You'll now need to create some files in the root directory of this repo to confi
 ### Deploy spreadform
 
  * Deploy spreadform using the `deploy.sh` script - this _should_ guide you with configuration if there are any issues.
- * Update your web form `action` to the URL of yous Spreadform deployment, shown at the end of the output from deployment
- * Grant edit permission on your Google sheet to the the email address of your Spreadform deployment, shown at the end of the output from deployment
+ * Update your web form `action` to the URL of your Spreadform deployment, shown at the end of the output of the deploy script. This will be something like `https://europe-west2-<project_id>cloudfunctions.net/form`
+ * Grant edit permission on your Google sheet to the the email address of your Spreadform deployment, shown at the end of the output of the deploy script. This will be something like `<project_id>@appspot.gserviceaccount.com`
 
 ### How it works
 
@@ -44,8 +44,8 @@ You'll now need to create some files in the root directory of this repo to confi
  * Enter some data
  * Submit your form
  * Spreadform receives the fields, generates a timestamp and a random alphanumeric submission ID, logs out all the data as a fallback (retained for 30 days by Stackdriver logging) and then submits it to a message queue for processing
- * If successful, Spreadform redirects you to your success page (`success_page.txt`) with a query parameter containing the submission ID, e.g. `https://example.com/success.html?id=a1b2c3d4`
- * If an error occurs, Spreadform redirects you to your error page (`error_page.txt`) with a query parameter containing the submission ID, e.g. `https://example.com/error.html?id=a1b2c3d4`
+ * If the submission is successfully sent to the queue, Spreadform redirects you to your success page (as per `success_page.txt`) with a query parameter containing the submission ID, e.g. `https://example.com/success.html?id=a1b2c3d4`
+ * If an error occurs, Spreadform redirects you to your error page (as per `error_page.txt`) with a query parameter containing the submission ID, e.g. `https://example.com/error.html?id=a1b2c3d4`
  * The message queue is processed one submission at a time (to avoid rows getting mixed up in the spreadsheet)
  * Key-value pairs in the data are compared to any existing header row keys in the spreadsheet (row 1)
  * If needed, new headings are added to the header row to accommodate the submitted data
@@ -61,4 +61,4 @@ I've made one compromise on data storage (which you can change in `form/index.js
 
  * Spreadform is serverless (using Google Cloud Functions, Pubsub and Sheets)
  * It's likely to cost you nothing to run on the GCP free tier for several thousand submissions
- * If you're using this in UK Governmont, you can use Gov.uk Notify (see the "notify" branch)
+ * If you're using this in UK Governmont, you can use Gov.uk Notify (see [form/index.js](https://github.com/davidcarboni/spreadform/blob/notify/form/index.js#L62) in the "notify" branch)
