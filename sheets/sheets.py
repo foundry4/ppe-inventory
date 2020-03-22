@@ -100,5 +100,5 @@ def sheets_client():
         service = build('sheets', 'v4', credentials=credentials)
     else:
         # We're expecting the service account to be available in GCF
-        service = build('sheets', 'v4')
+        service = build('sheets', 'v4', cache_discovery=False)
     return service.spreadsheets()
