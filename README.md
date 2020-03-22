@@ -48,7 +48,7 @@ You'll now need to create some files in the root directory of this repo to confi
  * If an error occurs, Spreadform redirects you to your error page (as per `error_page.txt`) with a query parameter containing the submission ID, e.g. `https://example.com/error.html?id=a1b2c3d4`
  * The message queue is processed one submission at a time (to avoid rows getting mixed up in the spreadsheet)
  * Key-value pairs in the data are compared to any existing header row keys in the spreadsheet (row 1)
- * If needed, new headings are added to the header row to accommodate the submitted data
+ * If needed, new headings are added to the header row to accommodate the submitted data (this means you can change your form on the fly if you need to)
  * A new row is added to the bottom of the spreadsheet, containing the submitted data values in the matched columns
 
 ## Data security
