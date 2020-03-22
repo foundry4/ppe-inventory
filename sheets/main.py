@@ -10,7 +10,7 @@ from sheets import update_sheet, get_header_row, get_row_count, update_header_ro
 
 # Sheets config
 sheet_id = os.getenv("SHEET_ID")
-worksheet_name = os.getenv("WORKSHEET_NAME")
+worksheet_name = os.getenv("WORKSHEET_NAME") or "Sheet1"
 
 
 def sheets(event, context):
