@@ -3,6 +3,7 @@ import json
 import os
 import time
 import base64
+import threading
 from operator import itemgetter
 from sheets import update_sheet, get_header_row, get_row_count, update_header_row, update_row
 
@@ -22,23 +23,37 @@ def sheets(event, context):
 
     # Process attributes
     print(f"Attributes: {event.get('attributes')}")
-    if 'attributes' in event and 'timestamp' in event['attributes']:
-        timestamp = event['attributes']['timestamp']
-    else:
-        print("Generating timestamp")
-        timestamp = str(round(time.time()))
+    if 'attributes' in event:
+        attributes = event['attributes']
+        if 'timestamp' in attributes:
+            timestamp = attributes['timestamp']
+        else:
+            print("Generating timestamp")
+            timestamp = str(round(time.time()))
+        if 'id' in attributes:
+            id = attributes['id']
+        else:
+            print("Generating id")
+            id = timestamp
     print(f"Timestamp: {timestamp}")
+    print(f"ID: {id}")
 
     # Process message data
     if 'data' in event:
         json_string = base64.b64decode(event['data']).decode('utf-8')
         message = json.loads(json_string)
+        message["timestamp"] = timestamp
+        message["id"] = id
 
         # Update header row if needed
         header = get_header_row(sheet_id, worksheet_name)
         update = False
         if not 'timestamp' in header:
             header.append('timestamp')
+            update = True
+        if not 'id' in header:
+            header.append('id')
+            update = True
         for key in message:
             if not key in header:
                 header.append(key)
@@ -50,12 +65,12 @@ def sheets(event, context):
         # Build row values
         row = []
         for key in header:
-            if key=='timestamp':
-                row.append(timestamp)
-            else:
-                row.append(message.get(key) or "")
+            row.append(str(message.get(key) or ""))
+
+        # Add the row to the sheet
         row_index = get_row_count(sheet_id, worksheet_name) + 1
         print(f"New row index is: {row_index}")
         update_row(row, row_index, sheet_id, worksheet_name)
+
         print("Sheet update sent.")
 
