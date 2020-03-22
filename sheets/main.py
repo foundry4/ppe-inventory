@@ -63,14 +63,14 @@ def sheets(event, context):
             update_header_row(header, sheet_id, worksheet_name)
         
         # Build row values
-        row = []
+        row_data = []
         for key in header:
-            row.append(str(message.get(key) or ""))
+            row_data.append(str(message.get(key) or ""))
 
         # Add the row to the sheet
         row_index = get_row_count(sheet_id, worksheet_name) + 1
         print(f"New row index is: {row_index}")
-        update_row(row, row_index, sheet_id, worksheet_name)
+        update_row(row_data, row_index, sheet_id, worksheet_name)
 
         print("Sheet update sent.")
 
