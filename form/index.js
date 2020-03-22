@@ -20,7 +20,7 @@ exports.form = async(req, res) => {
     const timestamp = new Date().toISOString()
     const id = generateId()
     const customAttributes = {'timestamp': timestamp, 'id': id}
-    console.log(`Backup json: ${message} / ${customAttributes}`)
+    console.log(`Backup json: ${message} / ${JSON.stringify(customAttributes)}`)
 
     // Send message
     try {
@@ -30,7 +30,7 @@ exports.form = async(req, res) => {
       const messageId = await pubSubClient
         .topic('form-submissions')
         .publish(dataBuffer, customAttributes)
-      console.log(`Message ${messageId} published (${customAttributes}).`)
+      console.log(`Message ${messageId} published (${JSON.stringify(customAttributes)}).`)
       console.log(`Redirecting to success page: ${successPage}`)
       res.redirect(`${successPage}?id=${id}`)
 
