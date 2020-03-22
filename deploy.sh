@@ -34,6 +34,9 @@ project_id=$(cat project_id.txt)
 gcloud config set account $account
 gcloud config set project $project_id
 
+form_page=$(cat form_page.txt)
+success_page=$(cat success_page.txt)
+error_page=$(cat error_page.txt)
 sheet_id=$(cat sheet-id.txt)
 worksheet_name=$(cat worksheet-name.txt)
 
@@ -83,20 +86,21 @@ gcloud pubsub topics create form-submissions
 # NB: limited to 1 instance to avoid race conditions when updating the spreadsheet
 
 cd $base/sheets
-env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
 concurrency=" --max-instances=1"
+env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
 options="--region=europe-west2 --memory=256MB --trigger-topic=form-submissions --allow-unauthenticated"
 
-gcloud functions deploy sheets --runtime=python37 ${env_vars} ${concurrency} ${options} #--service-account=${service_account}
+gcloud functions deploy sheets --runtime=python37 ${concurrency} ${env_vars} ${options} #--service-account=${service_account}
 
 cd $base
 
 # Web form function
 
 cd $base/form
+env_vars="--set-env-vars=FORM_PAGE=$form_page,SUCCESS_PAGE=$success_page,ERROR_PAGE=$error_page"
 options="--region=europe-west2 --memory=256MB --trigger-http --allow-unauthenticated"
 
-gcloud functions deploy form --runtime=nodejs10 ${options} #--service-account=${service_account}
+gcloud functions deploy form --runtime=nodejs10 ${env_vars} ${options} #--service-account=${service_account}
 
 cd $base
 
