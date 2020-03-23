@@ -8,6 +8,8 @@ I built Spreadform as part of the response to Coronavirus, to help organisations
 
 If Google Forms works for you, I'd advise you to use that. If you prefer to have a custom web form, then Spreadform is for you.
 
+I've put together [a diagram that summarises how this works](https://docs.google.com/drawings/d/1TyqtGFOoZwxuIQh-H-Nsk7_411XCvw8khdVkWb3rJN8/edit).
+
 ## Setup
 
 ### Set up your web form and Google sheet
