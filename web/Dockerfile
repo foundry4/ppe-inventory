@@ -14,4 +14,5 @@ USER 1000
 
 # This is isn't recommended, but it's enough to run a low-traffic wiki
 # NB Flask defaults to looking for app.py
-ENTRYPOINT python app.py
+#ENTRYPOINT python app.py
+CMD python app.py
