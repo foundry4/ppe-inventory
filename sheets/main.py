@@ -4,8 +4,8 @@ import os
 import time
 import base64
 import threading
-from operator import itemgetter
-from sheets import update_sheet, get_header_row, get_row_count, get_row, update_header_row, update_row
+from flask import jsonify
+from sheets import update_sheet, get_header_row, get_row_count, get_row, update_header_row, update_row, get_row_data
 
 
 # Sheets config
@@ -83,3 +83,36 @@ def sheets(event, context):
 
         print("Sheet update sent.")
 
+
+
+
+def inventory(request):
+    """
+    Read a hospital inventory from spreadsheet
+    """
+
+    hospital = "Barts"
+    if 'hospital' in request.args:
+        hospital = request.args.get('hospital')
+    print(f"Getting data for {hospital}")
+    
+    header = get_header_row(sheet_id, worksheet_name)
+    column_index = header.index("hospital")
+    row_index = get_row(sheet_id, worksheet_name, column_index, hospital)
+
+    row = []
+    if row_index > 0:
+        hospital_data = get_row_data(sheet_id, worksheet_name, row_index)
+        print(f"{row_index}: {hospital_data}")
+
+        if row_index > 1:
+            row = get_row_data(sheet_id, worksheet_name, row_index)
+
+    result = {}
+    if len(row) > 0:
+        for i in range(len(row)):
+            if i < len(header) and i < len(row):
+                result[header[i]] = row[i]
+
+    print(f"Got row: {result}")
+    return jsonify(result)
