@@ -10,8 +10,11 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-USER 1000
+#USER 1000
 
 # This is isn't recommended, but it's enough to run a low-traffic wiki
 # NB Flask defaults to looking for app.py
-ENTRYPOINT ls -lah && python app.py # flask run --host=0.0.0.0 --port=$PORT
+RUN echo "ls -lah && python app.py" > run.sh
+RUN chmod u+x run.sh
+USER 1000
+ENTRYPOINT ./run.sh
