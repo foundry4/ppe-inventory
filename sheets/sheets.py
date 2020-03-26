@@ -29,6 +29,15 @@ def get_header_row(sheet_id, worksheet_name):
     else:
         return []
 
+def get_row_data(sheet_id, worksheet_name, row_index):
+
+    cell_range = f"{worksheet_name}!{row_index}:{row_index}"
+    cells = get_cells(sheet_id, cell_range)
+    if len(cells)>0:
+        return cells[0]
+    else:
+        return []
+
 
 def get_row_count(sheet_id, worksheet_name):
     
