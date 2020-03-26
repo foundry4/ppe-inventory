@@ -1,10 +1,9 @@
-from flask import Flask, current_app, redirect, render_template
+from flask import Flask, current_app, request, make_response, redirect, render_template, send_from_directory
 from flask_basicauth import BasicAuth
 from flask_sslify import SSLify
 import json
 import os
 import threading
-from .wiki import wiki
 
 app = Flask(__name__)
 
@@ -39,9 +38,25 @@ def redirect_to_form():
 @app.route('/ppe-inventory', methods=['GET'])
 def ppe_inventory_form():
     """ Form to upload images and other files to the wiki. """
-    return render_template('ppe-inventory.html' if os.getenv('GITHUB_ACCESS_TOKEN') else 'upload.html', 
-        hospital="Hammersmith Hospital"
-        )
+
+    if 'hospital' in request.args:
+        hospital = request.args.get('hospital')
+    elif 'hospital' in request.cookies:
+        hospital = request.cookies['hospital']
+
+    response = make_response(render_template('ppe-inventory.html', 
+        hospital=hospital
+        ))
+    response.set_cookie('hospital', hospital)
+    return response
+
+@app.route('/assets/<path:path>')
+def govuk_frontend_assets(path):
+    """ Fix for Govuk frontend requests. """
+    print(f"Fixed govuk path: /assets/{path}")
+    return send_from_directory('static/assets', path)
+
+
 
 # Run the app (if this file is called directly and not through 'flask run')
 # This is isn't recommended, but it's good enough to run a low-traffic wiki
