@@ -14,4 +14,4 @@ USER 1000
 
 # This is isn't recommended, but it's enough to run a low-traffic wiki
 # NB Flask defaults to looking for app.py
-ENTRYPOINT ls -lah && flask run --host=0.0.0.0 --port=$PORT
+ENTRYPOINT ls -lah && python app.py # flask run --host=0.0.0.0 --port=$PORT

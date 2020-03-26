@@ -61,4 +61,5 @@ def govuk_frontend_assets(path):
 # Run the app (if this file is called directly and not through 'flask run')
 # This is isn't recommended, but it's good enough to run a low-traffic wiki
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    port = os.getenv('PORT') or 5000
+    app.run(host='0.0.0.0', port=port)
