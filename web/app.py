@@ -54,7 +54,7 @@ def ppe_inventory_form():
         raise Exception(f"Error: {response.status_code}")
 
     form = make_response(render_template('ppe-inventory.html', 
-        response.json()
+        **response.json()
         ))
     form.set_cookie('hospital', hospital)
     return form
