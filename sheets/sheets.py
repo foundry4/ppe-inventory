@@ -44,6 +44,23 @@ def get_row_count(sheet_id, worksheet_name):
     return len(get_cells(sheet_id, cell_range))
 
 
+def get_row(sheet_id, worksheet_name, column_index, row_value):
+    
+    columns = 'ABCDEFGHI'
+    column=columns[column_index]
+    cell_range = f"{worksheet_name}!{column}:{column}"
+    print(f'Getting cells for range {cell_range}')
+    values = get_cells(sheet_id, cell_range)
+    print(f'Found {values}')
+    row_values=[]
+    # Unpack the [["row", "values"]] into a simple array
+    for value in values:
+        row_values.append(value[0])
+    row_index = -1 if row_value not in row_values else row_values.index(row_value)
+    print(f'row index {row_index}')
+    return row_index
+
+
 def get_cells(sheet_id, cell_range):
 
     # Get the requested data

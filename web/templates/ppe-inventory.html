@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]><html class="ie8" lang="en"><![endif]--><!--[if IE 9]><html class="ie9" lang="en"><![endif]--><!--[if gt IE 9]><!--><html lang="en" style="background-color: #f0f4f5;"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>Input - NHS.UK frontend</title>
+
+    <link href="https://www.nhs.uk/" rel="preconnect">
+    <link href="https://assets.nhs.uk/" rel="preconnect" crossorigin>
+
+    <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2" rel="preload" as="font" crossorigin>
+    <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" rel="preload" as="font" crossorigin>
+
+    <link href="/assets/nhsuk.css" rel="stylesheet">
+
+    <script src="/assets/nhsuk.js" defer></script>
+
+    <link rel="shortcut icon" href="/assets/favicons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/assets/favicons/apple-touch-icon-180x180.png">
+    <link rel="mask-icon" href="/assets/favicon.svg" color="#005eb8">
+    <link rel="icon" sizes="192x192" href="/assets/favicon-192x192.png">
+    <meta name="msapplication-TileImage" content="/assets/mediumtile-144x144.png">
+    <meta name="msapplication-TileColor" content="#005eb8">
+    <meta name="msapplication-square70x70logo" content="/assets/smalltile-70x70.png">
+    <meta name="msapplication-square150x150logo" content="/assets/mediumtile-150x150.png">
+    <meta name="msapplication-wide310x150logo" content="/assets/favicons/widetile-310x150.png">
+    <meta name="msapplication-square310x310logo" content="/assets/favicons/largetile-310x310.png">
+
+    <meta property="og:url" content="https://nhsuk.github.io/nhsuk-frontend/">
+    <meta property="og:title" content="PPE stock levels">
+    <meta property="og:description" content="PPE stock levels tracker">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/assets/logos/open-graph.png">
+    <meta property="og:image:alt" content="NHS">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@nhsuk">
+    <meta name="twitter:creator" content="@nhsuk">
+
+    <title>PPE - QUANTITY HELD (Eaches)</title>
+  </head>
+
+  <body class="">
+    
+  <header class="nhsuk-header" role="banner">
+    <div class="nhsuk-width-container nhsuk-header__container">
+      <div class="nhsuk-header__logo"><a class="nhsuk-header__link" href="/" aria-label="NHS homepage">
+          <svg class="nhsuk-logo" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" viewBox="0 0 40 16">
+            <path class="nhsuk-logo__background" d="M0 0h40v16H0z"></path>
+            <path class="nhsuk-logo__text" d="M3.9 1.5h4.4l2.6 9h.1l1.8-9h3.3l-2.8 13H9l-2.7-9h-.1l-1.8 9H1.1M17.3 1.5h3.6l-1 4.9h4L25 1.5h3.5l-2.7 13h-3.5l1.1-5.6h-4.1l-1.2 5.6h-3.4M37.7 4.4c-.7-.3-1.6-.6-2.9-.6-1.4 0-2.5.2-2.5 1.3 0 1.8 5.1 1.2 5.1 5.1 0 3.6-3.3 4.5-6.4 4.5-1.3 0-2.9-.3-4-.7l.8-2.7c.7.4 2.1.7 3.2.7s2.8-.2 2.8-1.5c0-2.1-5.1-1.3-5.1-5 0-3.4 2.9-4.4 5.8-4.4 1.6 0 3.1.2 4 .6"></path>
+            <image src="https://assets.nhs.uk/images/nhs-logo.png" xlink:href=""></image>
+          </svg>
+        </a>
+      </div>
+  
+        <div class="nhsuk-header__content" id="content-header">
+          <div class="nhsuk-header__menu nhsuk-header__menu--only">
+            <button class="nhsuk-header__menu-toggle" id="toggle-menu" aria-controls="header-navigation" aria-label="Open menu">Menu</button>
+          </div>
+        </div>
+      </div>
+  
+      <nav class="nhsuk-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
+        <div class="nhsuk-width-container">
+          <p class="nhsuk-header__navigation-title"><span id="label-navigation">Menu</span>
+            <button class="nhsuk-header__navigation-close" id="close-menu">
+              <svg class="nhsuk-icon nhsuk-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z"></path>
+              </svg>
+              <span class="nhsuk-u-visually-hidden">Close menu</span>
+            </button>
+          </p>
+          <ul class="nhsuk-header__navigation-list">
+            <li class="nhsuk-header__navigation-item nhsuk-header__navigation-item--for-mobile">
+              <a class="nhsuk-header__navigation-link" href="/ppe-dashboard.html">
+                Home
+                <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+                </svg>
+              </a>
+            </li>
+            <li class="nhsuk-header__navigation-item">
+              <a class="nhsuk-header__navigation-link" href="/ppe.html">
+                PPE stock levels
+                <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+                </svg>
+              </a>
+            </li>
+            <li class="nhsuk-header__navigation-item">
+              <a class="nhsuk-header__navigation-link" href="https://www.nhs.uk/live-well/">
+                Live Well
+                <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+                </svg>
+              </a>
+            </li>
+            <li class="nhsuk-header__navigation-item">
+              <a class="nhsuk-header__navigation-link" href="https://www.nhs.uk/conditions/social-care-and-support/">
+                Care and support
+                <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+                </svg>
+              </a>
+            </li>
+            <li class="nhsuk-header__navigation-item">
+              <a class="nhsuk-header__navigation-link" href="https://www.nhs.uk/news/">
+                Health news
+                <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+                </svg>
+              </a>
+            </li>
+            <li class="nhsuk-header__navigation-item">
+              <a class="nhsuk-header__navigation-link" href="https://www.nhs.uk/service-search">
+                Services near you
+                <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+  
+      </header>
+  
+
+      <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+          <ol class="nhsuk-breadcrumb__list">
+    <li class="nhsuk-breadcrumb__item">
+      <a href="/" class="nhsuk-breadcrumb__link">Home</a>
+    </li>
+    <li class="nhsuk-breadcrumb__item">
+      <a href="/conditions/" class="nhsuk-breadcrumb__link">Health A to Z</a>
+    </li>
+          </ol>
+          <p class="nhsuk-breadcrumb__back">
+    <a href="/conditions/" class="nhsuk-breadcrumb__backlink">Back to Health A to Z</a>
+          </p>
+        </div>
+      </nav>
+
+
+<div class="nhsuk-width-container">
+<main class="nhsuk-main-wrapper" id="maincontent">
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-full">
+  
+
+    <h1 class="govuk-heading-xl">
+      PPE - QUANTITY HELD (Eaches)
+    </h1>
+
+    <form id="" action="https://europe-west2-ppe-inventory.cloudfunctions.net/form" method="post" class="form">
+
+
+<input type="hidden" id="hospital" name="hospital" value="{{ hospital }}">
+
+
+<!-- FACE VISORS -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    FACE VISORS
+  </legend>
+
+  <label class="nhsuk-label" for="face-visors-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="face-visors-stock-levels" name="face-visors-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="face-visors-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="face-visors-hint">
+    RAG status for face-visors.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="face-visors-2" type="radio" name="face-visors-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="face-visors-23" type="radio" name="face-visors-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="face-visors-3" type="radio" name="face-visors-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="face-visors-1" type="radio" name="face-visors-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- FACE VISORS -->
+
+
+
+
+<!-- MASKS - IIR -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    MASKS - IIR
+  </legend>
+
+  <label class="nhsuk-label" for="masks-iir-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="masks-iir-stock-levels" name="masks-iir-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="masks-iir-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="masks-iir-hint">
+    RAG status for masks-iir.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-iir-2" type="radio" name="masks-iir-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-iir-23" type="radio" name="masks-iir-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-iir-3" type="radio" name="masks-iir-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-iir-1" type="radio" name="masks-iir-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- MASKS - IIR -->
+
+
+
+
+
+<!-- MASKS - FFP2 -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    MASKS - FFP2
+  </legend>
+
+  <label class="nhsuk-label" for="masks-ffp2-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="masks-ffp2-stock-levels" name="masks-ffp2-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="masks-ffp2-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="masks-ffp2-hint">
+    RAG status for masks-ffp2.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp2-2" type="radio" name="masks-ffp2-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp2-23" type="radio" name="masks-ffp2-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp2-3" type="radio" name="masks-ffp2-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp2-1" type="radio" name="masks-ffp2-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- MASKS - FFP2 -->
+
+
+
+
+<!-- MASKS - FFP3 -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    MASKS - FFP3
+  </legend>
+
+  <label class="nhsuk-label" for="masks-ffp3-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="masks-ffp3-stock-levels" name="masks-ffp3-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="masks-ffp3-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="masks-ffp3-hint">
+    RAG status for masks-ffp3.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp3-2" type="radio" name="masks-ffp3-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp3-23" type="radio" name="masks-ffp3-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp3-3" type="radio" name="masks-ffp3-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp3-1" type="radio" name="masks-ffp3-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- MASKS - FFP3 -->
+
+
+
+
+
+<!-- FIT TEST (SOLUTION) -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    FIT TEST (SOLUTION)
+  </legend>
+
+  <label class="nhsuk-label" for="fit-test-solution-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="fit-test-solution-stock-levels" name="fit-test-solution-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="fit-test-solution-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="fit-test-solution-hint">
+    RAG status for fit-test-solution.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-solution-2" type="radio" name="fit-test-solution-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-solution-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-solution-23" type="radio" name="fit-test-solution-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-solution-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-solution-3" type="radio" name="fit-test-solution-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-solution-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-solution-1" type="radio" name="fit-test-solution-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-solution-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- FIT TEST (SOLUTION) -->
+
+
+
+
+
+<!-- FIT TEST (FULL KIT) -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    FIT TEST (FULL KIT)
+  </legend>
+
+  <label class="nhsuk-label" for="fit-test-fullkit-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="fit-test-fullkit-stock-levels" name="fit-test-fullkit-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="fit-test-fullkit-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="fit-test-fullkit-hint">
+    RAG status for fit-test-fullkit.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-fullkit-2" type="radio" name="fit-test-fullkit-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-fullkit-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-fullkit-23" type="radio" name="fit-test-fullkit-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-fullkit-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-fullkit-3" type="radio" name="fit-test-fullkit-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-fullkit-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="fit-test-fullkit-1" type="radio" name="fit-test-fullkit-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="fit-test-fullkit-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- FIT TEST (FULL KIT) -->
+
+
+
+
+
+
+<!-- GLOVES -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    GLOVES
+  </legend>
+
+  <label class="nhsuk-label" for="gloves-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="gloves-stock-levels" name="gloves-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="gloves-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="gloves-hint">
+    RAG status for gloves.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gloves-2" type="radio" name="gloves-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="gloves-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gloves-23" type="radio" name="gloves-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="gloves-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gloves-3" type="radio" name="gloves-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="gloves-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gloves-1" type="radio" name="gloves-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="gloves-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- GLOVES -->
+
+
+
+
+
+<!-- GOWNS -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    GOWNS
+  </legend>
+
+  <label class="nhsuk-label" for="gowns-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="gowns-stock-levels" name="gowns-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="gowns-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="gowns-hint">
+    RAG status for gowns.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gowns-2" type="radio" name="gowns-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="gowns-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gowns-23" type="radio" name="gowns-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="gowns-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gowns-3" type="radio" name="gowns-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="gowns-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gowns-1" type="radio" name="gowns-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="gowns-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- GOWNS -->
+
+
+
+
+<!-- HAND HYGIENE -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    HAND HYGIENE
+  </legend>
+
+  <label class="nhsuk-label" for="hand-hygiene-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="hand-hygiene-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="hand-hygiene-hint">
+    RAG status for hand-hygiene.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-2" type="radio" name="hand-hygiene-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-23" type="radio" name="hand-hygiene-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-3" type="radio" name="hand-hygiene-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-1" type="radio" name="hand-hygiene-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- HAND HYGIENE -->
+
+
+
+<!-- APRON -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    APRON
+  </legend>
+
+  <label class="nhsuk-label" for="apron-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="apron-stock-levels" name="apron-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="apron-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="apron-hint">
+    RAG status for apron.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="apron-2" type="radio" name="apron-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="apron-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="apron-23" type="radio" name="apron-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="apron-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="apron-3" type="radio" name="apron-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="apron-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="apron-1" type="radio" name="apron-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="apron-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- APRON -->
+
+
+
+<!-- GOGGLES -->
+<div class="nhsuk-form-group">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+    GOGGLES
+  </legend>
+
+  <label class="nhsuk-label" for="goggles-stock-levels">
+    Stock levels
+  </label>
+  <input class="nhsuk-input" id="goggles-stock-levels" name="goggles-stock-levels" type="text">
+
+</div>
+<div class="nhsuk-form-group">
+
+  <fieldset class="nhsuk-fieldset" aria-describedby="goggles-hint">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+    RAG
+  </legend>
+
+  <!-- <span class="nhsuk-hint" id="goggles-hint">
+    RAG status for goggles.
+  </span> -->
+
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="goggles-2" type="radio" name="goggles-rag" value="two">
+      <label class="nhsuk-label nhsuk-radios__label" for="goggles-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="goggles-23" type="radio" name="goggles-rag" value="two-three">
+      <label class="nhsuk-label nhsuk-radios__label" for="goggles-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="goggles-3" type="radio" name="goggles-rag" value="three-plus">
+      <label class="nhsuk-label nhsuk-radios__label" for="goggles-3">
+        >3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="goggles-1" type="radio" name="goggles-rag" value="one-or-less">
+      <label class="nhsuk-label nhsuk-radios__label" for="goggles-1">
+        >3 days
+      </label>
+    </div>
+  </div>
+  </fieldset>
+
+</div>
+<!-- GOGGLES -->
+
+
+    
+
+
+        <div class="nhsuk-grid-row">
+
+        <button class="nhsuk-button" type="submit">
+          Update
+        </button>
+
+        </div>
+
+
+      </div>
+
+    </form>
+
+
+
+</div>
+</div>
+</main>
+</div>
+    
+
+    
+      <footer role="contentinfo">
+        <div class="nhsuk-footer" id="nhsuk-footer">
+          <div class="nhsuk-width-container">
+            <h2 class="nhsuk-u-visually-hidden">Support links</h2>
+            <ul class="nhsuk-footer__list">
+              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/nhs-sites">NHS sites</a></li>
+              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/about-us">About us</a></li>
+              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/contact-us/">Contact us</a></li>
+              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/about-us/sitemap/">Sitemap</a></li>
+              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/our-policies/">Our policies</a></li>
+            </ul>
+            
+            <p class="nhsuk-footer__copyright">&copy; Crown copyright</p>
+          </div>
+        </div>
+      </footer>
+
+  </body>
+</html>
+

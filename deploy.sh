@@ -42,20 +42,9 @@ worksheet_name=$(cat worksheet-name.txt)
 
 # Enable APIs
 
-functions_enabled=$(gcloud services list | grep cloudfunctions.googleapis.com)
-if [ -z "$(gcloud services list | grep cloudfunctions.googleapis.com)" ]
-then
   gcloud services enable cloudfunctions.googleapis.com
-else
-  echo "Functions API is enabled."
-fi
 
-if [ -z "$(gcloud services list | grep sheets.googleapis.com)" ]
-then
   gcloud services enable sheets.googleapis.com
-else
-  echo "Sheets API is enabled."
-fi
 
 # Service account - less privilege, but more complex
 

@@ -5,7 +5,7 @@ import time
 import base64
 import threading
 from operator import itemgetter
-from sheets import update_sheet, get_header_row, get_row_count, update_header_row, update_row
+from sheets import update_sheet, get_header_row, get_row_count, get_row, update_header_row, update_row
 
 
 # Sheets config
@@ -68,8 +68,17 @@ def sheets(event, context):
             row_data.append(str(message.get(key) or ""))
 
         # Add the row to the sheet
-        row_index = get_row_count(sheet_id, worksheet_name) + 1
-        print(f"New row index is: {row_index}")
+        row_index = 0
+        if 'hospital' in header:
+            print('hospital found in headers')
+            column = header.index("hospital")
+            print(f"Column index for {row_data[column]} is: {column}")
+            row_index = get_row(sheet_id, worksheet_name, column, row_data[column])
+            print(f'Got row index {row_index}')
+        if row_index < 1:
+            print('no row index found')
+            row_index = get_row_count(sheet_id, worksheet_name) + 1
+            print(f"New row index is: {row_index}")
         update_row(row_data, row_index, sheet_id, worksheet_name)
 
         print("Sheet update sent.")
