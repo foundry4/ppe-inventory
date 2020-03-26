@@ -58,7 +58,7 @@ def get_row(sheet_id, worksheet_name, column_index, row_value):
         row_values.append(value[0])
     row_index = -1 if row_value not in row_values else row_values.index(row_value)
     print(f'row index {row_index}')
-    return row_index
+    return row_index + 1
 
 
 def get_cells(sheet_id, cell_range):
