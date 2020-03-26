@@ -77,9 +77,10 @@ gcloud pubsub topics create form-submissions
 cd $base/sheets
 concurrency=" --max-instances=1"
 env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
-options="--region=europe-west2 --memory=256MB --trigger-topic=form-submissions --allow-unauthenticated"
+options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
-gcloud functions deploy sheets --runtime=python37 ${concurrency} ${env_vars} ${options} #--service-account=${service_account}
+gcloud functions deploy inventory --runtime=python37 --trigger-http ${concurrency} ${env_vars} ${options} #--service-account=${service_account}
+gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions ${concurrency} ${env_vars} ${options} #--service-account=${service_account}
 
 cd $base
 
@@ -87,9 +88,9 @@ cd $base
 
 cd $base/form
 env_vars="--set-env-vars=FORM_PAGE=$form_page,SUCCESS_PAGE=$success_page,ERROR_PAGE=$error_page"
-options="--region=europe-west2 --memory=256MB --trigger-http --allow-unauthenticated"
+options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
-gcloud functions deploy form --runtime=nodejs10 ${env_vars} ${options} #--service-account=${service_account}
+gcloud functions deploy form --runtime=nodejs10 --trigger-http ${env_vars} ${options} #--service-account=${service_account}
 
 cd $base
 
