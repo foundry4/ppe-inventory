@@ -7,8 +7,6 @@ import threading
 from .wiki import wiki
 
 app = Flask(__name__)
-app.register_blueprint(wiki)
-app.register_blueprint(upload)
 
 
 # Redirect to https, but allow this to be disabled in development
@@ -32,7 +30,6 @@ if username and password:
     basic_auth = BasicAuth(app) 
 else:
     print(f"Not setting up authentication. USERNAME: {username}, PASSWORD set: {password != ''}")
-
 
 
 @app.route('/', methods=['GET'])
