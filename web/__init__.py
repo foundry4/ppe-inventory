@@ -1,12 +1,10 @@
-from flask import Flask, current_app
+from flask import Flask, current_app, redirect, render_template
 from flask_basicauth import BasicAuth
 from flask_sslify import SSLify
 import json
 import os
 import threading
 from .wiki import wiki
-from .upload import upload
-from .github import pull
 
 app = Flask(__name__)
 app.register_blueprint(wiki)
@@ -35,8 +33,18 @@ if username and password:
 else:
     print(f"Not setting up authentication. USERNAME: {username}, PASSWORD set: {password != ''}")
 
-# Clone wiki content
-#pull()
+
+
+@app.route('/', methods=['GET'])
+def redirect_to_form():
+    return redirect("/ppe-inventory")
+
+@app.route('/ppe-inventory', methods=['GET'])
+def ppe_inventory_form():
+    """ Form to upload images and other files to the wiki. """
+    return render_template('ppe-inventory.html' if os.getenv('GITHUB_ACCESS_TOKEN') else 'upload.html', 
+        hospital="Hammersmith Hospital"
+        )
 
 # Run the app (if this file is called directly and not through 'flask run')
 # This is isn't recommended, but it's good enough to run a low-traffic wiki
