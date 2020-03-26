@@ -3,7 +3,7 @@ from flask_basicauth import BasicAuth
 from flask_sslify import SSLify
 import json
 import os
-import threading
+import requests
 
 app = Flask(__name__)
 
@@ -39,23 +39,31 @@ def redirect_to_form():
 def ppe_inventory_form():
     """ Form to upload images and other files to the wiki. """
 
+    hospital = "Barts"
     if 'hospital' in request.args:
         hospital = request.args.get('hospital')
     elif 'hospital' in request.cookies:
         hospital = request.cookies['hospital']
 
-    response = make_response(render_template('ppe-inventory.html', 
-        hospital=hospital
+    url = "https://europe-west2-ppe-inventory.cloudfunctions.net/inventory"
+
+    response = requests.get(url,
+                            params={'hospital': hospital})
+    if response.status_code != 200:
+        print(response)
+        raise Exception(f"Error: {response.status_code}")
+
+    form = make_response(render_template('ppe-inventory.html', 
+        response.json()
         ))
-    response.set_cookie('hospital', hospital)
-    return response
+    form.set_cookie('hospital', hospital)
+    return form
 
 @app.route('/assets/<path:path>')
 def govuk_frontend_assets(path):
     """ Fix for Govuk frontend requests. """
     print(f"Fixed govuk path: /assets/{path}")
     return send_from_directory('static/assets', path)
-
 
 
 # Run the app (if this file is called directly and not through 'flask run')
