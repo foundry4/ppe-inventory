@@ -89,7 +89,7 @@
   <label class="nhsuk-label" for="face-visors-stock-levels">
     Stock levels
   </label>
-  <input class="nhsuk-input" id="face-visors-stock-levels" name="face-visors-stock-levels" type="text">
+  <input class="nhsuk-input" id="face-visors-stock-levels" name="face-visors-stock-levels" type="text" value="{{ face-visors-stock-levels }}">
 
 </div>
 <div class="nhsuk-form-group">
@@ -105,25 +105,25 @@
 
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="face-visors-1" type="radio" name="face-visors-rag" value="one-or-less">
+      <input class="nhsuk-radios__input" id="face-visors-1" type="radio" name="face-visors-rag" value="one-or-less" {{ "checked" if face-visors-rag = "one-or-less" else "" }}>
       <label class="nhsuk-label nhsuk-radios__label" for="face-visors-1">
         &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="face-visors-2" type="radio" name="face-visors-rag" value="two">
+      <input class="nhsuk-radios__input" id="face-visors-2" type="radio" name="face-visors-rag" value="two" {{ "checked" if face-visors-rag = "two" else "" }}>
       <label class="nhsuk-label nhsuk-radios__label" for="face-visors-2">
         2 days
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="face-visors-23" type="radio" name="face-visors-rag" value="two-three">
+      <input class="nhsuk-radios__input" id="face-visors-23" type="radio" name="face-visors-rag" value="two-three" {{ "checked" if face-visors-rag = "two-three" else "" }}>
       <label class="nhsuk-label nhsuk-radios__label" for="face-visors-23">
         2-3 days
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="face-visors-3" type="radio" name="face-visors-rag" value="three-plus">
+      <input class="nhsuk-radios__input" id="face-visors-3" type="radio" name="face-visors-rag" value="three-plus" {{ "checked" if face-visors-rag = "three-plus" else "" }}>
       <label class="nhsuk-label nhsuk-radios__label" for="face-visors-3">
         &gt;3 days
       </label>
