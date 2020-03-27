@@ -76,9 +76,12 @@
     <form id="" action="https://europe-west2-ppe-inventory.cloudfunctions.net/form" method="post" class="form">
 
 
-<input type="hidden" id="hospital" name="hospital" value="{{ data['hospital'] }}">
+      <input type="hidden" id="hospital" name="hospital" value="{{ data['hospital'] }}">
+      <input type="hidden" id="acute" name="acute" value="{{ data['acute'] }}">
+      <input type="hidden" id="link" name="link" value="{{ data['link'] }}">
 
 
+{% if data['acute'] == "yes" %}
 <!-- FACE VISORS -->
 <div class="nhsuk-form-group">
 
@@ -133,7 +136,7 @@
 
 </div>
 <!-- FACE VISORS -->
-
+{% endif %}
 
 
 
@@ -195,7 +198,7 @@
 
 
 
-
+{% if data['acute'] == "yes" %}
 <!-- MASKS - FFP2 -->
 <div class="nhsuk-form-group">
 
@@ -250,10 +253,10 @@
 
 </div>
 <!-- MASKS - FFP2 -->
+{% endif %}
 
 
-
-
+{% if data['acute'] == "yes" %}
 <!-- MASKS - FFP3 -->
 <div class="nhsuk-form-group">
 
@@ -308,11 +311,11 @@
 
 </div>
 <!-- MASKS - FFP3 -->
+{% endif %}
 
 
 
-
-
+{% if data['acute'] == "yes" %}
 <!-- FIT TEST (SOLUTION) -->
 <div class="nhsuk-form-group">
 
@@ -367,11 +370,11 @@
 
 </div>
 <!-- FIT TEST (SOLUTION) -->
+{% endif %}
 
 
 
-
-
+{% if data['acute'] == "yes" %}
 <!-- FIT TEST (FULL KIT) -->
 <div class="nhsuk-form-group">
 
@@ -426,7 +429,7 @@
 
 </div>
 <!-- FIT TEST (FULL KIT) -->
-
+{% endif %}
 
 
 
@@ -605,7 +608,7 @@
 <!-- HAND HYGIENE -->
 
 
-
+{% if data['acute'] == "yes" %}
 <!-- APRON -->
 <div class="nhsuk-form-group">
 
@@ -660,9 +663,10 @@
 
 </div>
 <!-- APRON -->
+{% endif %}
 
 
-
+{% if data['acute'] == "yes" %}
 <!-- GOGGLES -->
 <div class="nhsuk-form-group">
 
@@ -717,7 +721,7 @@
 
 </div>
 <!-- GOGGLES -->
-
+{% endif %}
 
     
 

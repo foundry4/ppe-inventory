@@ -14,7 +14,7 @@ if os.getenv('NOSSL'):
     print("Configured to not require SSL.")
 else:
     print("Setting up redirect to SSL.")
-    sslify = SSLify(app)
+    #sslify = SSLify(app)
 
 
 # Set up password protection
