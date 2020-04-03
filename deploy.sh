@@ -36,14 +36,11 @@ base=$PWD
 
 account=$(cat account.txt)
 project_id=$(cat project_id.txt)
-gcloud config set account $account
-gcloud config set project $project_id
-
-form_page=$(cat form_page.txt)
-success_page=$(cat success_page.txt)
-error_page=$(cat error_page.txt)
 sheet_id=$(cat sheet-id.txt)
 worksheet_name=$(cat worksheet-name.txt)
+
+gcloud config set account $account
+gcloud config set project $project_id
 
 
 # Enable APIs
