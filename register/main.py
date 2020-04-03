@@ -1,4 +1,5 @@
 from flask import request, make_response, redirect
+import datetime
 import os
 
 
@@ -14,11 +15,9 @@ def register(request):
 
     if site and code:
         print(f"Setting cookie site={site}, code={code}")
-        response.set_cookie('site', value=site)
-        response.set_cookie('code', value=code)
-        # response.set_cookie('site', value=site, domain=domain, expires=30*86400, secure=True, httponly=True)
-        # response.set_cookie('code', value=code, domain=domain, expires=30*86400, secure=True, httponly=True)
-        #response.set_cookie('code', code, secure=True, httponly=True, expires=30*86400)
+        expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
+        response.set_cookie('site', site, expires=expire_date, secure=True, httponly=True)
+        response.set_cookie('code', code, expires=expire_date, secure=True, httponly=True)
     else:
         print("Not setting registration cookie")
 
