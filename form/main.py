@@ -28,14 +28,20 @@ def form(request):
     template = 'ppe-inventory.html' if site else 'ppe-error.html'
     print(f"Rendering {template}")
 
-    form = make_response(render_template(template, 
+    response = make_response(render_template(template, 
         site=site,
         name=name,
         form_action=form_action,
         assets='https://storage.googleapis.com/ppe-inventory',
         data={}
         ))
-    return form
+    
+    # Refresh the cookie
+    expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
+    response.set_cookie('site', site, expires=expire_date, secure=True, httponly=True)
+    response.set_cookie('code', code, expires=expire_date, secure=True, httponly=True)
+
+    return response
 
 
 def get_site(name, code, client):
@@ -67,8 +73,8 @@ def update_site(site, client):
     message['last_update'] = datetime.datetime.now().isoformat()
 
     publisher = pubsub_v1.PublisherClient()
-    # project_id = os.getenv("PROJECT_ID")
-    # topic_path = publisher.topic_path(project_id, 'form-submissions')
+    project_id = os.getenv("PROJECT_ID")
+    topic_path = publisher.topic_path(project_id, 'form-submissions')
     data = json.dumps(message).encode("utf-8")
-    future = publisher.publish('form-submissions', data=data)
+    future = publisher.publish(topic_path, data=data)
     print(f"Published: {future.result()}")
