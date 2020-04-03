@@ -8,17 +8,18 @@ import os
 
 def form(request):
 
-    client = datastore.Client()
-
     name = request.cookies.get('site')
     code = request.cookies.get('code')
+
+    client = datastore.Client()
 
     site = None
     if name and code:
         site = get_site(name, code, client)
 
     if site and request.method == 'POST':
-        update_site(site, client)
+        update_site(site, client, request, code)
+        publish_update(site)
  
     # Construct a full URL to redirect to
     # otherwise we seem to end up on http
@@ -36,10 +37,11 @@ def form(request):
         data={}
         ))
     
-    # Refresh the cookie
-    expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
-    response.set_cookie('site', site, expires=expire_date, secure=True, httponly=True)
-    response.set_cookie('code', code, expires=expire_date, secure=True, httponly=True)
+    if site:
+        # Refresh the cookie
+        expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
+        response.set_cookie('site', site.key.name, expires=expire_date, secure=True, httponly=True)
+        response.set_cookie('code', site['code'], expires=expire_date, secure=True, httponly=True)
 
     return response
 
@@ -54,17 +56,22 @@ def get_site(name, code, client):
     return None
 
 
-def update_site(site, client):
+def update_site(site, client, request, code):
+    
     acute = site.get('acute')
 
     # Update the site
     site.update(request.form)
 
     # Values not to change
-    site['name'] = site.key.name
+    site['site'] = site.key.name
     site['acute'] = acute
+    site['code'] = code
 
     client.put(site)
+
+
+def publish_update(site):
 
     # Publish a message to update the Google Sheet:
 
@@ -73,8 +80,10 @@ def update_site(site, client):
     message['last_update'] = datetime.datetime.now().isoformat()
 
     publisher = pubsub_v1.PublisherClient()
+
     project_id = os.getenv("PROJECT_ID")
     topic_path = publisher.topic_path(project_id, 'form-submissions')
+
     data = json.dumps(message).encode("utf-8")
     future = publisher.publish(topic_path, data=data)
     print(f"Published: {future.result()}")
