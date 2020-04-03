@@ -1,9 +1,0 @@
-{
-  "name": "form",
-  "version": "0.0.1",
-  "author": "David Carboni",
-  "license": "MIT",
-  "dependencies": {
-    "@google-cloud/pubsub": "^1.6.0"
-  }
-}
