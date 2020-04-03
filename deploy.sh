@@ -55,8 +55,8 @@ worksheet_name=$(cat worksheet-name.txt)
 
 # Pubsub topic
 
-gcloud pubsub topics describe form-submissions || \
-gcloud pubsub topics create form-submissions
+#gcloud pubsub topics describe form-submissions || \
+#gcloud pubsub topics create form-submissions
 #echo "{
 #     \"bindings\": [
 #       {
@@ -73,6 +73,12 @@ gcloud pubsub topics create form-submissions
 
 # Google sheets function
 # NB: limited to 1 instance to avoid race conditions when updating the spreadsheet
+
+# Static content
+#gsutil mb gs://ppe-inventory
+gsutil rsync -r static gs://ppe-inventory
+gsutil iam ch allUsers:objectViewer gs://ppe-inventory
+#gsutil web set -m index.html -e 404.html gs://www.example.com
 
 cd $base/sheets
 concurrency=" --max-instances=1"
