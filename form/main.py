@@ -1,16 +1,15 @@
 from flask import request, make_response, redirect, render_template, abort
-import json
-import os
-import requests
 
 
-def ppe_inventory_form(request):
+def form(request):
 
     site = request.cookies.get('site')
-    if not site:
-        abort(400)
+    template = 'ppe-inventory.html' if site else 'ppe-error.html'
 
-    form = make_response(render_template('ppe-inventory.html', 
-        data={'site': site}
+    form = make_response(render_template(template, 
+        site=site,
+        assets='https://storage.googleapis.com/ppe-inventory',
+        data={
+            }
         ))
     return form

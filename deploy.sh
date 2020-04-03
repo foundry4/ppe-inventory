@@ -80,6 +80,26 @@ gsutil rsync -r static gs://ppe-inventory
 gsutil iam ch allUsers:objectViewer gs://ppe-inventory
 #gsutil web set -m index.html -e 404.html gs://www.example.com
 
+
+# Web form function
+
+cd $base/form
+options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
+
+gcloud functions deploy form --runtime=python37 --trigger-http ${options} #--service-account=${service_account}
+
+
+# Data update function
+
+cd $base/update
+env_vars="--set-env-vars=FORM_PAGE=$form_page,SUCCESS_PAGE=$success_page,ERROR_PAGE=$error_page"
+options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
+
+gcloud functions deploy form --runtime=nodejs10 --trigger-http ${env_vars} ${options} #--service-account=${service_account}
+
+
+# Google sheets function
+
 cd $base/sheets
 concurrency=" --max-instances=1"
 env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
@@ -87,16 +107,6 @@ options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
 gcloud functions deploy inventory --runtime=python37 --trigger-http ${concurrency} ${env_vars} ${options} #--service-account=${service_account}
 gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions ${concurrency} ${env_vars} ${options} #--service-account=${service_account}
-
-cd $base
-
-# Web form function
-
-cd $base/form
-env_vars="--set-env-vars=FORM_PAGE=$form_page,SUCCESS_PAGE=$success_page,ERROR_PAGE=$error_page"
-options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
-
-gcloud functions deploy form --runtime=nodejs10 --trigger-http ${env_vars} ${options} #--service-account=${service_account}
 
 cd $base
 
