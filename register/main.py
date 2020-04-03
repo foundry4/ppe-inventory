@@ -11,7 +11,6 @@ def register(request):
     # otherwise we seem to end up on http
     domain=os.getenv('DOMAIN')
     response = make_response(redirect(f'https://{domain}/form'))
-    print(response.location)
 
     if site and code:
         print(f"Setting cookie site={site}, code={code}")
