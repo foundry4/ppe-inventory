@@ -66,17 +66,17 @@
   
 
     <h1 class="govuk-heading-xl">
-      {{ data['hospital'] }}
+      {{ data['site'] }}
     </h1>
 
     <p>
       PPE - QUANTITY HELD (Eaches)
     </p>
 
-    <form id="" action="https://europe-west2-ppe-inventory.cloudfunctions.net/form" method="post" class="form">
+    <form id="" action="/update" method="post" class="form">
 
 
-      <input type="hidden" id="hospital" name="hospital" value="{{ data['hospital'] }}">
+      <input type="hidden" id="site" name="site" value="{{ data['site'] }}">
       <input type="hidden" id="acute" name="acute" value="{{ data['acute'] }}">
       <input type="hidden" id="link" name="link" value="{{ data['link'] }}">
 
