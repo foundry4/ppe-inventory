@@ -13,8 +13,9 @@ def form(request):
     name = request.cookies.get('site')
     code = request.cookies.get('code')
 
-    site = get_site(name, code, client)
-    print(f'Site: {site}')
+    site = None
+    if name and code:
+        site = get_site(name, code, client)
 
     if site and request.method == 'POST':
         update_site(site, client)
@@ -25,6 +26,7 @@ def form(request):
     form_action = f'https://{domain}/form'
 
     template = 'ppe-inventory.html' if site else 'ppe-error.html'
+    print(f"Rendering {template}")
 
     form = make_response(render_template(template, 
         site=site,
@@ -38,8 +40,8 @@ def form(request):
 
 def get_site(name, code, client):
 
-    kind = 'Site'
-    key = client.key(kind, name)
+    print(f"Getting site: {name}/{code}")
+    key = client.key('Site', name)
     site = client.get(key)
     if site and site.get('code') == code:
         return site
@@ -65,8 +67,8 @@ def update_site(site, client):
     message['last_update'] = datetime.datetime.now().isoformat()
 
     publisher = pubsub_v1.PublisherClient()
-    project_id = os.getenv("PROJECT_ID")
-    topic_path = publisher.topic_path(project_id, 'form-submissions')
+    # project_id = os.getenv("PROJECT_ID")
+    # topic_path = publisher.topic_path(project_id, 'form-submissions')
     data = json.dumps(message).encode("utf-8")
-    future = publisher.publish(topic_path, data=data)
+    future = publisher.publish('form-submissions', data=data)
     print(f"Published: {future.result()}")

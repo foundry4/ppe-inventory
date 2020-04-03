@@ -97,8 +97,8 @@ concurrency=" --max-instances=1"
 env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
 options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
-gcloud functions deploy inventory --runtime=python37 --trigger-http ${concurrency} ${env_vars} ${options}
 gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions ${concurrency} ${env_vars} ${options}
+# gcloud functions deploy inventory --runtime=python37 --trigger-http ${concurrency} ${env_vars} ${options}
 
 cd $base
 

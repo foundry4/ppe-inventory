@@ -21,38 +21,19 @@ def sheets(event, context):
     #print(f"event: {event}")
     #print(f"context: {context}")
 
-    # Process attributes
-    print(f"Attributes: {event.get('attributes')}")
-    if 'attributes' in event:
-        attributes = event['attributes']
-        if 'timestamp' in attributes:
-            timestamp = attributes['timestamp']
-        else:
-            print("Generating timestamp")
-            timestamp = str(round(time.time()))
-        if 'id' in attributes:
-            id = attributes['id']
-        else:
-            print("Generating id")
-            id = timestamp
-    print(f"Timestamp: {timestamp}")
-    print(f"ID: {id}")
-
     # Process message data
     if 'data' in event:
         json_string = base64.b64decode(event['data']).decode('utf-8')
         message = json.loads(json_string)
-        message["timestamp"] = timestamp
-        message["id"] = id
 
         # Update header row if needed
         header = get_header_row(sheet_id, worksheet_name)
         update = False
-        if not 'timestamp' in header:
-            header.append('timestamp')
+        if not 'last_update' in header:
+            header.append('last_update')
             update = True
-        if not 'id' in header:
-            header.append('id')
+        if not 'code' in header:
+            header.append('code')
             update = True
         for key in message:
             if not key in header:
@@ -61,58 +42,63 @@ def sheets(event, context):
         if update:
             print("New columns found. Updating header row: {header}")
             update_header_row(header, sheet_id, worksheet_name)
-        
-        # Build row values
-        row_data = []
-        for key in header:
-            row_data.append(str(message.get(key) or ""))
 
         # Add the row to the sheet
+        site = message.get('site')
         row_index = 0
-        if 'hospital' in header:
-            print('hospital found in headers')
-            column = header.index("hospital")
-            print(f"Column index for {row_data[column]} is: {column}")
-            row_index = get_row(sheet_id, worksheet_name, column, row_data[column])
-            print(f'Got row index {row_index}')
+        if 'site' in header:
+            print('site column found in headers')
+            column = header.index("site")
+            print(f"Column index for 'site' is: {column}")
+            row_index = get_row(sheet_id, worksheet_name, column, site)
+            print(f'Got row index {row_index} for site {site}')
         if row_index < 1:
             print('no row index found')
             row_index = get_row_count(sheet_id, worksheet_name) + 1
             print(f"New row index is: {row_index}")
-        update_row(row_data, row_index, sheet_id, worksheet_name)
+        
+        
+        # Build row values
+        row_data = get_row_data(sheet_id, worksheet_name, row_index)
+        row_update = []
+        for i, key in enumerate(header):
+            default = "" if i >= len(row_data) else row_data[i]
+            row_update.append(str(message.get(key) or default))
+        print(f'Row data is {row_update}')
+        update_row(row_update, row_index, sheet_id, worksheet_name)
 
         print("Sheet update sent.")
 
 
 
 
-def inventory(request):
-    """
-    Read a hospital inventory from spreadsheet
-    """
+# def inventory(request):
+#     """
+#     Read a hospital inventory from spreadsheet
+#     """
 
-    hospital = "Barts"
-    if 'hospital' in request.args:
-        hospital = request.args.get('hospital')
-    print(f"Getting data for {hospital}")
+#     hospital = "Barts"
+#     if 'hospital' in request.args:
+#         hospital = request.args.get('hospital')
+#     print(f"Getting data for {hospital}")
     
-    header = get_header_row(sheet_id, worksheet_name)
-    column_index = header.index("hospital")
-    row_index = get_row(sheet_id, worksheet_name, column_index, hospital)
+#     header = get_header_row(sheet_id, worksheet_name)
+#     column_index = header.index("hospital")
+#     row_index = get_row(sheet_id, worksheet_name, column_index, hospital)
 
-    row = []
-    if row_index > 0:
-        hospital_data = get_row_data(sheet_id, worksheet_name, row_index)
-        print(f"{row_index}: {hospital_data}")
+#     row = []
+#     if row_index > 0:
+#         hospital_data = get_row_data(sheet_id, worksheet_name, row_index)
+#         print(f"{row_index}: {hospital_data}")
 
-        if row_index > 1:
-            row = get_row_data(sheet_id, worksheet_name, row_index)
+#         if row_index > 1:
+#             row = get_row_data(sheet_id, worksheet_name, row_index)
 
-    result = {}
-    if len(row) > 0:
-        for i in range(len(row)):
-            if i < len(header) and i < len(row):
-                result[header[i]] = row[i]
+#     result = {}
+#     if len(row) > 0:
+#         for i in range(len(row)):
+#             if i < len(header) and i < len(row):
+#                 result[header[i]] = row[i]
 
-    print(f"Got row: {result}")
-    return jsonify(result)
+#     print(f"Got row: {result}")
+#     return jsonify(result)
