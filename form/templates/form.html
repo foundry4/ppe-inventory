@@ -90,7 +90,7 @@
   <label class="nhsuk-label" for="face-visors-stock-levels">
     Number of visors
   </label>
-  <input class="nhsuk-input" id="face-visors-stock-levels" name="face-visors-stock-levels" type="text" value="{{ site['face-visors-stock-levels'] }}">
+  <input class="nhsuk-input" id="face-visors-stock-levels" name="face-visors-stock-levels" type="number" value="{{ site['face-visors-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -142,7 +142,7 @@
   <label class="nhsuk-label" for="masks-iir-stock-levels">
     Number of masks
   </label>
-  <input class="nhsuk-input" id="masks-iir-stock-levels" name="masks-iir-stock-levels" type="text" value="{{ site['masks-iir-stock-levels'] }}">
+  <input class="nhsuk-input" id="masks-iir-stock-levels" name="masks-iir-stock-levels" type="number" value="{{ site['masks-iir-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -195,7 +195,7 @@
   <label class="nhsuk-label" for="masks-ffp2-stock-levels">
     Number of masks
   </label>
-  <input class="nhsuk-input" id="masks-ffp2-stock-levels" name="masks-ffp2-stock-levels" type="text" value="{{ site['masks-ffp2-stock-levels'] }}">
+  <input class="nhsuk-input" id="masks-ffp2-stock-levels" name="masks-ffp2-stock-levels" type="number" value="{{ site['masks-ffp2-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -247,7 +247,7 @@
   <label class="nhsuk-label" for="masks-ffp3-stock-levels">
     Number of masks
   </label>
-  <input class="nhsuk-input" id="masks-ffp3-stock-levels" name="masks-ffp3-stock-levels" type="text" value="{{ site['masks-ffp3-stock-levels'] }}">
+  <input class="nhsuk-input" id="masks-ffp3-stock-levels" name="masks-ffp3-stock-levels" type="number" value="{{ site['masks-ffp3-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -289,18 +289,18 @@
 
 
 {% if site['acute'] == "yes" %}
-<!-- Fit test (solution) -->
+<!-- Fit test - solution -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    Fit test (solution)
+    Fit test - solution
   </legend>
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="fit-test-solution-stock-levels">
     Number of tests
   </label>
-  <input class="nhsuk-input" id="fit-test-solution-stock-levels" name="fit-test-solution-stock-levels" type="text" value="{{ site['fit-test-solution-stock-levels'] }}">
+  <input class="nhsuk-input" id="fit-test-solution-stock-levels" name="fit-test-solution-stock-levels" type="number" value="{{ site['fit-test-solution-stock-levels'] }}">
   </div>
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="fit-test-solution-stock-levels-note">
@@ -345,17 +345,17 @@
   </div>
 
 </fieldset>
-<!-- Fit test (solution) -->
+<!-- Fit test - solution -->
 {% endif %}
 
 
 
 {% if site['acute'] == "yes" %}
-<!-- Fit test (full kit) -->
+<!-- Fit test - full kit -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    Fit test (full kit)
+    Fit test - full kit
   </legend>
 
   <div class="nhsuk-form-group">
@@ -408,7 +408,7 @@
   </div>
 
 </fieldset>
-<!-- Fit test (full kit) -->
+<!-- Fit test - full kit -->
 {% endif %}
 
 
@@ -424,7 +424,7 @@
   <label class="nhsuk-label" for="gloves-stock-levels">
     Number of gloves
   </label>
-  <input class="nhsuk-input" id="gloves-stock-levels" name="gloves-stock-levels" type="text" value="{{ site['gloves-stock-levels'] }}">
+  <input class="nhsuk-input" id="gloves-stock-levels" name="gloves-stock-levels" type="number" value="{{ site['gloves-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -485,7 +485,7 @@
   <label class="nhsuk-label" for="gowns-stock-levels">
     Number of gowns
   </label>
-  <input class="nhsuk-input" id="gowns-stock-levels" name="gowns-stock-levels" type="text" value="{{ site['gowns-stock-levels'] }}">
+  <input class="nhsuk-input" id="gowns-stock-levels" name="gowns-stock-levels" type="number" value="{{ site['gowns-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -536,7 +536,7 @@
   <label class="nhsuk-label" for="hand-hygiene-stock-levels">
     Number of containers (pump or wall dispenser cartridges)
   </label>
-  <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="text" value="{{ site['hand-hygiene-stock-levels'] }}">
+  <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="number" value="{{ site['hand-hygiene-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -597,7 +597,7 @@
   <label class="nhsuk-label" for="apron-stock-levels">
     Individual numbers (not rolls)
   </label>
-  <input class="nhsuk-input" id="apron-stock-levels" name="apron-stock-levels" type="text" value="{{ site['apron-stock-levels'] }}">
+  <input class="nhsuk-input" id="apron-stock-levels" name="apron-stock-levels" type="number" value="{{ site['apron-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -649,7 +649,7 @@
   <label class="nhsuk-label" for="goggles-stock-levels">
     Individual goggles (frames)
   </label>
-  <input class="nhsuk-input" id="goggles-stock-levels" name="goggles-stock-levels" type="text" value="{{ site['goggles-stock-levels'] }}">
+  <input class="nhsuk-input" id="goggles-stock-levels" name="goggles-stock-levels" type="number" value="{{ site['goggles-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -711,7 +711,7 @@
   <label class="nhsuk-label" for="body-bags-stock-levels">
     Stock level
   </label>
-  <input class="nhsuk-input" id="body-bags-stock-levels" name="body-bags-stock-levels" type="text" value="{{ site['body-bags-stock-levels'] }}">
+  <input class="nhsuk-input" id="body-bags-stock-levels" name="body-bags-stock-levels" type="number" value="{{ site['body-bags-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
