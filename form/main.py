@@ -31,7 +31,6 @@ def form(request):
 
     response = make_response(render_template(template, 
         site=site,
-        name=name,
         form_action=form_action,
         assets='https://storage.googleapis.com/ppe-inventory',
         data={}

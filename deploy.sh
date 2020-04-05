@@ -80,15 +80,6 @@ options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 gcloud functions deploy register --runtime=python37 --trigger-http ${env_vars} ${options}
 
 
-# # Data update function
-
-# cd $base/update
-# env_vars="--set-env-vars=DOMAIN=europe-west2-${project_id}.cloudfunctions.net"
-# options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
-
-# gcloud functions deploy form --runtime=nodejs10 --trigger-http ${env_vars} ${options}
-
-
 # Google sheets function
 # NB: limited to 1 instance to avoid race conditions when updating the spreadsheet
 
@@ -100,11 +91,10 @@ options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions ${concurrency} ${env_vars} ${options}
 # gcloud functions deploy inventory --runtime=python37 --trigger-http ${concurrency} ${env_vars} ${options}
 
-cd $base
 
 # Report back
 
-# echo "*** Please grant edit permissions on the spreadsheet to ${service_account} (https://docs.google.com/spreadsheets/d/${sheet_id})"
+cd $base
 echo "*** Please grant edit permissions on the spreadsheet to ${project_id}@appspot.gserviceaccount.com (https://docs.google.com/spreadsheets/d/${sheet_id})"
 gcloud functions describe form --region=europe-west2 | grep url
 echo "Please ensure you've set up your Datastore database in the GCP console."
