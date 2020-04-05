@@ -82,29 +82,22 @@
 {% if site['acute'] == "yes" %}
 <!-- FACE VISORS -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     FACE VISORS
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="face-visors-stock-levels">
     Number of visors
   </label>
   <input class="nhsuk-input" id="face-visors-stock-levels" name="face-visors-stock-levels" type="text" value="{{ site['face-visors-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="face-visors-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="face-visors-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="face-visors-hint">
-    RAG status for face-visors.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="face-visors-1" type="radio" name="face-visors-rag" value="one-or-less" {% if site['face-visors-rag'] == "one-or-less" %}checked{% endif %}>
@@ -131,8 +124,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- FACE VISORS -->
 {% endif %}
@@ -141,29 +134,22 @@
 
 <!-- MASKS - IIR -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     MASKS - IIR
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="masks-iir-stock-levels">
     Number of masks
   </label>
   <input class="nhsuk-input" id="masks-iir-stock-levels" name="masks-iir-stock-levels" type="text" value="{{ site['masks-iir-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="masks-iir-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="masks-iir-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="masks-iir-hint">
-    RAG status for masks-iir.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-iir-1" type="radio" name="masks-iir-rag" value="one-or-less" {% if site['masks-iir-rag'] == "one-or-less" %}checked{% endif %}>
@@ -190,8 +176,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- MASKS - IIR -->
 
@@ -201,29 +187,22 @@
 {% if site['acute'] == "yes" %}
 <!-- MASKS - FFP2 -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     MASKS - FFP2
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="masks-ffp2-stock-levels">
     Number of masks
   </label>
   <input class="nhsuk-input" id="masks-ffp2-stock-levels" name="masks-ffp2-stock-levels" type="text" value="{{ site['masks-ffp2-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="masks-ffp2-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="masks-ffp2-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="masks-ffp2-hint">
-    RAG status for masks-ffp2.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-ffp2-1" type="radio" name="masks-ffp2-rag" value="one-or-less" {% if site['masks-ffp2-rag'] == "one-or-less" %}checked{% endif %}>
@@ -250,8 +229,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- MASKS - FFP2 -->
 {% endif %}
@@ -260,29 +239,22 @@
 {% if site['acute'] == "yes" %}
 <!-- MASKS - FFP3 -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     MASKS - FFP3
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="masks-ffp3-stock-levels">
     Number of masks
   </label>
   <input class="nhsuk-input" id="masks-ffp3-stock-levels" name="masks-ffp3-stock-levels" type="text" value="{{ site['masks-ffp3-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="masks-ffp3-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="masks-ffp3-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="masks-ffp3-hint">
-    RAG status for masks-ffp3.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-ffp3-1" type="radio" name="masks-ffp3-rag" value="one-or-less" {% if site['masks-ffp3-rag'] == "one-or-less" %}checked{% endif %}>
@@ -309,8 +281,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- MASKS - FFP3 -->
 {% endif %}
@@ -320,37 +292,31 @@
 {% if site['acute'] == "yes" %}
 <!-- FIT TEST (SOLUTION) -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     FIT TEST (SOLUTION)
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="fit-test-solution-stock-levels">
     Number of tests
   </label>
   <input class="nhsuk-input" id="fit-test-solution-stock-levels" name="fit-test-solution-stock-levels" type="text" value="{{ site['fit-test-solution-stock-levels'] }}">
-
+  </div>
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="fit-test-solution-stock-levels-note">
-    Notes
+    Note
   </label>
   <span class="nhsuk-hint" id="fit-test-solution-stock-levels-note-hint">
     Any additional comment
   </span>
   <input class="nhsuk-input" id="fit-test-solution-stock-levels-note" name="fit-test-solution-stock-levels-note" type="text" value="{{ site['fit-test-solution-stock-levels-note'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="fit-test-solution-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="fit-test-solution-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="fit-test-solution-hint">
-    RAG status for fit-test-solution.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="fit-test-solution-1" type="radio" name="fit-test-solution-rag" value="one-or-less" {% if site['fit-test-solution-rag'] == "one-or-less" %}checked{% endif %}>
@@ -377,8 +343,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- FIT TEST (SOLUTION) -->
 {% endif %}
@@ -388,17 +354,19 @@
 {% if site['acute'] == "yes" %}
 <!-- FIT TEST (FULL KIT) -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     FIT TEST (FULL KIT)
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="fit-test-fullkit-stock-levels">
     Number of tests
   </label>
   <input class="nhsuk-input" id="fit-test-fullkit-stock-levels" name="fit-test-fullkit-stock-levels" type="text" value="{{ site['fit-test-fullkit-stock-levels'] }}">
+  </div>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="fit-test-fullkit-stock-levels-note">
     Notes
   </label>
@@ -406,19 +374,12 @@
     Any additional comment
   </span>
   <input class="nhsuk-input" id="fit-test-fullkit-stock-levels-note" name="fit-test-fullkit-stock-levels-note" type="text" value="{{ site['fit-test-fullkit-stock-levels-note'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="fit-test-fullkit-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="fit-test-fullkit-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="fit-test-fullkit-hint">
-    RAG status for fit-test-fullkit.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="fit-test-fullkit-1" type="radio" name="fit-test-fullkit-rag" value="one-or-less" {% if site['fit-test-fullkit-rag'] == "one-or-less" %}checked{% endif %}>
@@ -445,8 +406,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- FIT TEST (FULL KIT) -->
 {% endif %}
@@ -455,17 +416,19 @@
 
 <!-- GLOVES -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     GLOVES
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="gloves-stock-levels">
     Number of gloves
   </label>
   <input class="nhsuk-input" id="gloves-stock-levels" name="gloves-stock-levels" type="text" value="{{ site['gloves-stock-levels'] }}">
+  </div>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="gloves-stock-levels-note">
     Notes
   </label>
@@ -473,19 +436,12 @@
     Any additional comment
   </span>
   <input class="nhsuk-input" id="gloves-stock-levels-note" name="gloves-stock-levels-note" type="text" value="{{ site['gloves-stock-levels-note'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="gloves-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="gloves-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="gloves-hint">
-    RAG status for gloves.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="gloves-1" type="radio" name="gloves-rag" value="one-or-less" {% if site['gloves-rag'] == "one-or-less" %}checked{% endif %}>
@@ -512,8 +468,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- GLOVES -->
 
@@ -521,29 +477,22 @@
 
 <!-- GOWNS -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     GOWNS
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="gowns-stock-levels">
     Number of gowns
   </label>
   <input class="nhsuk-input" id="gowns-stock-levels" name="gowns-stock-levels" type="text" value="{{ site['gowns-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="gowns-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="gowns-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="gowns-hint">
-    RAG status for gowns.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="gowns-1" type="radio" name="gowns-rag" value="one-or-less" {% if site['gowns-rag'] == "one-or-less" %}checked{% endif %}>
@@ -570,27 +519,28 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- GOWNS -->
 
 
 
-
 <!-- HAND HYGIENE -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     HAND HYGIENE
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="hand-hygiene-stock-levels">
     Number of containers (pump or wall dispenser cartridges)
   </label>
   <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="text" value="{{ site['hand-hygiene-stock-levels'] }}">
+  </div>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="hand-hygiene-stock-levels-note">
     Notes
   </label>
@@ -598,19 +548,12 @@
     Any additional comment
   </span>
   <input class="nhsuk-input" id="hand-hygiene-stock-levels-note" name="hand-hygiene-stock-levels-note" type="text" value="{{ site['hand-hygiene-stock-levels-note'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="hand-hygiene-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="hand-hygiene-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="hand-hygiene-hint">
-    RAG status for hand-hygiene.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="hand-hygiene-1" type="radio" name="hand-hygiene-rag" value="one-or-less" {% if site['hand-hygiene-rag'] == "one-or-less" %}checked{% endif %}>
@@ -637,8 +580,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- HAND HYGIENE -->
 
@@ -646,28 +589,22 @@
 {% if site['acute'] == "yes" %}
 <!-- APRON -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     APRON
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="apron-stock-levels">
     Individual numbers (not rolls)
   </label>
   <input class="nhsuk-input" id="apron-stock-levels" name="apron-stock-levels" type="text" value="{{ site['apron-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="apron-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="apron-hint">
-    RAG status for apron.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="apron-1" type="radio" name="apron-rag" value="one-or-less" {% if site['apron-rag'] == "one-or-less" %}checked{% endif %}>
@@ -694,8 +631,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- APRON -->
 {% endif %}
@@ -704,17 +641,19 @@
 {% if site['acute'] == "yes" %}
 <!-- GOGGLES -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     GOGGLES
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="goggles-stock-levels">
     Individual goggles (frames)
   </label>
   <input class="nhsuk-input" id="goggles-stock-levels" name="goggles-stock-levels" type="text" value="{{ site['goggles-stock-levels'] }}">
+  </div>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="goggles-stock-levels-note">
     Notes
   </label>
@@ -722,19 +661,12 @@
     Any additional comment
   </span>
   <input class="nhsuk-input" id="goggles-stock-levels-note" name="goggles-stock-levels-note" type="text" value="{{ site['goggles-stock-levels-note'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="goggles-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="goggles-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="goggles-hint">
-    RAG status for goggles.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="goggles-1" type="radio" name="goggles-rag" value="one-or-less" {% if site['goggles-rag'] == "one-or-less" %}checked{% endif %}>
@@ -761,8 +693,8 @@
       </label>
     </div>
   </div>
+  </div>
 
-</div>
 </fieldset>
 <!-- GOGGLES -->
 {% endif %}
@@ -771,29 +703,22 @@
 {% if site['acute'] == "yes" %}
 <!-- BODY BAGS -->
 <fieldset class="nhsuk-fieldset">
-<div class="nhsuk-form-group">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     BODY BAGS
   </legend>
 
+  <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="body-bags-stock-levels">
     Stock level
   </label>
   <input class="nhsuk-input" id="body-bags-stock-levels" name="body-bags-stock-levels" type="text" value="{{ site['body-bags-stock-levels'] }}">
+  </div>
 
-</div>
-<div class="nhsuk-form-group">
-
-  <fieldset class="nhsuk-fieldset" aria-describedby="body-bags-hint">
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="body-bags-rag">
     Stock level assessment (RAG)
-  </legend>
-
-  <!-- <span class="nhsuk-hint" id="body-bags-hint">
-    RAG status for body-bags.
-  </span> -->
-
+  </label>
   <div class="nhsuk-radios nhsuk-radios--inline">
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="body-bags-1" type="radio" name="body-bags-rag" value="one-or-less" {% if site['body-bags-rag'] == "one-or-less" %}checked{% endif %}>
@@ -820,8 +745,8 @@
       </label>
     </div>
   </div>
-
-</div>
+  </div>
+  
 </fieldset>
 <!-- BODY BAGS -->
 {% endif %}
