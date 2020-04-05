@@ -26,7 +26,7 @@ def form(request):
     domain=os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
 
-    template = 'ppe-inventory.html' if site else 'ppe-error.html'
+    template = 'form.html' if site else 'error.html'
     print(f"Rendering {template}")
 
     response = make_response(render_template(template, 
