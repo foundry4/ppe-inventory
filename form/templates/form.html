@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
 
-    <title>PPE Inventory</title>
+    <title>{{ site.key.name }} - PPE Stock</title>
 
     <link href="https://www.nhs.uk/" rel="preconnect">
     <link href="https://assets.nhs.uk/" rel="preconnect" crossorigin>
@@ -29,18 +29,17 @@
     <meta name="msapplication-wide310x150logo" content="{{ assets }}/assets/favicons/widetile-310x150.png">
     <meta name="msapplication-square310x310logo" content="{{ assets }}/assets/favicons/largetile-310x310.png">
 
-    <meta property="og:url" content="https://nhsuk.github.io/nhsuk-frontend/">
-    <meta property="og:title" content="PPE stock levels">
-    <meta property="og:description" content="PPE stock levels tracker">
+    <meta property="og:url" content="https://ppe.notb.in/form">
+    <meta property="og:title" content="PPE stock">
+    <meta property="og:description" content="Personal protective equipment stock level reporting">
     <meta property="og:type" content="website">
     <meta property="og:image" content="{{ assets }}/assets/logos/open-graph.png">
     <meta property="og:image:alt" content="NHS">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@nhsuk">
-    <meta name="twitter:creator" content="@nhsuk">
+    <meta name="twitter:creator" content="@notbinary_">
 
-    <title>PPE - QUANTITY HELD (Eaches)</title>
   </head>
 
   <body class="">
@@ -70,7 +69,7 @@
     </h1>
 
     <p>
-      PPE - QUANTITY HELD (Eaches)
+      PPE - quantity held (eaches)
     </p>
 
     <form id="" action="{{ form_action }}" method="post" class="form">
@@ -80,11 +79,11 @@
 
 
 {% if site['acute'] == "yes" %}
-<!-- FACE VISORS -->
+<!-- Face visors -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    FACE VISORS
+    Face visors
   </legend>
 
   <div class="nhsuk-form-group">
@@ -127,16 +126,16 @@
   </div>
 
 </fieldset>
-<!-- FACE VISORS -->
+<!-- Face visors -->
 {% endif %}
 
 
 
-<!-- MASKS - IIR -->
+<!-- Masks - IIR -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    MASKS - IIR
+    Masks - IIR
   </legend>
 
   <div class="nhsuk-form-group">
@@ -179,17 +178,17 @@
   </div>
 
 </fieldset>
-<!-- MASKS - IIR -->
+<!-- Masks - IIR -->
 
 
 
 
 {% if site['acute'] == "yes" %}
-<!-- MASKS - FFP2 -->
+<!-- Masks - FFP2 -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    MASKS - FFP2
+    Masks - FFP2
   </legend>
 
   <div class="nhsuk-form-group">
@@ -232,16 +231,16 @@
   </div>
 
 </fieldset>
-<!-- MASKS - FFP2 -->
+<!-- Masks - FFP2 -->
 {% endif %}
 
 
 {% if site['acute'] == "yes" %}
-<!-- MASKS - FFP3 -->
+<!-- Masks - FFP3 -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    MASKS - FFP3
+    Masks - FFP3
   </legend>
 
   <div class="nhsuk-form-group">
@@ -284,17 +283,17 @@
   </div>
 
 </fieldset>
-<!-- MASKS - FFP3 -->
+<!-- Masks - FFP3 -->
 {% endif %}
 
 
 
 {% if site['acute'] == "yes" %}
-<!-- FIT TEST (SOLUTION) -->
+<!-- Fit test (solution) -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    FIT TEST (SOLUTION)
+    Fit test (solution)
   </legend>
 
   <div class="nhsuk-form-group">
@@ -346,17 +345,17 @@
   </div>
 
 </fieldset>
-<!-- FIT TEST (SOLUTION) -->
+<!-- Fit test (solution) -->
 {% endif %}
 
 
 
 {% if site['acute'] == "yes" %}
-<!-- FIT TEST (FULL KIT) -->
+<!-- Fit test (full kit) -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    FIT TEST (FULL KIT)
+    Fit test (full kit)
   </legend>
 
   <div class="nhsuk-form-group">
@@ -409,16 +408,16 @@
   </div>
 
 </fieldset>
-<!-- FIT TEST (FULL KIT) -->
+<!-- Fit test (full kit) -->
 {% endif %}
 
 
 
-<!-- GLOVES -->
+<!-- Gloves -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    GLOVES
+    Gloves
   </legend>
 
   <div class="nhsuk-form-group">
@@ -471,15 +470,15 @@
   </div>
 
 </fieldset>
-<!-- GLOVES -->
+<!-- Gloves -->
 
 
 
-<!-- GOWNS -->
+<!-- Gowns -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    GOWNS
+    Gowns
   </legend>
 
   <div class="nhsuk-form-group">
@@ -522,15 +521,15 @@
   </div>
 
 </fieldset>
-<!-- GOWNS -->
+<!-- Gowns -->
 
 
 
-<!-- HAND HYGIENE -->
+<!-- Hand hygiene -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    HAND HYGIENE
+    Hand hygiene
   </legend>
 
   <div class="nhsuk-form-group">
@@ -583,15 +582,15 @@
   </div>
 
 </fieldset>
-<!-- HAND HYGIENE -->
+<!-- Hand hygiene -->
 
 
 {% if site['acute'] == "yes" %}
-<!-- APRON -->
+<!-- Apron -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    APRON
+    Apron
   </legend>
 
   <div class="nhsuk-form-group">
@@ -634,16 +633,16 @@
   </div>
 
 </fieldset>
-<!-- APRON -->
+<!-- Apron -->
 {% endif %}
 
 
 {% if site['acute'] == "yes" %}
-<!-- GOGGLES -->
+<!-- Goggles -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    GOGGLES
+    Goggles
   </legend>
 
   <div class="nhsuk-form-group">
@@ -696,16 +695,16 @@
   </div>
 
 </fieldset>
-<!-- GOGGLES -->
+<!-- Goggles -->
 {% endif %}
 
 
 {% if site['acute'] == "yes" %}
-<!-- BODY BAGS -->
+<!-- Body bags -->
 <fieldset class="nhsuk-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-    BODY BAGS
+    Body bags
   </legend>
 
   <div class="nhsuk-form-group">
@@ -748,7 +747,7 @@
   </div>
 
 </fieldset>
-<!-- BODY BAGS -->
+<!-- Body bags -->
 {% endif %}
 
     
