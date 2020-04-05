@@ -81,9 +81,10 @@
 
 {% if site['acute'] == "yes" %}
 <!-- FACE VISORS -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     FACE VISORS
   </legend>
 
@@ -130,18 +131,19 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- FACE VISORS -->
 {% endif %}
 
 
 
 <!-- MASKS - IIR -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     MASKS - IIR
   </legend>
 
@@ -188,9 +190,9 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- MASKS - IIR -->
 
 
@@ -198,9 +200,10 @@
 
 {% if site['acute'] == "yes" %}
 <!-- MASKS - FFP2 -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     MASKS - FFP2
   </legend>
 
@@ -247,18 +250,19 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- MASKS - FFP2 -->
 {% endif %}
 
 
 {% if site['acute'] == "yes" %}
 <!-- MASKS - FFP3 -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     MASKS - FFP3
   </legend>
 
@@ -305,9 +309,9 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- MASKS - FFP3 -->
 {% endif %}
 
@@ -315,9 +319,10 @@
 
 {% if site['acute'] == "yes" %}
 <!-- FIT TEST (SOLUTION) -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     FIT TEST (SOLUTION)
   </legend>
 
@@ -325,6 +330,14 @@
     Number of tests
   </label>
   <input class="nhsuk-input" id="fit-test-solution-stock-levels" name="fit-test-solution-stock-levels" type="text" value="{{ site['fit-test-solution-stock-levels'] }}">
+
+  <label class="nhsuk-label" for="fit-test-solution-stock-levels-note">
+    Notes
+  </label>
+  <span class="nhsuk-hint" id="fit-test-solution-stock-levels-note-hint">
+    Any additional comment
+  </span>
+  <input class="nhsuk-input" id="fit-test-solution-stock-levels-note" name="fit-test-solution-stock-levels-note" type="text" value="{{ site['fit-test-solution-stock-levels-note'] }}">
 
 </div>
 <div class="nhsuk-form-group">
@@ -364,9 +377,9 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- FIT TEST (SOLUTION) -->
 {% endif %}
 
@@ -374,9 +387,10 @@
 
 {% if site['acute'] == "yes" %}
 <!-- FIT TEST (FULL KIT) -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     FIT TEST (FULL KIT)
   </legend>
 
@@ -384,6 +398,14 @@
     Number of tests
   </label>
   <input class="nhsuk-input" id="fit-test-fullkit-stock-levels" name="fit-test-fullkit-stock-levels" type="text" value="{{ site['fit-test-fullkit-stock-levels'] }}">
+
+  <label class="nhsuk-label" for="fit-test-fullkit-stock-levels-note">
+    Notes
+  </label>
+  <span class="nhsuk-hint" id="fit-test-fullkit-stock-levels-note-hint">
+    Any additional comment
+  </span>
+  <input class="nhsuk-input" id="fit-test-fullkit-stock-levels-note" name="fit-test-fullkit-stock-levels-note" type="text" value="{{ site['fit-test-fullkit-stock-levels-note'] }}">
 
 </div>
 <div class="nhsuk-form-group">
@@ -423,20 +445,19 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- FIT TEST (FULL KIT) -->
 {% endif %}
 
 
 
-
-
 <!-- GLOVES -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     GLOVES
   </legend>
 
@@ -444,6 +465,14 @@
     Number of gloves
   </label>
   <input class="nhsuk-input" id="gloves-stock-levels" name="gloves-stock-levels" type="text" value="{{ site['gloves-stock-levels'] }}">
+
+  <label class="nhsuk-label" for="gloves-stock-levels-note">
+    Notes
+  </label>
+  <span class="nhsuk-hint" id="gloves-stock-levels-note-hint">
+    Any additional comment
+  </span>
+  <input class="nhsuk-input" id="gloves-stock-levels-note" name="gloves-stock-levels-note" type="text" value="{{ site['gloves-stock-levels-note'] }}">
 
 </div>
 <div class="nhsuk-form-group">
@@ -483,19 +512,18 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- GLOVES -->
 
 
 
-
-
 <!-- GOWNS -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     GOWNS
   </legend>
 
@@ -542,18 +570,19 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- GOWNS -->
 
 
 
 
 <!-- HAND HYGIENE -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     HAND HYGIENE
   </legend>
 
@@ -561,6 +590,14 @@
     Number of containers (pump or wall dispenser cartridges)
   </label>
   <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="text" value="{{ site['hand-hygiene-stock-levels'] }}">
+
+  <label class="nhsuk-label" for="hand-hygiene-stock-levels-note">
+    Notes
+  </label>
+  <span class="nhsuk-hint" id="hand-hygiene-stock-levels-note-hint">
+    Any additional comment
+  </span>
+  <input class="nhsuk-input" id="hand-hygiene-stock-levels-note" name="hand-hygiene-stock-levels-note" type="text" value="{{ site['hand-hygiene-stock-levels-note'] }}">
 
 </div>
 <div class="nhsuk-form-group">
@@ -600,29 +637,29 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- HAND HYGIENE -->
 
 
 {% if site['acute'] == "yes" %}
 <!-- APRON -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     APRON
   </legend>
 
   <label class="nhsuk-label" for="apron-stock-levels">
-    Individuals numbers (not rolls)
+    Individual numbers (not rolls)
   </label>
   <input class="nhsuk-input" id="apron-stock-levels" name="apron-stock-levels" type="text" value="{{ site['apron-stock-levels'] }}">
 
 </div>
 <div class="nhsuk-form-group">
 
-  <fieldset class="nhsuk-fieldset" aria-describedby="apron-hint">
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
     Stock level assessment (RAG)
   </legend>
@@ -657,18 +694,19 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- APRON -->
 {% endif %}
 
 
 {% if site['acute'] == "yes" %}
 <!-- GOGGLES -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     GOGGLES
   </legend>
 
@@ -676,6 +714,14 @@
     Individual goggles (frames)
   </label>
   <input class="nhsuk-input" id="goggles-stock-levels" name="goggles-stock-levels" type="text" value="{{ site['goggles-stock-levels'] }}">
+
+  <label class="nhsuk-label" for="goggles-stock-levels-note">
+    Notes
+  </label>
+  <span class="nhsuk-hint" id="goggles-stock-levels-note-hint">
+    Any additional comment
+  </span>
+  <input class="nhsuk-input" id="goggles-stock-levels-note" name="goggles-stock-levels-note" type="text" value="{{ site['goggles-stock-levels-note'] }}">
 
 </div>
 <div class="nhsuk-form-group">
@@ -715,18 +761,19 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- GOGGLES -->
 {% endif %}
 
 
 {% if site['acute'] == "yes" %}
 <!-- BODY BAGS -->
+<fieldset class="nhsuk-fieldset">
 <div class="nhsuk-form-group">
 
-  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
     BODY BAGS
   </legend>
 
@@ -773,9 +820,9 @@
       </label>
     </div>
   </div>
-  </fieldset>
 
 </div>
+</fieldset>
 <!-- BODY BAGS -->
 {% endif %}
 
