@@ -26,30 +26,46 @@ def sheets(event, context):
         json_string = base64.b64decode(event['data']).decode('utf-8')
         message = json.loads(json_string)
 
-        # Update header row if needed
-        header = get_header_row(sheet_id, worksheet_name)
+        # Update Status header row if needed
+        status_header = get_header_row(sheet_id, worksheet_name)
         update = False
-        if not 'last_update' in header:
-            header.append('last_update')
+        if not 'last_update' in status_header:
+            status_header.append('last_update')
             update = True
-        if not 'code' in header:
-            header.append('code')
+        if not 'code' in status_header:
+            status_header.append('code')
             update = True
         for key in message:
-            if not key in header:
-                header.append(key)
+            if not key in status_header:
+                status_header.append(key)
                 update = True
         if update:
-            print("New columns found. Updating header row: {header}")
-            update_header_row(header, sheet_id, worksheet_name)
-            update_header_row(header, sheet_id, "History")
+            print("New columns found. Updating status_header row: {status_header}")
+            update_header_row(status_header, sheet_id, worksheet_name)
 
-        # Add the row to the sheet
+        # Update History header row if needed
+        history_header = get_header_row(sheet_id, "History")
+        update = False
+        if not 'last_update' in history_header:
+            history_header.append('last_update')
+            update = True
+        if not 'code' in history_header:
+            history_header.append('code')
+            update = True
+        for key in message:
+            if not key in history_header:
+                history_header.append(key)
+                update = True
+        if update:
+            print("New columns found. Updating History history_header row: {history_header}")
+            update_header_row(history_header, sheet_id, "History")
+
+        # Find the row index on the status sheet
         site = message.get('site')
         row_index = 0
-        if 'site' in header:
+        if 'site' in status_header:
             print('site column found in headers')
-            column = header.index("site")
+            column = status_header.index("site")
             print(f"Column index for 'site' is: {column}")
             row_index = get_row(sheet_id, worksheet_name, column, site)
             print(f'Got row index {row_index} for site {site}')
@@ -58,18 +74,26 @@ def sheets(event, context):
             row_index = get_row_count(sheet_id, worksheet_name) + 1
             print(f"New row index is: {row_index}")
         
-        # For the history of updates
-        history_index = get_row_count(sheet_id, "History") + 1
         
-        
-        # Build row values
+        # Build Status row values
         row_data = get_row_data(sheet_id, worksheet_name, row_index)
         row_update = []
-        for i, key in enumerate(header):
+        for i, key in enumerate(status_header):
             default = "" if i >= len(row_data) else row_data[i]
             row_update.append(str(message.get(key) or default))
-        print(f'Row data is {row_update}')
+        print(f'Status data is {row_update}')
         update_row(row_update, row_index, sheet_id, worksheet_name)
+        
+        
+        # Add a row to the history of updates
+        history_index = get_row_count(sheet_id, "History") + 1
+
+        # Build History row values
+        row_update = []
+        for i, key in enumerate(history_header):
+            default = "" if i >= len(row_data) else row_data[i]
+            row_update.append(str(message.get(key) or ""))
+        print(f'History data is {row_update}')
         update_row(row_update, history_index, sheet_id, "History")
 
         print("Sheet update sent.")
