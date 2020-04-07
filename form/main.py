@@ -76,7 +76,7 @@ def publish_update(site):
 
     message = {}
     message.update(site)
-    message['last_update'] = (datetime.datetime.now()+ datetime.timedelta(hours=1)).strftime('%I:%M %d %B %y')
+    message['last_update'] = (datetime.datetime.now()+ datetime.timedelta(hours=1)).strftime('%H:%M %d %B %y')
 
     publisher = pubsub_v1.PublisherClient()
 
