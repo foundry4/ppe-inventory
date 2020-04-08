@@ -1,4 +1,4 @@
-from flask import request, make_response, redirect, render_template, abort
+from flask import request, make_response, redirect, render_template, abort, flash
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 import datetime
@@ -14,19 +14,21 @@ def form(request):
     client = datastore.Client()
 
     site = None
+    post = False
     if name and code:
         site = get_site(name, code, client)
 
     if site and request.method == 'POST':
         update_site(site, client, request, code)
         publish_update(site)
+        post = True
  
     # Construct a full URL to redirect to
     # otherwise we seem to end up on http
     domain=os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
 
-    template = 'form.html' if site else 'error.html'
+    template = 'success.html' if post else 'form.html' if site else 'error.html'
     print(f"Rendering {template}")
 
     response = make_response(render_template(template, 
@@ -84,5 +86,7 @@ def publish_update(site):
     topic_path = publisher.topic_path(project_id, 'form-submissions')
 
     data = json.dumps(message).encode("utf-8")
+
     future = publisher.publish(topic_path, data=data)
+
     print(f"Published: {future.result()}")
