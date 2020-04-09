@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
 
-    <title>PPE Inventory</title>
+    <title>{{ site.key.name }} - PPE Stock</title>
 
     <link href="https://www.nhs.uk/" rel="preconnect">
     <link href="https://assets.nhs.uk/" rel="preconnect" crossorigin>
@@ -17,6 +17,7 @@
     <link href="{{assets}}/assets/nhsuk.css" rel="stylesheet">
 
     <script src="{{assets}}/assets/nhsuk.js" defer></script>
+
     <link rel="shortcut icon" href="{{assets}}/assets/favicons/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{assets}}/assets/favicons/apple-touch-icon-180x180.png">
     <link rel="mask-icon" href="{{assets}}/assets/favicon.svg" color="#005eb8">
@@ -28,18 +29,17 @@
     <meta name="msapplication-wide310x150logo" content="{{assets}}/assets/favicons/widetile-310x150.png">
     <meta name="msapplication-square310x310logo" content="{{assets}}/assets/favicons/largetile-310x310.png">
 
-    <meta property="og:url" content="https://nhsuk.github.io/nhsuk-frontend/">
-    <meta property="og:title" content="PPE stock levels">
-    <meta property="og:description" content="PPE stock levels tracker">
+    <meta property="og:url" content="https://ppe.notb.in/form">
+    <meta property="og:title" content="PPE stock">
+    <meta property="og:description" content="Personal protective equipment stock level reporting">
     <meta property="og:type" content="website">
     <meta property="og:image" content="{{assets}}/assets/logos/open-graph.png">
     <meta property="og:image:alt" content="NHS">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@nhsuk">
-    <meta name="twitter:creator" content="@nhsuk">
+    <meta name="twitter:creator" content="@notbinary_">
 
-    <title>{{ site.key.name }}</title>
   </head>
 
   <body class="">
@@ -56,15 +56,17 @@
       </div>
     </div>
   </header>
-   <h1 class="govuk-heading-xl">
-      {{ site.key.name }}
-    </h1>
 
-    <div class="nhsuk-width-container">
-    <main class="nhsuk-main-wrapper" id="maincontent">
+
+<div class="nhsuk-width-container">
+<main class="nhsuk-main-wrapper" id="maincontent">
 
       <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-two-thirds">
+        <div class="nhsuk-grid-column-two-thirds">  
+
+          <h1 class="govuk-heading-xl">
+            {{ site.key.name }}
+          </h1>
 
 <div class="nhsuk-panel-with-label">
   <h3 class="nhsuk-panel-with-label__label">Thank you</h3>
