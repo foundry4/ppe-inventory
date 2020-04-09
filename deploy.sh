@@ -62,17 +62,6 @@ gsutil rsync -r static gs://ppe-inventory
 gsutil iam ch allUsers:objectViewer gs://ppe-inventory
 
 
-# Google sheets function
-# NB: limited to 1 instance to avoid race conditions when updating the spreadsheet
-
-cd $base/sheets
-concurrency=" --max-instances=1"
-env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
-options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
-
-gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions ${concurrency} ${env_vars} ${options}
-
-
 # Web form function
 
 cd $base/form
@@ -89,6 +78,17 @@ env_vars="--set-env-vars=DOMAIN=europe-west2-${project_id}.cloudfunctions.net"
 options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
 gcloud functions deploy register --runtime=python37 --trigger-http ${env_vars} ${options}
+
+
+# Google sheets function
+# NB: limited to 1 instance to avoid race conditions when updating the spreadsheet
+
+cd $base/sheets
+concurrency=" --max-instances=1"
+env_vars="--set-env-vars=SHEET_ID=$sheet_id,WORKSHEET_NAME=$worksheet_name"
+options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
+
+gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions ${concurrency} ${env_vars} ${options}
 
 
 # Report back
