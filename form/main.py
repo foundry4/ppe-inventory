@@ -69,6 +69,7 @@ def update_site(site, client, request, code):
     site['acute'] = acute
     site['code'] = code
 
+    print(f"Updating site {site}")
     client.put(site)
 
 
@@ -89,4 +90,4 @@ def publish_update(site):
 
     future = publisher.publish(topic_path, data=data)
 
-    print(f"Published: {future.result()}")
+    print(f"Published update to site {site.key.name}: {future.result()}")
