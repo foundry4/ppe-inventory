@@ -877,21 +877,17 @@
         </div>
       </footer>
 
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-  <script 
-    src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
   <script>
 
     window.onfocus = function() {
-          pageSite = $('#site').val()
+          pageSite = document.getElementById("site").value
           console.log("Page site: " + pageSite)
           cookieSite = Cookies.get('site')
           console.log("Cookie site: " + cookieSite)
           if (pageSite && pageSite != cookieSite) {
             console.log("Site has changed. Reloading...")
+            // Ensure it's a get rather than resending a post
             window.location.href = window.location.href
           } else {
             console.log("Site matches. Not reloading.")
