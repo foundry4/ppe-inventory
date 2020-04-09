@@ -891,10 +891,10 @@
           cookieSite = Cookies.get('site')
           console.log("Cookie site: " + cookieSite)
           if (pageSite && pageSite != cookieSite) {
-            console.log("Reloading...")
+            console.log("Site has changed. Reloading...")
             window.location.href = window.location.href
           } else {
-            console.log("Site matches.")
+            console.log("Site matches. Not reloading.")
           }
         }
 

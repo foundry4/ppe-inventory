@@ -43,8 +43,8 @@ def form(request):
     if site:
         # Refresh the cookie
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
-        response.set_cookie('site', site.key.name, expires=expire_date, secure=True, httponly=True)
-        response.set_cookie('code', site['code'], expires=expire_date, secure=True, httponly=True)
+        response.set_cookie('site', site.key.name, expires=expire_date, secure=True)
+        response.set_cookie('code', site['code'], expires=expire_date, secure=True)
 
     return response
 

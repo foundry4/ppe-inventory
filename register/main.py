@@ -16,8 +16,8 @@ def register(request):
     if site and code:
         print(f"Setting cookie site={site}, code={code}")
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
-        response.set_cookie('site', site, expires=expire_date)
-        response.set_cookie('code', code, expires=expire_date)
+        response.set_cookie('site', site, expires=expire_date, secure=True)
+        response.set_cookie('code', code, expires=expire_date, secure=True)
     else:
         print("Not setting registration cookie")
 
