@@ -1,13 +1,14 @@
-from flask import request, make_response, redirect, render_template, abort, flash
+from flask import request, make_response, redirect, render_template, abort, flash, url_for
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 import datetime
 import json
 import os
 
+currentTime = datetime.datetime.now()
+
 
 def form(request):
-
     name = request.cookies.get('site')
     code = request.cookies.get('code')
 
@@ -22,22 +23,23 @@ def form(request):
         update_site(site, client, request, code)
         publish_update(site)
         post = True
- 
+
     # Construct a full URL to redirect to
     # otherwise we seem to end up on http
-    domain=os.getenv('DOMAIN')
+    domain = os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
 
     template = 'success.html' if post else 'form.html' if site else 'error.html'
     print(f"Rendering {template}")
 
-    response = make_response(render_template(template, 
-        site=site,
-        form_action=form_action,
-        assets='https://storage.googleapis.com/ppe-inventory',
-        data={}
-        ))
-    
+    response = make_response(render_template(template,
+                                             site=site,
+                                             form_action=form_action,
+                                             currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
+                                             assets='https://storage.googleapis.com/ppe-inventory',
+                                             data={}
+                                             ))
+
     if site:
         # Refresh the cookie
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
@@ -47,8 +49,28 @@ def form(request):
     return response
 
 
-def get_site(name, code, client):
+def Success(request):
+    client = datastore.Client()
 
+    # Construct a full URL to redirect to
+    # otherwise we seem to end up on http
+    domain = os.getenv('DOMAIN')
+    form_action = f'https://{domain}/form'
+
+    template = 'success.html'
+    print(f"Rendering {template}")
+
+    response = make_response(render_template(template,
+                                             form_action=form_action,
+                                             currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
+                                             assets='https://storage.googleapis.com/ppe-inventory',
+                                             data={}
+                                             ))
+
+    return response
+
+
+def get_site(name, code, client):
     print(f"Getting site: {name}/{code}")
     key = client.key('Site', name)
     site = client.get(key)
@@ -58,9 +80,8 @@ def get_site(name, code, client):
 
 
 def update_site(site, client, request, code):
-    
     acute = site.get('acute')
-
+    print(f"Updating site: {site}/{code}")
     # Update the site
     site.update(request.form)
 
@@ -73,12 +94,11 @@ def update_site(site, client, request, code):
 
 
 def publish_update(site):
-
     # Publish a message to update the Google Sheet:
 
     message = {}
     message.update(site)
-    message['last_update'] = (datetime.datetime.now()+ datetime.timedelta(hours=1)).strftime('%H:%M %d %B %y')
+    message['last_update'] = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%H:%M %d %B %y')
 
     publisher = pubsub_v1.PublisherClient()
 

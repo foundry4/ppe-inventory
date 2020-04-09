@@ -17,7 +17,6 @@
     <link href="{{assets}}/assets/nhsuk.css" rel="stylesheet">
 
     <script src="{{assets}}/assets/nhsuk.js" defer></script>
-
     <link rel="shortcut icon" href="{{assets}}/assets/favicons/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{assets}}/assets/favicons/apple-touch-icon-180x180.png">
     <link rel="mask-icon" href="{{assets}}/assets/favicon.svg" color="#005eb8">
@@ -40,7 +39,7 @@
     <meta name="twitter:site" content="@nhsuk">
     <meta name="twitter:creator" content="@nhsuk">
 
-    <title>PPE - QUANTITY HELD (Eaches)</title>
+    <title>{{ site.key.name }}</title>
   </head>
 
   <body class="">
@@ -57,30 +56,31 @@
       </div>
     </div>
   </header>
+   <h1 class="govuk-heading-xl">
+      {{ site.key.name }}
+    </h1>
 
+    <div class="nhsuk-width-container">
+    <main class="nhsuk-main-wrapper" id="maincontent">
 
-<div class="nhsuk-width-container">
-<main class="nhsuk-main-wrapper" id="maincontent">
+      <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-two-thirds">
 
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-two-thirds">
-    <div class="nhsuk-details__summary" aria-labelledby="summ" role="alert" tabindex="-1">
-        <h2 class="nhsuk-details-summary__title" id="summary-title">
-            Submitted!
-        </h2>
-        <div class="nhsuk-details-summary__body">
-            <p>
-                You have successfully submitted your change.
-            </p>
+<div class="nhsuk-panel-with-label">
+  <h3 class="nhsuk-panel-with-label__label">Thank you</h3>
+<p>Stock level submitted at {{ currentTime }} </p>
+</div>
+
         </div>
-    </div>
+      </div>
+        <div class="nhsuk-grid-row">
+            <button class="nhsuk-button" type="submit">
+                <a href="{{url}}">Start again</a>
+            </button>
 
-</div>
-</div>
-
-</main>
-</div>
-    
+        </div>
+    </main>
+  </div>
 
     
       <footer role="contentinfo">
