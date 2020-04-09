@@ -62,6 +62,7 @@ def sheets(event, context):
 
         # Find the row index on the status sheet
         site = message.get('site')
+        print(f"Attempting to update row for site {site}")
         row_index = 0
         if 'site' in status_header:
             print('site column found in headers')
