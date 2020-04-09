@@ -5,7 +5,7 @@ import time
 import base64
 import threading
 from flask import jsonify
-from sheets import update_sheet, get_header_row, get_row_count, get_row, update_header_row, update_row, get_row_data
+from sheets import sheets_client, update_sheet, get_header_row, get_row_count, get_row, update_header_row, update_row, get_row_data
 
 
 # Sheets config
@@ -26,8 +26,11 @@ def sheets(event, context):
         json_string = base64.b64decode(event['data']).decode('utf-8')
         message = json.loads(json_string)
 
+        # Get a Google Sheets client
+        client = sheets_client()
+
         # Update Status header row if needed
-        status_header = get_header_row(sheet_id, worksheet_name)
+        status_header = get_header_row(sheet_id, worksheet_name, client)
         update = False
         if not 'last_update' in status_header:
             status_header.append('last_update')
@@ -41,10 +44,10 @@ def sheets(event, context):
                 update = True
         if update:
             print("New columns found. Updating status_header row: {status_header}")
-            update_header_row(status_header, sheet_id, worksheet_name)
+            update_header_row(status_header, sheet_id, worksheet_name, client)
 
         # Update History header row if needed
-        history_header = get_header_row(sheet_id, "History")
+        history_header = get_header_row(sheet_id, "History", client)
         update = False
         if not 'last_update' in history_header:
             history_header.append('last_update')
@@ -58,35 +61,36 @@ def sheets(event, context):
                 update = True
         if update:
             print("New columns found. Updating History history_header row: {history_header}")
-            update_header_row(history_header, sheet_id, "History")
+            update_header_row(history_header, sheet_id, "History", client)
 
         # Find the row index on the status sheet
         site = message.get('site')
+        print(f"Attempting to update row for site {site}")
         row_index = 0
         if 'site' in status_header:
             print('site column found in headers')
             column = status_header.index("site")
             print(f"Column index for 'site' is: {column}")
-            row_index = get_row(sheet_id, worksheet_name, column, site)
+            row_index = get_row(sheet_id, worksheet_name, column, site, client)
             print(f'Got row index {row_index} for site {site}')
         if row_index < 1:
             print('no row index found')
-            row_index = get_row_count(sheet_id, worksheet_name) + 1
+            row_index = get_row_count(sheet_id, worksheet_name, client) + 1
             print(f"New row index is: {row_index}")
         
         
         # Build Status row values
-        row_data = get_row_data(sheet_id, worksheet_name, row_index)
+        row_data = get_row_data(sheet_id, worksheet_name, row_index, client)
         row_update = []
         for i, key in enumerate(status_header):
             default = "" if i >= len(row_data) else row_data[i]
             row_update.append(str(message.get(key) or default))
         print(f'Status data is {row_update}')
-        update_row(row_update, row_index, sheet_id, worksheet_name)
+        update_row(row_update, row_index, sheet_id, worksheet_name, client)
         
         
         # Add a row to the history of updates
-        history_index = get_row_count(sheet_id, "History") + 1
+        history_index = get_row_count(sheet_id, "History", client) + 1
 
         # Build History row values
         row_update = []
@@ -94,7 +98,7 @@ def sheets(event, context):
             default = "" if i >= len(row_data) else row_data[i]
             row_update.append(str(message.get(key) or ""))
         print(f'History data is {row_update}')
-        update_row(row_update, history_index, sheet_id, "History")
+        update_row(row_update, history_index, sheet_id, "History", client)
 
         print("Sheet update sent.")
 

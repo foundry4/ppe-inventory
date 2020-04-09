@@ -17,29 +17,26 @@ def sheets_client():
         service = build('sheets', 'v4', cache_discovery=False)
     return service.spreadsheets()
 
-# Get a Google Sheets client
-sheets = sheets_client()
-
-def get_header_row(sheet_id, worksheet_name):
+def get_header_row(sheet_id, worksheet_name, client):
 
     cell_range = f"{worksheet_name}!1:1"
-    cells = get_cells(sheet_id, cell_range)
+    cells = get_cells(sheet_id, cell_range, client)
     if len(cells)>0:
         return cells[0]
     else:
         return []
 
-def get_row_data(sheet_id, worksheet_name, row_index):
+def get_row_data(sheet_id, worksheet_name, row_index, client):
 
     cell_range = f"{worksheet_name}!{row_index}:{row_index}"
-    cells = get_cells(sheet_id, cell_range)
+    cells = get_cells(sheet_id, cell_range, client)
     if len(cells)>0:
         return cells[0]
     else:
         return []
 
 
-def get_row_count(sheet_id, worksheet_name):
+def get_row_count(sheet_id, worksheet_name, client):
     
     # NB Ideally we'd only request A:A, but
     # If there are existing rows with a blank 
@@ -50,16 +47,16 @@ def get_row_count(sheet_id, worksheet_name):
     # column A, but it could get moved so it's 
     # not guaranteed.
     cell_range = f"{worksheet_name}"
-    return len(get_cells(sheet_id, cell_range))
+    return len(get_cells(sheet_id, cell_range, client))
 
 
-def get_row(sheet_id, worksheet_name, column_index, row_value):
+def get_row(sheet_id, worksheet_name, column_index, row_value, client):
     
     columns = 'ABCDEFGHI'
     column=columns[column_index]
     cell_range = f"{worksheet_name}!{column}:{column}"
     print(f'Getting cells for range {cell_range}')
-    values = get_cells(sheet_id, cell_range)
+    values = get_cells(sheet_id, cell_range, client)
     print(f'Found {values}')
     row_values=[]
     # Unpack the [["row", "values"]] into a simple array
@@ -70,29 +67,29 @@ def get_row(sheet_id, worksheet_name, column_index, row_value):
     return row_index + 1
 
 
-def get_cells(sheet_id, cell_range):
+def get_cells(sheet_id, cell_range, client):
 
     # Get the requested data
-    result = sheets.values().get(spreadsheetId=sheet_id,
+    result = client.values().get(spreadsheetId=sheet_id,
                                  range=cell_range).execute()
     return result.get('values', [])
 
 
-def update_header_row(spreadsheet_row, sheet_id, worksheet_name):
+def update_header_row(spreadsheet_row, sheet_id, worksheet_name, client):
     cell_range = f"{worksheet_name}!1:1"
-    update_sheet([spreadsheet_row], sheet_id, cell_range)
+    update_sheet([spreadsheet_row], sheet_id, cell_range, client)
 
 
-def update_row(row, row_index, sheet_id, worksheet_name):
+def update_row(row, row_index, sheet_id, worksheet_name, client):
     cell_range = f"{worksheet_name}!{row_index}:{row_index}"
     print(f"Updating row {cell_range}")
-    update_sheet([row], sheet_id, cell_range)
+    update_sheet([row], sheet_id, cell_range, client)
 
 
-def update_sheet(data_table, sheet_id, cell_range):
+def update_sheet(data_table, sheet_id, cell_range, client):
 
     # Write the updated table to the spreadsheet
-    sheets.values().update(spreadsheetId=sheet_id,
+    client.values().update(spreadsheetId=sheet_id,
                            range=cell_range,
                            valueInputOption='USER_ENTERED',
                            body={
