@@ -43,5 +43,8 @@ jobs:
     # Enable cloud functions api
     - run: gcloud services enable cloudfunctions.googleapis.com
 
+    # Enable sheets api
+    - run: gcloud services enable sheets.googleapis.com
+
     # form-submissions
     - run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
