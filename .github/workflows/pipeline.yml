@@ -67,19 +67,8 @@ jobs:
       env:
         PROJECT_ID: ${{ secrets.STAGING_GCP_PROJECT_ID }}
         DOMAIN: "europe-west2-${{ secrets.STAGING_GCP_PROJECT_ID }}.cloudfunctions.net"
-      run: echo ${{ env.PROJECT_ID }}
-
-    - run: echo ${{ env.DOMAIN }}
-
-    - run: pwd
-
-    - run: ls -a
-
-    - run: cd ./form
-
-    - run: ls -a
-
-    - run: pwd
-
-    - run: gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }}
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd form
+        gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
 
