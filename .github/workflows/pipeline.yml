@@ -60,6 +60,4 @@ jobs:
       env:
         env_vars: "PROJECT_ID=${{ secrets.STAGING_GCP_PROJECT_ID }},DOMAIN=europe-west2-${{ secrets.STAGING_GCP_PROJECT_ID }}.cloudfunctions.net"
         options: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
-      run: |
-      cd $base/form
-      echo ${{ env.env_vars }}
+      run: echo ${{ env_vars }}
