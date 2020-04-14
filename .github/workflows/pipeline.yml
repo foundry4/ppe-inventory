@@ -62,3 +62,5 @@ jobs:
         DOMAIN: "europe-west2-${{ secrets.STAGING_GCP_PROJECT_ID }}.cloudfunctions.net"
       run: echo ${{ env.PROJECT_ID }}
 
+    - run: echo ${{ env.DOMAIN }}
+
