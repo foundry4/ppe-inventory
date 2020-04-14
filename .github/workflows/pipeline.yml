@@ -94,3 +94,4 @@ jobs:
         cd sheets
         gcloud functions deploy sheets --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe sheets --region=europe-west2 | grep url
+
