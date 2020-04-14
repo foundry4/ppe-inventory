@@ -62,4 +62,4 @@ jobs:
         options: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
       run: |
       cd $base/form
-      gcloud functions deploy form --runtime=python37 --trigger-http ${env_vars} ${options}
+      gcloud functions deploy form --runtime=python37 --trigger-http  ${{ env.env_vars }} ${{env.options}}
