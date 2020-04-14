@@ -55,3 +55,6 @@ jobs:
 
     # Check if gcloud is good to go
     - run: gcloud info
+
+    # Enable cloud functions
+    - run: gcloud services enable cloudfunctions.googleapis.com
