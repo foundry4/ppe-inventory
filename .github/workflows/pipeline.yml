@@ -6,9 +6,9 @@ name: CI
 # events but only for the master branch
 on:
   push:
-    branches: [ staging ]
+    branches: [ feature/pipeline-setup ]
   pull_request:
-    branches: [ staging ]
+    branches: [ feature/pipeline-setup ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -37,3 +37,13 @@ jobs:
       env:
         SECRET_ONE: ${{secrets.SECRET_ONE}}
       run: echo This is to test redacting secrets "$SECRET_ONE"
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.STAGING_GCP_PROJECT_ID }}
+        export_default_credentials: true
+      run: gcloud info
