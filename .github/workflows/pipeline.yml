@@ -66,7 +66,7 @@ jobs:
 
     - run: pwd
 
-    - run: cd form
+    - run: cd ppe-inventory/form
 
     - run: pwd
 
