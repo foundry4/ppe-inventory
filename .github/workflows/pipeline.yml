@@ -4,18 +4,13 @@ name: CI
 
 on:
   push:
-    branches: [ feature/pipeline-setup ]
+    branches: [ staging ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
-#    - name: Install PyOpenSSL and set env var
-#      env:
-#        CLOUDSDK_PYTHON_SITEPACKAGES: "1"
-#      run: pip install pyopenssl
 
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -26,14 +21,11 @@ jobs:
         project_id: ${{ secrets.STAGING_GCP_PROJECT_ID }}
         export_default_credentials: true
 
-    # Check if gcloud is good to go
-    - run: gcloud info
-
     # Enable cloud functions api
-    - run: gcloud services enable cloudfunctions.googleapis.com
-
-    # Enable sheets api
-    - run: gcloud services enable sheets.googleapis.com
+    - name: Enable API services
+      run: |
+        gcloud services enable cloudfunctions.googleapis.com
+        gcloud services enable sheets.googleapis.com
 
     # form-submissions
     - run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
