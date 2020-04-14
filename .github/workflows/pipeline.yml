@@ -68,7 +68,7 @@ jobs:
 
     - run: ls -a
 
-    - run: cd form
+    - run: cd ./form
 
     - run: ls -a
 
