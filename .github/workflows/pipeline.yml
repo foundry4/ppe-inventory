@@ -26,7 +26,7 @@ jobs:
         gcloud services enable cloudfunctions.googleapis.com
         gcloud services enable sheets.googleapis.com
     # Configure pubsub topics
-    - name: Setup pusub topics
+    - name: Setup pubsub topics
       run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
     # Copy static files
     - name: Copy asset files to bucket and config access
