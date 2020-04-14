@@ -65,8 +65,3 @@ jobs:
     - run: echo ${{ PROJECT_ID }}
 
     - run: echo ${{ DOMAIN }}
-
-env_vars="--set-env-vars=PROJECT_ID=${project_id},DOMAIN=europe-west2-${project_id}.cloudfunctions.net"
-options="--region=europe-west2 --memory=256MB --allow-unauthenticated"
-
-gcloud functions deploy form --runtime=python37 --trigger-http ${env_vars} ${options}
