@@ -48,3 +48,9 @@ jobs:
 
     # form-submissions
     - run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
+
+    # Copy static files
+    - run: gsutil rsync -r static gs://ppe-inventory-test
+
+    # Set bucket/object permissions
+    - run: gsutil iam ch allUsers:objectViewer gs://ppe-inventory-test

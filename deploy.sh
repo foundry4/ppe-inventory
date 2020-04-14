@@ -58,8 +58,8 @@ gcloud pubsub topics create form-submissions
 # Static content
 
 #gsutil mb gs://ppe-inventory
-gsutil rsync -r static gs://ppe-inventory
-gsutil iam ch allUsers:objectViewer gs://ppe-inventory
+gsutil rsync -r static gs://ppe-inventory-test
+gsutil iam ch allUsers:objectViewer gs://ppe-inventory-test
 
 
 # Web form function
