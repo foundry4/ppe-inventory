@@ -58,6 +58,7 @@ jobs:
     # Deploy form
     - name: Deploy form
       env:
+        PROJECT_ID: ${{ secrets.STAGING_GCP_PROJECT_ID }}
         DOMAIN: "europe-west2-${{ secrets.STAGING_GCP_PROJECT_ID }}.cloudfunctions.net"
-      run: echo ${{ env.DOMAIN }}
+      run: echo ${{ env.PROJECT_ID }}
 
