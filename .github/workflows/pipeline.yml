@@ -38,9 +38,6 @@ jobs:
         SECRET_ONE: ${{secrets.SECRET_ONE}}
       run: echo This is to test redacting secrets "$SECRET_ONE"
 
-    # Install python
-    - run: sudo apt-get install -y python
-
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
