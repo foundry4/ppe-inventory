@@ -92,6 +92,6 @@ jobs:
         OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
       run: |
         cd sheets
-        gcloud functions deploy sheets --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe sheets --region=europe-west2 | grep url
 
