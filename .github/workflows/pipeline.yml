@@ -4,9 +4,9 @@ name: CI
 
 on:
   push:
-    branches: [ pipeline-setup ]
+    branches: [ feature/pipeline-setup ]
   pull_request:
-    branches: [ pipeline-setup ]
+    branches: [ feature/pipeline-setup ]
 
 jobs:
   build:
