@@ -64,3 +64,9 @@ jobs:
 
     - run: echo ${{ env.DOMAIN }}
 
+    - run: pwd
+
+    - run: cd ../form
+
+    - run: gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }}
+
