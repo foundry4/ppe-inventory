@@ -39,7 +39,7 @@ jobs:
       run: echo This is to test redacting secrets "$SECRET_ONE"
 
     # Install PyOpenSSL
-    -run pip install pyopenssl
+    - run: pip install pyopenssl
 
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
