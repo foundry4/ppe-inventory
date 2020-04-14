@@ -61,6 +61,6 @@ jobs:
         PROJECT_ID: ${{ secrets.STAGING_GCP_PROJECT_ID }}"
         DOMAIN: "europe-west2-${{ secrets.STAGING_GCP_PROJECT_ID }}.cloudfunctions.net"
         options: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
-      run: echo ${{ PROJECT_ID }}
+      run: echo ${{ env.PROJECT_ID }}
 
-    - run: echo ${{ DOMAIN }}
+    - run: echo ${{ env.DOMAIN }}
