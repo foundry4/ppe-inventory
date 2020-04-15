@@ -1,33 +1,73 @@
-# This is a basic workflow to help you get started with Actions
+# This is a basic workflow to create, configure and deploy artefacts and resources
+# for the PPE Inventory project in the TEST environment
 
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ test ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
-
-    # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.TEST_PROJECT_ID }}
+        export_default_credentials: true
+    # Enable cloud functions api
+    - name: Enable API services
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        gcloud services enable cloudfunctions.googleapis.com
+        gcloud services enable sheets.googleapis.com
+    # Configure pubsub topics
+    - name: Setup pubsub topics
+      run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
+    # Copy static files
+    - name: Copy asset files to bucket and config access
+      run: |
+        gsutil rsync -r static gs://${{ secrets.TEST_PROJECT_ID }}
+        gsutil iam ch allUsers:objectViewer gs://${{ secrets.TEST_PROJECT_ID }}
+    # Deploy form function
+    - name: Deploy form function
+      env:
+        PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
+        DOMAIN: "europe-west2-${{ secrets.TEST_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd form
+        gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe form --region=europe-west2 | grep url
+    # Deploy register function
+    - name: Deploy register function
+      env:
+        DOMAIN: "europe-west2-${{ secrets.TEST_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd register
+        gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe register --region=europe-west2 | grep url
+    # Deploy sheets function
+    - name: Deploy sheets function
+      env:
+        SHEET_ID: ${{ secrets.TEST_SHEET_ID }}
+        WORKSHEET_NAME: ${{ secrets.TEST_WORKSHEET_NAME }}
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
+      run: |
+        cd sheets
+        gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS }}
+    # Deploy barts function
+    - name: Deploy barts function
+      env:
+        PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
+        DOMAIN: "europe-west2-${{ secrets.TEST_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd barts
+        gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe barts --region=europe-west2 | grep url
