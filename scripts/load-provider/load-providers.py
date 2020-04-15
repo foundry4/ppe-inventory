@@ -20,8 +20,8 @@ with open('providers.csv', newline='') as csvfile:
         provider = row[1]
         email = row[10]
         address = row[12]
-        id = str(uuid.uuid4())
-        print(f'provider => {provider}   uuid => {id}   email => {email}   address => {address}')
+        code = str(uuid.uuid4())
+        print(f'provider => {provider}   uuid => {code}   email => {email}   address => {address}')
 
         # The name/ID for the new entity
         name = provider
@@ -31,7 +31,7 @@ with open('providers.csv', newline='') as csvfile:
 
         # Prepares the new entity
         task = datastore.Entity(key=task_key)
-        task['id'] = id
+        task['code'] = code
         task['email'] = email
         task['address'] = address
 
