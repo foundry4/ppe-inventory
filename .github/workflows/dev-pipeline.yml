@@ -5,7 +5,7 @@ name: CI
 
 on:
   push:
-    branches: [ dev, feature/pipeline-for-dev ]
+    branches: [ dev]
 
 jobs:
   build:
