@@ -61,3 +61,13 @@ jobs:
       run: |
         cd sheets
         gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS }}
+    # Deploy barts function
+    - name: Deploy barts function
+      env:
+        PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
+        DOMAIN: "europe-west2-${{ secrets.TEST_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd barts
+        gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe barts --region=europe-west2 | grep url
