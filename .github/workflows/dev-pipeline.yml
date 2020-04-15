@@ -60,7 +60,7 @@ jobs:
         OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
       run: |
         cd sheets
-        gcloud functions deploy sheets --runtime=python37 --triDEVgger-topic=form-submissions --set-env-vars=SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS }}
+        gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS }}
     # Deploy barts function
     - name: Deploy barts function
       env:
