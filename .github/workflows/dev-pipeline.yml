@@ -1,0 +1,73 @@
+# This is a basic workflow to create, configure and deploy artefacts and resources
+# for the PPE Inventory project in the DEV environment
+
+name: CI
+
+on:
+  push:
+    branches: [ dev, feature/pipeline-for-dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ secrets.DEV_SA_EMAIL }}
+        service_account_key: ${{ secrets.DEV_SA_KEY }}
+        project_id: ${{ secrets.DEV_PROJECT_ID }}
+        export_default_credentials: true
+    # Enable cloud functions api
+    - name: Enable API services
+      run: |
+        gcloud services enable cloudfunctions.googleapis.com
+        gcloud services enable sheets.googleapis.com
+    # Configure pubsub topics
+    - name: Setup pubsub topics
+      run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
+    # Copy static files
+    - name: Copy asset files to bucket and config access
+      run: |
+        gsutil rsync -r static gs://${{ secrets.DEV_PROJECT_ID }}
+        gsutil iam ch allUsers:objectViewer gs://${{ secrets.DEV_PROJECT_ID }}
+    # Deploy form function
+    - name: Deploy form function
+      env:
+        PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd form
+        gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe form --region=europe-west2 | grep url
+    # Deploy register function
+    - name: Deploy register function
+      env:
+        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd register
+        gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe register --region=europe-west2 | grep url
+    # Deploy sheets function
+    - name: Deploy sheets function
+      env:
+        SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
+        WORKSHEET_NAME: ${{ secrets.DEV_WORKSHEET_NAME }}
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
+      run: |
+        cd sheets
+        gcloud functions deploy sheets --runtime=python37 --triDEVgger-topic=form-submissions --set-env-vars=SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS }}
+    # Deploy barts function
+    - name: Deploy barts function
+      env:
+        PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
+        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+      run: |
+        cd barts
+        gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe barts --region=europe-west2 | grep url
