@@ -31,8 +31,8 @@ jobs:
     # Copy static files
     - name: Copy asset files to bucket and config access
       run: |
-        gsutil rsync -r static gs://${{ secrets.PROD_PROJECT_ID }}
-        gsutil iam ch allUsers:objectViewer gs://${{ secrets.PROD_PROJECT_ID }}
+        gsutil rsync -r static gs://${{ secrets.PROD_BUCKET_NAME }}
+        gsutil iam ch allUsers:objectViewer gs://${{ secrets.PROD_BUCKET_NAME }}
     # Deploy form function
     - name: Deploy form function
       env:
