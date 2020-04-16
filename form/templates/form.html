@@ -865,6 +865,118 @@
 </fieldset>
 
 
+<!-- Coveralls -->
+<fieldset class="nhsuk-fieldset">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
+   Coveralls
+  </legend>
+
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="coveralls-stock-levels">
+    Number of coveralls
+  </label>
+  <input class="nhsuk-input" id="coveralls-stock-levels" name="coveralls-stock-levels" type="number" value="{{ site['coveralls-stock-levels'] }}">
+  </div>
+
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="coveralls-quantity_used">
+    Quantity used in the last 24 hours
+  </label>
+  <input class="nhsuk-input" id="coveralls-quantity_used" name="coveralls-quantity_used" type="number" value="{{ site['coveralls-quantity_used'] }}">
+  </div>
+
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="coveralls-rag">
+    Stock level assessment (RAG)
+  </label>
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="coveralls-1" type="radio" name="coveralls-rag" value="one-or-less" {% if site['coveralls-rag'] == "one-or-less" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="coveralls-1">
+        &lt;1
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="coveralls-2" type="radio" name="coveralls-rag" value="two" {% if site['coveralls-rag'] == "two" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="coveralls-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="coveralls-23" type="radio" name="coveralls-rag" value="two-three" {% if site['coveralls-rag'] == "two-three" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="coveralls-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="coveralls-3" type="radio" name="coveralls-rag" value="three-plus" {% if site['coveralls-rag'] == "three-plus" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="coveralls-3">
+        &gt;3 days
+      </label>
+    </div>
+  </div>
+  </div>
+
+</fieldset>
+<!-- Coveralls -->
+
+<!-- Swabs -->
+<fieldset class="nhsuk-fieldset">
+
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
+   Swabs
+  </legend>
+
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="swabs-stock-levels">
+    Number of swabs
+  </label>
+  <input class="nhsuk-input" id="swabs-stock-levels" name="swabs-stock-levels" type="number" value="{{ site['swabs-stock-levels'] }}">
+  </div>
+
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="swabs-quantity_used">
+    Quantity used in the last 24 hours
+  </label>
+  <input class="nhsuk-input" id="swabs-quantity_used" name="swabs-quantity_used" type="number" value="{{ site['swabs-quantity_used'] }}">
+  </div>
+
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="swabs-rag">
+    Stock level assessment (RAG)
+  </label>
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="swabs-1" type="radio" name="swabs-rag" value="one-or-less" {% if site['swabs-rag'] == "one-or-less" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="swabs-1">
+        &lt;1
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="swabs-2" type="radio" name="swabs-rag" value="two" {% if site['swabs-rag'] == "two" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="swabs-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="swabs-23" type="radio" name="swabs-rag" value="two-three" {% if site['swabs-rag'] == "two-three" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="swabs-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="swabs-3" type="radio" name="swabs-rag" value="three-plus" {% if site['swabs-rag'] == "three-plus" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="swabs-3">
+        &gt;3 days
+      </label>
+    </div>
+  </div>
+  </div>
+
+</fieldset>
+<!-- Swabs -->
+
 
         <div class="nhsuk-grid-row">
 
