@@ -12,9 +12,10 @@ def barts(request):
 
     sites = {'Royal London Hospital': 'pr234ted',
              'Whipps Cross Hospital': 'el324os',
-             'Barts': 'ak907atp',
+             'St Bartholomew': 'ak907atp',
              'Mile End Hospital': 'ap193fw',
-             'Newham Hospital': 'th738go'}
+             'Newham Hospital': 'th738go',
+             'Nightingale Hospital': 'b047a27a-e6be-4a03-8dc9-2123495a3c09'}
 
     post = False
     site = None
