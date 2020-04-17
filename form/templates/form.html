@@ -511,14 +511,14 @@
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="gloves-stock-levels">
-    Number of gloves
+    Pairs of gloves
   </label>
   <input class="nhsuk-input" id="gloves-stock-levels" name="gloves-stock-levels" type="number" value="{{ site['gloves-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="gloves-quantity_used">
-    Quantity used in the last 24 hours
+    Pairs used in the last 24 hours
   </label>
   <input class="nhsuk-input" id="gloves-quantity_used" name="gloves-quantity_used" type="number" value="{{ site['gloves-quantity_used'] }}">
   </div>
@@ -1061,23 +1061,7 @@
       </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-  <script>
 
-    window.onfocus = function() {
-          pageSite = document.getElementById("site").value
-          console.log("Page site: " + pageSite)
-          cookieSite = Cookies.get('site')
-          console.log("Cookie site: " + cookieSite)
-          if (pageSite && pageSite != cookieSite) {
-            console.log("Site has changed. Reloading...")
-            // Ensure it's a get rather than resending a post
-            window.location.href = window.location.href
-          } else {
-            console.log("Site matches. Not reloading.")
-          }
-        }
-
-  </script>
 
 </body>
 </html>
