@@ -12,7 +12,7 @@ env:
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
     SA_KEY: ${{ secrets.DEV_SA_KEY }}
     PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
-    DOMAIN: "europe-west2-${{ env.PROJECT_ID }}.cloudfunctions.net"
+    DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
     OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
 jobs:
