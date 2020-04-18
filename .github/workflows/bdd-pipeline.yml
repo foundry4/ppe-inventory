@@ -12,7 +12,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - run: ls -al
+    - run: |
+        ls -al
+        pip install behave
+        ls -al
 #    # Setup gcloud CLI
 #    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
 #      with:
