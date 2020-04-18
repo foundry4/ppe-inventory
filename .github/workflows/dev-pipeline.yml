@@ -8,7 +8,7 @@ on:
     branches: [ dev, feature/* ]
 
 env:
-    ENVIRONMEMT: "development"
+    ENVIRONMENT: 'development'
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
     SA_KEY: ${{ secrets.DEV_SA_KEY }}
     PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
@@ -23,7 +23,7 @@ jobs:
   gcp-setup:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Deploying to ${{ env.OPTIONS }} environment"
+    - run: echo "Deploying to ${{ env.ENVIRONMENT }} environment"
     - uses: actions/checkout@v2
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
