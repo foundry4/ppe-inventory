@@ -12,10 +12,17 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - run: |
-        ls -al
-        pip install behave
-        ls -al
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install behave
+    - name: Runn Acceptance Tests
+        run: |
+          behave
 #    # Setup gcloud CLI
 #    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
 #      with:
