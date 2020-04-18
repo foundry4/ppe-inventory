@@ -22,8 +22,8 @@ jobs:
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '286.0.0'
-        service_account_email: ${{ secrets.DEV_SA_EMAIL }}
-        service_account_key: ${{ secrets.DEV_SA_KEY }}
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
         project_id: ${{ secrets.DEV_PROJECT_ID }}
         export_default_credentials: true
     # Enable cloud functions api
