@@ -25,7 +25,8 @@ jobs:
   confirm-branch:
     runs-on: ubuntu-latest
     steps:
-      - run: echo YOU ARE ON ${{ env.GITHUB_REF }} branch
+      - uses: actions/checkout@v2
+      - run: echo YOU ARE ON ${{ env.GITHUB_BASE_REF }} branch
 
   gcp-setup:
     runs-on: ubuntu-latest
