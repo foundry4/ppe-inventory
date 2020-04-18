@@ -16,7 +16,7 @@ def step_impl(context):
     context.browser.get(context.link)
 
 
-@then("I can see the Form page")
+@then("I can see the form page")
 def step_impl(context):
     assert context.browser.current_url == context.base_url + "/form"
 
