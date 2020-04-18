@@ -11,6 +11,9 @@ env:
     ENVIRONMEMT: dev
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
     SA_KEY: ${{ secrets.DEV_SA_KEY }}
+    PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+    DOMAIN: "europe-west2-${{ env_PROJECT_ID }}.cloudfunctions.net"
+    OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
 
 jobs:
 
@@ -24,7 +27,7 @@ jobs:
         version: '286.0.0'
         service_account_email: ${{ env.SA_EMAIL }}
         service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ secrets.DEV_PROJECT_ID }}
+        project_id: ${{ env.PROJECT_ID}}
         export_default_credentials: true
     # Enable cloud functions api
     - name: Enable API services
@@ -37,8 +40,8 @@ jobs:
     # Copy static files
     - name: Copy asset files to bucket and config access
       run: |
-        gsutil rsync -r static gs://${{ secrets.DEV_PROJECT_ID }}
-        gsutil iam ch allUsers:objectViewer gs://${{ secrets.DEV_PROJECT_ID }}
+        gsutil rsync -r static gs://${{ env.PROJECT_ID }}
+        gsutil iam ch allUsers:objectViewer gs://${{ env.PROJECT_ID }}
   deploy-form-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
@@ -48,16 +51,12 @@ jobs:
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '286.0.0'
-        service_account_email: ${{ secrets.DEV_SA_EMAIL }}
-        service_account_key: ${{ secrets.DEV_SA_KEY }}
-        project_id: ${{ secrets.DEV_PROJECT_ID }}
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
         export_default_credentials: true
     # Deploy form function
     - name: Deploy form function
-      env:
-        PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
-        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
-        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
       run: |
         cd form
         gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
