@@ -2,11 +2,13 @@ Feature: Redirect from Registration page
   The user should be redirected to the Form page from the Registration page.
 
   Scenario: Successful Registration
-    When I visit the registration page with a valid link
+    Given I have a valid registration link
+    When I visit the link
     Then I can see the Form page
-    And I see the provider name
+    And I see the provider's stock form
 
   Scenario: Unsuccessful Registration
-    When I visit the registration page with an invalid link
+    Given I have an invalid registration link
+    When I visit the link
     Then I can see the Form page
     And I see that I am denied access

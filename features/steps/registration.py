@@ -1,17 +1,19 @@
 from behave import *
 
-use_step_matcher("re")
 
-
-@given("I have a valid registration link")
+@given(u'I have a valid registration link')
 def step_impl(context):
-    context.registration_link = 'gfsfdggdgd'
+    context.link = context.valid_link
 
 
-@when("I visit the registration page with a valid link")
+@given(u'I have an invalid registration link')
 def step_impl(context):
-    context.browser.get(context.valid_link)
-    context.browser.save_screenshot('features/screenshots/I visit the registration page with a valid link.png')
+    context.link = context.invalid_link
+
+
+@when("I visit the link")
+def step_impl(context):
+    context.browser.get(context.link)
 
 
 @then("I can see the Form page")
@@ -19,17 +21,11 @@ def step_impl(context):
     assert context.browser.current_url == context.domain + "/form"
 
 
-@step("I see the provider name")
+@step("I see the provider's stock form")
 def step_impl(context):
-    assert 'ABERFELDY PRACTICE' in context.browser.page_source
+    assert context.browser.title == context.valid_provider_name + " - PPE Stock"
 
 
 @step("I see that I am denied access")
 def step_impl(context):
     assert 'You may need permission to access this service' in context.browser.page_source
-
-
-@when("I visit the registration page with an invalid link")
-def step_impl(context):
-    context.browser.get(context.invalid_link)
-    context.browser.save_screenshot('features/screenshots/I visit the registration page with an invalid link.png')
