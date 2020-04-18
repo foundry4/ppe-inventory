@@ -31,7 +31,7 @@ jobs:
         version: '286.0.0'
         service_account_email: ${{ env.SA_EMAIL }}
         service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ env.PROJECT_ID}}
+        project_id: ${{ env.PROJECT_ID }}
         export_default_credentials: true
     # Enable cloud functions api
     - name: Enable API services
@@ -129,7 +129,7 @@ jobs:
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
