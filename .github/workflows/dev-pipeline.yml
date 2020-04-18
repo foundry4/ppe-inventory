@@ -81,8 +81,8 @@ jobs:
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
   test:
-    steps:
     runs-on: macos-latest
+    steps:
     - name: Run Acceptance Tests
       run: |
         behave
