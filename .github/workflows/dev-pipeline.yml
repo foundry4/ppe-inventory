@@ -9,18 +9,9 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install behave
-        pip install selenium
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
@@ -80,7 +71,17 @@ jobs:
         cd barts
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
-    - name: Run Acceptance Tests
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
       run: |
-        behave
-        ls -al
+        python -m pip install --upgrade pip
+        pip install behave
+        pip install selenium
