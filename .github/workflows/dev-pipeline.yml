@@ -25,6 +25,7 @@ jobs:
 
   confirm-branch:
     if: github.base.ref == 'feature/bdd'
+    runs-on: ubuntu-latest
     steps:
       - run: echo YOU ARE ON feature/bdd branch
 
