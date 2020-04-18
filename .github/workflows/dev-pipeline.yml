@@ -7,11 +7,13 @@ on:
   push:
     branches: [ dev, feature/* ]
 
-jobs:
-  env:
+env:
     ENVIRONMEMT: dev
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
     SA_KEY: ${{ secrets.DEV_SA_KEY }}
+
+jobs:
+
   gcp-setup:
     runs-on: ubuntu-latest
     steps:
