@@ -23,7 +23,7 @@ jobs:
   gcp-setup:
     runs-on: ubuntu-latest
     steps:
-    - run: echo Deploying to ${{ env.ENVIRONMENT }} environment
+    - run: echo "Deploying to ${{ env.ENVIRONMENT }} environment"
     - uses: actions/checkout@v2
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
