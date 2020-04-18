@@ -98,7 +98,7 @@ jobs:
         gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe register --region=europe-west2 | grep url
   tests:
-    needs: build
+    needs: [deploy-form-function, deploy-register-function]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
