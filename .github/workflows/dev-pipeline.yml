@@ -7,19 +7,19 @@ on:
   push:
     branches: [ dev, feature/* ]
 
- env:
-    if: contains(github.ref, "feature/bdd")
-    ENVIRONMENT: 'DEVELOPMENT'
-    SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
-    SA_KEY: ${{ secrets.DEV_SA_KEY }}
-    PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
-    DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
-    OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
-    SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
-    WORKSHEET_NAME: ${{ secrets.DEV_WORKSHEET_NAME }}
-    OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
-    VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
-    VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
+env:
+  if: contains(github.ref, "feature/bdd")
+  ENVIRONMENT: 'DEVELOPMENT'
+  SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
+  SA_KEY: ${{ secrets.DEV_SA_KEY }}
+  PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+  DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
+  OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+  SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
+  WORKSHEET_NAME: ${{ secrets.DEV_WORKSHEET_NAME }}
+  OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
+  VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
+  VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
 
 jobs:
 
