@@ -1,5 +1,5 @@
 # This is a basic workflow to create, configure and deploy artefacts and resources
-# for the PPE Inventory project in the DEV environment
+# for the PPE Inventory project in the DEVELOPMENT environment
 
 name: CI
 
@@ -8,7 +8,7 @@ on:
     branches: [ dev, feature/* ]
 
 env:
-    ENVIRONMENT: 'development'
+    ENVIRONMENT: 'DEVELOPMENT'
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
     SA_KEY: ${{ secrets.DEV_SA_KEY }}
     PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
@@ -141,3 +141,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install behave
         pip install selenium
+    - name: Run the tests
+      run: behave
