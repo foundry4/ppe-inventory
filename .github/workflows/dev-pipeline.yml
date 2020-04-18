@@ -7,12 +7,7 @@ on:
   push:
     branches: [ dev, feature/* ]
 
-
-
-jobs:
-
-
-  env:
+ env:
     if: contains(github.ref, "feature/bdd")
     ENVIRONMENT: 'DEVELOPMENT'
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
@@ -25,6 +20,8 @@ jobs:
     OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
     VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
     VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
+
+jobs:
 
   gcp-setup:
     runs-on: ubuntu-latest
