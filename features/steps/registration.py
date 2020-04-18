@@ -18,7 +18,7 @@ def step_impl(context):
 
 @then("I can see the Form page")
 def step_impl(context):
-    assert context.browser.current_url == context.domain + "/form"
+    assert context.browser.current_url == context.base_url + "/form"
 
 
 @step("I see the provider's stock form")
