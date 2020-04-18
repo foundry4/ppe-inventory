@@ -8,6 +8,10 @@ on:
     branches: [ dev, feature/* ]
 
 jobs:
+  env:
+    ENVIRONMEMT: dev
+    SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
+    SA_KEY: ${{ secrets.DEV_SA_KEY }}
   gcp-setup:
     runs-on: ubuntu-latest
     steps:
