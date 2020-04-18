@@ -27,6 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo YOU ARE ON ${{ github.base_ref }} branch
+      - run: env
 
   gcp-setup:
     runs-on: ubuntu-latest
