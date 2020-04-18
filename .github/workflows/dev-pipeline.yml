@@ -26,7 +26,7 @@ jobs:
   confirm-branch:
     runs-on: ubuntu-latest
     steps:
-      - run: echo YOU ARE ON $(( github.base.ref }} branch
+      - run: echo YOU ARE ON ${{ github.base.ref }} branch
 
   gcp-setup:
     runs-on: ubuntu-latest
