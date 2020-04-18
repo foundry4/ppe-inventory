@@ -11,8 +11,9 @@ on:
 
 jobs:
 
-  if: contains(github.ref, "feature/bdd")
+
   env:
+    if: contains(github.ref, "feature/bdd")
     ENVIRONMENT: 'DEVELOPMENT'
     SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
     SA_KEY: ${{ secrets.DEV_SA_KEY }}
