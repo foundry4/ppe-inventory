@@ -5,7 +5,7 @@ name: CI
 
 on:
   push:
-    branches: [ dev, feature/*, experiment/bdd ]
+    branches: [ dev, feature/* ]
 
 jobs:
   build:
@@ -80,6 +80,7 @@ jobs:
         cd barts
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
+  test:
     - name: Run Acceptance Tests
       run: |
         behave
