@@ -8,7 +8,7 @@ on:
     branches: [ dev, feature/* ]
 
 env:
-  if: contains(github.ref, "feature/bdd")
+  if: contains(github.base.ref, "feature/bdd")
   ENVIRONMENT: 'DEVELOPMENT'
   SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
   SA_KEY: ${{ secrets.DEV_SA_KEY }}
@@ -22,6 +22,11 @@ env:
   VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
 
 jobs:
+
+  confirm-branch:
+    if: github.base.ref == 'feature/bdd'
+    steps:
+      - run: echo YOU ARE ON feature/bdd branch
 
   gcp-setup:
     runs-on: ubuntu-latest
