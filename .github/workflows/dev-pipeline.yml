@@ -82,6 +82,7 @@ jobs:
         gcloud functions describe barts --region=europe-west2 | grep url
   test:
     steps:
+    runs-on: macos-latest
     - name: Run Acceptance Tests
       run: |
         behave
