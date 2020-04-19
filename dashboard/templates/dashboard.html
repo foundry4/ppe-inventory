@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block html_head %}
+  <style type="text/css">
+      .dot {
+          height: 25px;
+          width: 25px;
+          background-color: #bbb;
+          border-radius: 50%;
+          display: inline-block;
+      }
+      .highlight-maroon{
+          background-color:#951d14;
+          border-color: #951D14;
+          border-style: solid;
+      }
+      .highlight-red{
+          background-color:#d5281b;
+          border-color: #D5481B;
+          border-style: solid;
+      }
+      .highlight-amber{
+          background-color:#ffa620;
+          border-color: #FFA620;
+          border-style: solid;
+      }
+      .highlight-green{
+          background-color:#2AB369;
+          border-color: #2AB369;
+          border-style: solid;
+      }
+
+  </style>
+{% endblock %}
+{% block content %}
+<h1>PPE Dashboard</h1>
+<h2>Today's community site stock assessment ratings across North East London</h2>
+
+<div class="nhsuk-width-container">
+  <main class="nhsuk-main-wrapper" id="maincontent">
+    <div style="text-align:center">
+      <table>
+        <span class="dot" style="background-color:Blue"></span> Up to one day
+        <span class="dot" style="background-color:Red"></span> 1-2 days
+        <span class="dot" style="background-color:#ffbf00"></span> 2-3 days
+        <span class="dot" style="background-color:Green"></span> 3+ days
+      </table>
+    </div>
+    <div class="nhsuk-grid-row">
+      <div class="nhsuk-grid-column-full">
+        {% for item in items %}
+          {% if loop.index % 4 == 1 %}
+            <div class="nhsuk-grid-row">
+          {% endif %}
+            <div class="nhsuk-grid-column-one-quarter">
+              <table style="background-color:white">
+                <tr>
+                  <td colspan="2">
+                    <b>{{item['name']}}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td {% if item.hightlight %} class="highlight-maroon" {% endif %}>
+                    <table>
+                      <tr>
+                        <td>Under 1 day</td>
+                        <td>{{item['under_one']}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td {% if item.hightlight %} class="highlight-red" {% endif %}>
+                    <table>
+                      <tr>
+                        <td>1-2 days</td>
+                        <td>{{item['one_two']}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td {% if item.hightlight %} class="highlight-amber" {% endif %}>
+                    <table><tr><td>2-3 days</td>
+                      <td>{{item['two_three']}}</td>
+                    </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td {% if item.hightlight %} class="highlight-green" {% endif %}>
+                    <table>
+                      <tr>
+                        <td>3+ days</td>
+                        <td>{{item['over_three']}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <a href="/dashboard?item={{item.name}}">View report</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          {% if loop.index % 4 == 0 %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}
