@@ -37,8 +37,8 @@ def dashboard(request):
 
     print(f"Rendering {template}")
 
-    items =get_ppe_items (sites)
-    items.append(get_ppe_item('Face visors', sites))
+    items =[]
+    #items.append(get_ppe_item('Face visors', sites))
 
 
     ppe_item = {'name': 'Face visors', 'under_one': '65%', 'one_two': '20%', 'two_three': '10%', 'over_three': '5%'}
