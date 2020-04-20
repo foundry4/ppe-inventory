@@ -3,6 +3,9 @@ from google.cloud import datastore
 import datetime
 import json
 import os
+import operator
+
+
 
 def dashboard(request):
 
@@ -34,8 +37,16 @@ def dashboard(request):
 
     print(f"Rendering {template}")
 
-    items = []
-    ppe_item = {'name': 'Face visors', 'under_one': '65%', 'one_two': '20%', 'two_three': '10%', 'over_three': '5%'}
+    items =get_ppe_items (sites)
+    items.append(get_ppe_item('Face visors', sites))
+    ppe_item = {
+                'name': 'Face visors',
+                'under_one': '65%',
+                'one_two': '20%',
+                'two_three': '10%',
+                'over_three': '5%',
+                'highlight': True
+                }
     items.append(ppe_item)
     ppe_item = {'name': 'Face visors', 'under_one': '65%', 'one_two': '20%', 'two_three': '10%', 'over_three': '5%'}
     items.append(ppe_item)
@@ -79,3 +90,19 @@ def get_site(name, code, client):
     if site and site.get('code') == code:
         return site
     return None
+
+
+def get_ppe_item(name, sites):
+    site_count = len(sites)
+    ppe_item = {
+        'name': name,
+        'under_one': sum(1 for site in sites if site.RAG == 'one-or-less') / site_count,
+        'one_two': sum(1 for site in sites if site.RAG == 'one_two') / site_count,
+        'two_three': sum(1 for site in sites if site.RAG == 'two-three') / site_count,
+        'over_three': sum(1 for site in sites if site.RAG == 'over_three') / site_count,
+    }
+    ppe_item['highlight'] = max(ppe_item.items(), key=operator.itemgetter(1))[0]
+
+
+def get_ppe_items(sites):
+    pass
