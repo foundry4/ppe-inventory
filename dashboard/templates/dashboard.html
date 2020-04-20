@@ -12,21 +12,25 @@
           background-color:#951d14;
           border-color: #951D14;
           border-style: solid;
+          outline: solid;
       }
       .highlight-red{
           background-color:#d5281b;
           border-color: #D5481B;
           border-style: solid;
+          outline: solid;
       }
       .highlight-amber{
           background-color:#ffa620;
           border-color: #FFA620;
           border-style: solid;
+          outline: solid;
       }
       .highlight-green{
           background-color:#2AB369;
           border-color: #2AB369;
           border-style: solid;
+          outline: solid;
       }
 
   </style>
@@ -39,10 +43,10 @@
   <main class="nhsuk-main-wrapper" id="maincontent">
     <div style="text-align:center">
       <table>
-        <span class="dot" style="background-color:Blue"></span> Up to one day
-        <span class="dot" style="background-color:Red"></span> 1-2 days
-        <span class="dot" style="background-color:#ffbf00"></span> 2-3 days
-        <span class="dot" style="background-color:Green"></span> 3+ days
+        <span class="dot" style="background-color:#951D14"></span> Up to one day
+        <span class="dot" style="background-color:#D5481B"></span> 1-2 days
+        <span class="dot" style="background-color:#FFA620"></span> 2-3 days
+        <span class="dot" style="background-color:#2AB369"></span> 3+ days
       </table>
     </div>
     <div class="nhsuk-grid-row">
@@ -58,24 +62,14 @@
                     <b>{{item['name']}}</b>
                   </td>
                 </tr>
-                <tr>
-                  <td {% if item.hightlight %} class="highlight-maroon" {% endif %}>
-                    <table>
-                      <tr>
-                        <td>Under 1 day</td>
-                        <td>{{item['under_one']}}</td>
-                      </tr>
-                    </table>
-                  </td>
+                <tr {% if item.hightlight = 'maroon' %} class="highlight-maroon" {% endif %}>
+                    <td>Under 1 day</td>
+                    <td>{{item['under_one']}}</td>
                 </tr>
-                <tr>
+                <tr {% if item.hightlight = 'red' %} class="highlight-red" {% endif %}>
                   <td {% if item.hightlight %} class="highlight-red" {% endif %}>
-                    <table>
-                      <tr>
-                        <td>1-2 days</td>
-                        <td>{{item['one_two']}}</td>
-                      </tr>
-                    </table>
+                    <td>1-2 days</td>
+                    <td>{{item['one_two']}}</td>
                   </td>
                 </tr>
                 <tr>
