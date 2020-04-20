@@ -62,12 +62,12 @@
                     <b>{{item['name']}}</b>
                   </td>
                 </tr>
-                <tr {% if item.hightlight = 'maroon' %} class="highlight-maroon" {% endif %}>
+                <tr {% if item[hightlight] = 'maroon' %} class="highlight-maroon" {% endif %}>
                     <td>Under 1 day</td>
                     <td>{{item['under_one']}}</td>
                 </tr>
-                <tr {% if item.hightlight = 'red' %} class="highlight-red" {% endif %}>
-                  <td {% if item.hightlight %} class="highlight-red" {% endif %}>
+                <tr {% if item[hightlight] = 'red' %} class="highlight-red" {% endif %}>
+                  <td>
                     <td>1-2 days</td>
                     <td>{{item['one_two']}}</td>
                   </td>
