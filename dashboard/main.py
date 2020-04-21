@@ -7,6 +7,10 @@ import operator
 
 
 
+def hello(request):
+    return "Hello World!"
+
+
 def dashboard(request):
 
     siteNames = {'Royal London Hospital': 'pr234ted',
@@ -41,25 +45,25 @@ def dashboard(request):
 
     ppe_item = {'name': 'Face visors', 'under_one': '65%', 'one_two': '20%', 'two_three': '10%', 'over_three': '5%', 'highlight': 'maroon'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Goggles', 'under_one': '45%', 'one_two': '20%', 'two_three': '20%', 'over_three': '15%'}
+    ppe_item = {'name': 'Goggles', 'under_one': '45%', 'one_two': '20%', 'two_three': '20%', 'over_three': '15%', 'highlight': 'maroon'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Masks (IIR)', 'under_one': '25%', 'one_two': '25%', 'two_three': '25%', 'over_three': '25%'}
+    ppe_item = {'name': 'Masks (IIR)', 'under_one': '25%', 'one_two': '25%', 'two_three': '25%', 'over_three': '25%', 'highlight': 'maroon'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Masks (FFP2)', 'under_one': '15%', 'one_two': '60%', 'two_three': '20%', 'over_three': '5%'}
+    ppe_item = {'name': 'Masks (FFP2)', 'under_one': '15%', 'one_two': '60%', 'two_three': '20%', 'over_three': '5%', 'highlight': 'red'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Masks (FFP3)', 'under_one': '15%', 'one_two': '60%', 'two_three': '20%', 'over_three': '5%'}
+    ppe_item = {'name': 'Masks (FFP3)', 'under_one': '15%', 'one_two': '60%', 'two_three': '20%', 'over_three': '5%', 'highlight': 'amber'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Fit test (solution)', 'under_one': '15%', 'one_two': '30%', 'two_three': '50%', 'over_three': '5%'}
+    ppe_item = {'name': 'Fit test (solution)', 'under_one': '15%', 'one_two': '30%', 'two_three': '50%', 'over_three': '5%', 'highlight': 'amber'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Fit test (full kit)', 'under_one': '10%', 'one_two': '10%', 'two_three': '80%', 'over_three': '0%'}
+    ppe_item = {'name': 'Fit test (full kit)', 'under_one': '10%', 'one_two': '10%', 'two_three': '80%', 'over_three': '0%', 'highlight': 'amber'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Gloves', 'under_one': '10%', 'one_two': '0%', 'two_three': '90%', 'over_three': '0%'}
+    ppe_item = {'name': 'Gloves', 'under_one': '10%', 'one_two': '0%', 'two_three': '90%', 'over_three': '0%', 'highlight': 'amber'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Gowns', 'under_one': '15%', 'one_two': '20%', 'two_three': '60%', 'over_three': '5%'}
+    ppe_item = {'name': 'Gowns', 'under_one': '15%', 'one_two': '20%', 'two_three': '60%', 'over_three': '5%', 'highlight': 'amber'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Hand hygiene', 'under_one': '10%', 'one_two': '20%', 'two_three': '10%', 'over_three': '60%'}
+    ppe_item = {'name': 'Hand hygiene', 'under_one': '10%', 'one_two': '20%', 'two_three': '10%', 'over_three': '60%', 'highlight': 'green'}
     items.append(ppe_item)
-    ppe_item = {'name': 'Aprons', 'under_one': '0%', 'one_two': '10%', 'two_three': '10%', 'over_three': '8%'}
+    ppe_item = {'name': 'Aprons', 'under_one': '0%', 'one_two': '10%', 'two_three': '10%', 'over_three': '8%', 'highlight': 'green'}
     items.append(ppe_item)
     ppe_item = {
                 'name': 'Body bags',
@@ -67,7 +71,7 @@ def dashboard(request):
                 'one_two': '1%',
                 'two_three': '8%',
                 'over_three': '90%',
-                'highlight': True
+                'highlight': 'green'
                 }
     items.append(ppe_item)
 
@@ -106,3 +110,5 @@ def get_ppe_item(name, sites):
 
 def get_ppe_items(sites):
     pass
+
+

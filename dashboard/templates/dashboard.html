@@ -12,26 +12,25 @@
           background-color:#951d14;
           border-color: #951D14;
           border-style: solid;
-          outline: solid;
       }
       .highlight-red{
           background-color:#d5281b;
           border-color: #D5481B;
           border-style: solid;
-          outline: solid;
       }
       .highlight-amber{
           background-color:#ffa620;
           border-color: #FFA620;
           border-style: solid;
-          outline: solid;
       }
       .highlight-green{
           background-color:#2AB369;
           border-color: #2AB369;
           border-style: solid;
-          outline: solid;
       }
+      .highlight-none{
+      }
+
 
   </style>
 {% endblock %}
@@ -43,60 +42,59 @@
   <main class="nhsuk-main-wrapper" id="maincontent">
     <div style="text-align:center">
       <table>
-        <span class="dot" style="background-color:#951D14"></span> Up to one day
-        <span class="dot" style="background-color:#D5481B"></span> 1-2 days
-        <span class="dot" style="background-color:#FFA620"></span> 2-3 days
-        <span class="dot" style="background-color:#2AB369"></span> 3+ days
+        <tr>
+          <td style="top-alignment:middle">
+            <span class="dot" style="background-color:#951D14"></span>Up to one day
+          </td>
+          <td>
+            <span class="dot" style="background-color:#D5481B"></span> 1-2 days
+          </td>
+          <td>
+            <span class="dot" style="background-color:#FFA620"></span> 2-3 days
+          </td>
+          <td>
+            <span class="dot" style="background-color:#2AB369"></span> 3+ days
+          </td>
       </table>
     </div>
     <div class="nhsuk-grid-row">
       <div class="nhsuk-grid-column-full">
         {% for item in items %}
           {% if loop.index % 4 == 1 %}
-            <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-row" style="">
           {% endif %}
             <div class="nhsuk-grid-column-one-quarter">
-              <table style="background-color:white">
-                <tr>
-                  <td colspan="2">
-                    <b>{{item['name']}}</b>
-                  </td>
-                </tr>
-                <tr {% if item[hightlight] = 'maroon' %} class="highlight-maroon" {% endif %}>
-                    <td>Under 1 day</td>
-                    <td>{{item['under_one']}}</td>
-                </tr>
-                <tr {% if item[hightlight] = 'red' %} class="highlight-red" {% endif %}>
-                  <td>
-                    <td>1-2 days</td>
-                    <td>{{item['one_two']}}</td>
-                  </td>
-                </tr>
-                <tr>
-                  <td {% if item.hightlight %} class="highlight-amber" {% endif %}>
-                    <table><tr><td>2-3 days</td>
-                      <td>{{item['two_three']}}</td>
-                    </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td {% if item.hightlight %} class="highlight-green" {% endif %}>
-                    <table>
-                      <tr>
-                        <td>3+ days</td>
-                        <td>{{item['over_three']}}</td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <a href="/dashboard?item={{item.name}}">View report</a>
-                  </td>
-                </tr>
-              </table>
+              <div style="background-color:white; padding:0x 10px">
+               <table>
+                  <tr>
+                    <td colspan="2">
+                      <b>{{item['name']}}</b>
+                    </td>
+                  </tr>
+                  {% if item['highlight']=='maroon' %}<tr class="highlight-maroon" >{% else %}<tr>{% endif %}
+                      <td>Under 1 day</td>
+                      <td>{{item['under_one']}}</td>
+                  </tr>
+                  {% if item['highlight']=='red' %}<tr class="highlight-red" >{% else %}<tr>{% endif %}
+                      <td>1-2 days</td>
+                      <td>{{item['one_two']}}</td>
+                  </tr>
+                  {% if item['highlight']=='amber' %}<tr class="highlight-amber" >{% else %}<tr>{% endif %}
+                    <td>2-3 days</td>
+                    <td>{{item['two_three']}}</td>
+                  </tr>
+                  {% if item['highlight']=='green' %}<tr class="highlight-green" >{% else %}<tr>{% endif %}
+                    <td>3+ days</td>
+                    <td>{{item['over_three']}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <a href="/dashboard?item={{item['name']}}">View report</a>
+                    </td>
+                  </tr>
+                </table>
             </div>
+              </div>
           {% if loop.index % 4 == 0 %}
             </div>
           {% endif %}
