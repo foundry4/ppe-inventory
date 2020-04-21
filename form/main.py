@@ -31,7 +31,7 @@ def form(request):
 
     if post:
         template = 'success.html'
-    elif site and site['acute'] == 'yes':
+    elif site and 'acute' in site.keys() and site['acute'] == 'yes':
         template = 'form.html'
     elif site:
         template = 'community_form.html'
