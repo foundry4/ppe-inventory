@@ -36,7 +36,7 @@ f = open("new-providers-output.csv", "a")
 # Read input from csv file
 print('Reading records from input csv file...')
 
-with open('new-providers.csv', newline='') as csvfile:
+with open('../../new-providers.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     next(reader, None)
     for row in reader:
