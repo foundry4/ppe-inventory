@@ -29,7 +29,16 @@ def form(request):
     domain = os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
 
-    template = 'success.html' if post else 'form.html' if site else 'error.html'
+    if post:
+        template = 'success.html'
+    elif site and site['acute'] == 'yes':
+        template = 'form.html'
+    elif site:
+        template = 'community_form.html'
+    else:
+        template = 'error.html'
+
+    # template = 'success.html' if post else 'form.html' if site else 'error.html'
     print(f"Rendering {template}")
 
     response = make_response(render_template(template,
@@ -45,27 +54,6 @@ def form(request):
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
         response.set_cookie('site', site.key.name, expires=expire_date, secure=True)
         response.set_cookie('code', site['code'], expires=expire_date, secure=True)
-
-    return response
-
-
-def Success(request):
-    client = datastore.Client()
-
-    # Construct a full URL to redirect to
-    # otherwise we seem to end up on http
-    domain = os.getenv('DOMAIN')
-    form_action = f'https://{domain}/form'
-
-    template = 'success.html'
-    print(f"Rendering {template}")
-
-    response = make_response(render_template(template,
-                                             form_action=form_action,
-                                             currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
-                                             assets='https://storage.googleapis.com/ppe-inventory',
-                                             data={}
-                                             ))
 
     return response
 
