@@ -26,6 +26,6 @@ def step_impl(context):
     print(u'STEP: Given that the new provider does exist')
 
 
-@then("I am informed that no new provider record was created")
+@then("I am informed that the provider existed")
 def step_impl(context):
-    print(u'STEP: Then I am informed that no new provider record was created')
+    print(u'STEP: Then I am informed that the provider existed')
