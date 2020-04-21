@@ -1,5 +1,8 @@
 from selenium import webdriver
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, filename="tests.log")
 
 
 def before_all(context):
@@ -13,5 +16,5 @@ def before_all(context):
     context.browser = webdriver.Chrome()
 
 
-def after_feature(context, feature):
+def after_all(context):
     context.browser.quit()
