@@ -4,3 +4,4 @@ sheet-id.txt
 worksheet-name.txt
 .gcloudignore
 /.idea/
+/.env

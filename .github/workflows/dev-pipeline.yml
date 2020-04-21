@@ -1,24 +1,47 @@
 # This is a basic workflow to create, configure and deploy artefacts and resources
-# for the PPE Inventory project in the DEV environment
+# for the PPE Inventory project in the DEVELOPMENT environment
 
-name: CI
+name: CI/CD
 
 on:
   push:
     branches: [ dev, feature/* ]
 
+env:
+  ENVIRONMENT: 'DEVELOPMENT'
+  SA_EMAIL: ${{ secrets.DEV_SA_EMAIL }}
+  SA_KEY: ${{ secrets.DEV_SA_KEY }}
+  PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+  DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
+  OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
+  SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
+  COMMUNITY_SHEET_ID: ${{ secrets.DEV_COMMUNITY_SHEET_ID }}
+  WORKSHEET_NAME: ${{ secrets.DEV_WORKSHEET_NAME }}
+  OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
+  VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
+  VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
+
 jobs:
-  build:
+
+  confirm-branch:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - run: echo YOU ARE ON ${{ github.ref }} branch
+      - run: env
+
+  gcp-setup:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "Deploying to ${{ env.ENVIRONMENT }} environment"
     - uses: actions/checkout@v2
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '286.0.0'
-        service_account_email: ${{ secrets.DEV_SA_EMAIL }}
-        service_account_key: ${{ secrets.DEV_SA_KEY }}
-        project_id: ${{ secrets.DEV_PROJECT_ID }}
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
         export_default_credentials: true
     # Enable cloud functions api
     - name: Enable API services
@@ -31,43 +54,102 @@ jobs:
     # Copy static files
     - name: Copy asset files to bucket and config access
       run: |
-        gsutil rsync -r static gs://${{ secrets.DEV_PROJECT_ID }}
-        gsutil iam ch allUsers:objectViewer gs://${{ secrets.DEV_PROJECT_ID }}
+        gsutil rsync -r static gs://${{ env.PROJECT_ID }}
+        gsutil iam ch allUsers:objectViewer gs://${{ env.PROJECT_ID }}
+
+  deploy-form-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
     # Deploy form function
     - name: Deploy form function
-      env:
-        PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
-        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
-        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
       run: |
         cd form
         gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe form --region=europe-west2 | grep url
+
+  deploy-register-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
     # Deploy register function
     - name: Deploy register function
-      env:
-        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
-        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
       run: |
         cd register
         gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe register --region=europe-west2 | grep url
+
+  deploy-sheets-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
     # Deploy sheets function
     - name: Deploy sheets function
-      env:
-        SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
-        WORKSHEET_NAME: ${{ secrets.DEV_WORKSHEET_NAME }}
-        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
       run: |
         cd sheets
-        gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS }}
+        gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS_MAX_ONE }}
+        gcloud functions describe form --region=europe-west2 | grep url
+
+  deploy-barts-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
     # Deploy barts function
     - name: Deploy barts function
-      env:
-        PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
-        DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
-        OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
       run: |
         cd barts
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
+
+  tests:
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function]
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install behave
+        pip install selenium
+    - name: Run the tests
+      run: behave
