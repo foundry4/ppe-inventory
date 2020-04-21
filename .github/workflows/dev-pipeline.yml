@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo YOU ARE ON ${{ github.ref }} branch
+      - run: echo YOU ARE ON ${{ github.ref }} BRANCH
       - run: env
 
   gcp-setup:
@@ -151,4 +151,4 @@ jobs:
         pip install behave
         pip install selenium
     - name: Run the tests
-      run: behave
+      run: behave --tags"@pipeline"
