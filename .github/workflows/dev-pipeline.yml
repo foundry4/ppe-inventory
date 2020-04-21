@@ -152,4 +152,4 @@ jobs:
         pip install behave
         pip install selenium
     - name: Run the tests
-      run: behave --tags="pipeline"
+      run: behave --tags="@pipeline"
