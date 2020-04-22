@@ -110,7 +110,9 @@ def get_sheet_data(site):
     safe_site['apron-quantity_used'] = site['apron-quantity_used']
     print(f'safe_site is {safe_site}')
 
-    ss = datastore.Entity(datastore.Key(site.key()))
+    client = datastore.Client()
+    key = client.key(['Site', site['site']])
+    ss = datastore.Entity(key)
     print(f'ss is {ss}')
 
     return safe_site
