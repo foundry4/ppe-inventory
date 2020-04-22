@@ -1,17 +1,15 @@
 @manual @new-providers
 Feature: Create new providers and generate their links
-  Providers not already in the datatsore are added and a new link generated for them.
-  Existing providers will have their input fields updated but their link will not be changed.
-  In all cases the results including the links are returned in an output file.
+  Providers that do not exist are created and their links generated.
+  Existing providers have their input fields updated but their links will not be changed.
+  Links for all providers are returned in an output file together with confirmation that
+  they were either NEW or EXISTING providers.
 
-  Scenario: Add new provider
-  Given that the new provider does not exist
-  When I attempt to add the new provider
-  Then I am informed that the new provider record was created
-  And the link for the provider is returned
+  Scenario:
+    Given provider "Test Provider One" exists
+    And provider "Test Provider Two" does not exist
+    And both providers are included in the input file
+    When the input file is processed
+    Then "Test Provider One" is updated with the original link
+    And "Test Provider Two" is created with a new link
 
-  Scenario: Attempt to add new provider when that provider already exists
-  Given that the new provider does exist
-  When I attempt to add the new provider
-  Then I am informed that the provider existed
-  And the link for the provider is returned

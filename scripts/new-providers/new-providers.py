@@ -18,6 +18,7 @@ from google.cloud import datastore
 import csv
 import uuid
 import sys
+import logging
 
 baseUrl = ''
 if len(sys.argv) > 1:
@@ -26,17 +27,22 @@ else:
     print('No link base url was provided so no action taken')
     sys.exit(1)
 
-print(f'Link base url is {baseUrl}')
+logfile = "new-providers.log"
+logging.basicConfig(level=logging.INFO, filename=logfile)
+
+print(f'logging to {logfile} ...')
+logging.info(f'Link base url is {baseUrl}')
+
 
 # Instantiates a client
 datastore_client = datastore.Client()
 
-f = open("new-providers-output.csv", "a")
+f = open("new-providers-output.csv", "w+")
 
 # Read input from csv file
-print('Reading records from input csv file...')
+logging.info('Reading records from input csv file...')
 
-with open('../../new-providers.csv', newline='') as csvfile:
+with open('new-providers.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quotechar='"')
     next(reader, None)
     for row in reader:
@@ -49,7 +55,6 @@ with open('../../new-providers.csv', newline='') as csvfile:
         service_type = row[5]
         location = row[6]
         postcode = row[7]
-
         # Check if record exists so can use existing code otherwise generate new code value
         existing_provider = datastore_client.get(datastore_client.key('Site', provider))
         if existing_provider:
@@ -67,6 +72,7 @@ with open('../../new-providers.csv', newline='') as csvfile:
         # entity['contact_name'] = contact_name
         # entity['contact_email'] = contact_email
         # entity['telephone'] = telephone
+        entity['service_type'] = service_type
         entity['location'] = location
         entity['postcode'] = postcode.upper()
         entity['code'] = code
@@ -76,7 +82,7 @@ with open('../../new-providers.csv', newline='') as csvfile:
         link = baseUrl + '/register?site=' + provider + '&code=' + code
         link = '{0: <200}'.format(link)
         line = f'{comment}, {link} \n'
-        print(line)
+        logging.info(line)
         f.write(line)
 
 f.close()
