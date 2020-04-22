@@ -177,7 +177,7 @@ def get_sheet_data(site):
 
     for field in fields:
         if site[field]:
-            field: site[field]
+            ss[field] = site[field]
 
     # ss.update({
     #     'site': site['site'],
