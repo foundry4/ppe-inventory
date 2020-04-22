@@ -176,9 +176,12 @@ def get_sheet_data(site):
     ]
 
     for field in fields:
-        if site[field]:
+        try:
             print(f'field = {field}')
             ss[field] = site[field]
+        except:
+            print(f'problem with field = {field}')
+
 
     # ss.update({
     #     'site': site['site'],
