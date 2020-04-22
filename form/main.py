@@ -113,6 +113,10 @@ def get_sheet_data(site):
     client = datastore.Client()
     key = client.key('Site', site['site'])
     ss = datastore.Entity(key)
+    ss.update({
+        'face-visors-stock-levels':  site['face-visors-stock-levels'],
+        'apron-quantity_used': site['apron-quantity_used']
+    })
     print(f'ss is {ss}')
 
-    return safe_site
+    return ss
