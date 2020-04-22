@@ -104,4 +104,5 @@ def publish_update(site):
 def get_sheet_data(site):
     # Remove sensitive fields to avoid leakage into the spreadsheet
     # To Do......
+    print(site)
     return site
