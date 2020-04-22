@@ -69,9 +69,9 @@ with open('new-providers.csv', newline='') as csvfile:
         entity = datastore.Entity(key=provider_key)
         entity['provider'] = provider
         entity['borough'] = borough
-        # entity['contact_name'] = contact_name
-        # entity['contact_email'] = contact_email
-        # entity['telephone'] = telephone
+        entity['contact_name'] = contact_name
+        entity['contact_email'] = contact_email
+        entity['telephone'] = telephone
         entity['service_type'] = service_type
         entity['location'] = location
         entity['postcode'] = postcode.upper()

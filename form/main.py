@@ -21,7 +21,7 @@ def form(request):
 
     if site and request.method == 'POST':
         update_site(site, client, request, code)
-        publish_update(site)
+        publish_update(get_sheet_data(site))
         post = True
 
     # Construct a full URL to redirect to
@@ -99,3 +99,9 @@ def publish_update(site):
     future = publisher.publish(topic_path, data=data)
 
     print(f"Published update to site {site.key.name}: {future.result()}")
+
+
+def get_sheet_data(site):
+    # Remove sensitive fields to avoid leakage into the spreadsheet
+    # To Do......
+    return site
