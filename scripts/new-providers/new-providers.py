@@ -38,7 +38,7 @@ logging.info(f'Link base url is {baseUrl}')
 notifications_client = NotificationsAPIClient(os.getenv('EMAIL_API_KEY'))
 
 response = notifications_client.get_template(
-  'a9b20e19-efe9-4e6a-b081-67b549e596dc' # required string - template ID
+    'a9b20e19-efe9-4e6a-b081-67b549e596dc'  # required string - template ID
 )
 
 print(response)
