@@ -19,6 +19,8 @@ import csv
 import uuid
 import sys
 import logging
+from notifications_python_client.notifications import NotificationsAPIClient
+import os
 
 baseUrl = ''
 if len(sys.argv) > 1:
@@ -33,6 +35,20 @@ logging.basicConfig(level=logging.INFO, filename=logfile)
 print(f'logging to {logfile} ...')
 logging.info(f'Link base url is {baseUrl}')
 
+notifications_client = NotificationsAPIClient(os.getenv('EMAIL_API_KEY'))
+
+response = notifications_client.get_template(
+  'a9b20e19-efe9-4e6a-b081-67b549e596dc' # required string - template ID
+)
+
+print(response)
+
+response = notifications_client.send_email_notification(
+    email_address='frank@notbinary.co.uk',  # required string
+    template_id='a9b20e19-efe9-4e6a-b081-67b549e596dc',  # required UUID string
+)
+
+print(response)
 
 # Instantiates a client
 datastore_client = datastore.Client()

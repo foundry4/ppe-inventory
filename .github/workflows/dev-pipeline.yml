@@ -152,5 +152,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install behave
         pip install selenium
+        pip install google-cloud-storage
     - name: Run the tests
       run: behave --tags=@pipeline,~@manual
