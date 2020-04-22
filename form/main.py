@@ -105,4 +105,6 @@ def get_sheet_data(site):
     # Remove sensitive fields to avoid leakage into the spreadsheet
     # To Do......
     print(site)
-    return site
+    safe_site = site
+    safe_site['apron-quantity_used'] = 9999
+    return safe_site
