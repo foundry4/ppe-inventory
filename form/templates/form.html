@@ -640,6 +640,7 @@
   <label class="nhsuk-label" for="gowns-national_and_other_external_receipts">
     National & other external receipts
   </label>
+
   <input class="nhsuk-input" id="gowns-national_and_other_external_receipts" name="gowns-national_and_other_external_receipts" type="number" value="{{ site['gowns-national_and_other_external_receipts'] }}">
   </div>
 
@@ -776,7 +777,7 @@
   </div>
 
     <div class="nhsuk-form-group">
-  <label class="nhsuk-label" for="fit-test-solution-55ml-stock-levels-note">
+  <label class="nhsuk-label" for="apron-stock-levels-note">
     Note
   </label>
   <span class="nhsuk-hint" id="apron-stock-levels-note-hint">
@@ -1055,6 +1056,15 @@
   </label>
   <input class="nhsuk-input" id="swabs-quantity_used" name="swabs-quantity_used" type="number" value="{{ site['swabs-quantity_used'] }}">
   </div>
+    <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="swabs-stock-levels-note">
+    Note
+  </label>
+  <span class="nhsuk-hint" id="swabs-stock-levels-note-hint">
+    Any additional comments
+  </span>
+  <input class="nhsuk-input" id="swabs-stock-levels-note" name="swabs-stock-levels-note" type="text" value="{{ site['swabs-iir-stock-levels-note'] }}">
+  </div>
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="swabs-rag">
@@ -1168,7 +1178,6 @@
       </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-
 
 </body>
 </html>
