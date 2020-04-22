@@ -104,8 +104,10 @@ def publish_update(site):
 def get_sheet_data(site):
     # Remove sensitive fields to avoid leakage into the spreadsheet
     # To Do......
+    ss = datastore.Entity(datastore.Key(site.key()))
+    print(ss)
     print(site)
-    safe_site = datastore.Entity(site.key())
+    safe_site = site
     safe_site['apron-quantity_used'] = site['apron-quantity_used']
     print(safe_site)
     return safe_site
