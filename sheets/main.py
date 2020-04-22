@@ -11,7 +11,7 @@ from sheets import sheets_client, update_sheet, get_header_row, get_row_count, g
 # Sheets config
 sheet_id = os.getenv("SHEET_ID")
 worksheet_name = os.getenv("WORKSHEET_NAME") or "Sheet1"
-
+community_worksheet_name = "Community"
 
 def sheets(event, context):
     """
