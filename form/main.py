@@ -102,7 +102,7 @@ def publish_update(site):
 
 
 def get_sheet_data(site):
-    ss = datastore.Entity(key = datastore.Client().key('Site', site['site']))
+    ss = datastore.Entity(key=datastore.Client().key('Site', site['site']))
     fields = [
         'site',
         'code',
@@ -167,6 +167,7 @@ def get_sheet_data(site):
     ]
 
     for field in fields:
+        ss[field] = site[field]
         try:
             ss[field] = site[field]
             print(f'field = {field} has value {ss[field]}')
