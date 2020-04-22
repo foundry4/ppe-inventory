@@ -116,6 +116,12 @@ def get_sheet_data(site):
     ss.update({
         'site': site['site'],
         'face-visors-stock-levels':  site['face-visors-stock-levels'],
+        'face-visors-quantity_used': site['face-visors-quantity_used'],
+        'face-visors-rag': site['face-visors-rag'],
+        'goggles-stock-levels': site['goggles-stock-levels'],
+        'goggles-quantity_used': site['goggles-quantity_used'],
+        'goggles-stock-levels-note': site['goggles-stock-levels-note'],
+        'goggles-rag': site['goggles-rag'],
         'apron-quantity_used': site['apron-quantity_used']
     })
     print(f'ss is {ss}')
