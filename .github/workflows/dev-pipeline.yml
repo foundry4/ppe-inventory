@@ -17,7 +17,7 @@ env:
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
   COMMUNITY_SHEET_ID: ${{ secrets.DEV_COMMUNITY_SHEET_ID }}
-  WORKSHEET_NAME: ${{ secrets.TRIAL_WORKSHEET_NAME }}
+  WORKSHEET_NAME: ${{ secrets.DEV_WORKSHEET_NAME }}
   OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
   VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
   VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
