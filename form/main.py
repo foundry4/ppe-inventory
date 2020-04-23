@@ -105,7 +105,6 @@ def get_sheet_data(site):
     safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site['site']))
     fields = [
         'site',
-        'code',
         'face-visors-stock-levels',
         'face-visors-quantity_used',
         'face-visors-stock-levels-note',
