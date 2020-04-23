@@ -7,9 +7,7 @@ import os
 
 currentTime = datetime.datetime.now()
 
-
 def barts(request):
-
     sites = {'Royal London Hospital': 'pr234ted',
              'Whipps Cross Hospital': 'el324os',
              'St Bartholomew': 'ak907atp',
@@ -28,6 +26,7 @@ def barts(request):
     if name and code:
         site = get_site(name, code, client)
     if site and request.method == 'POST':
+        return "post"
         print ("data are being updated.")
         update_site(site, client, request, code)
         publish_update(site)
