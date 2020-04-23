@@ -102,12 +102,13 @@ def publish_update(site):
 
 
 def get_sheet_data(site):
-    ss = datastore.Entity(key=datastore.Client().key('Site', site['site']))
+    safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site['site']))
     fields = [
         'site',
         'code',
         'face-visors-stock-levels',
         'face-visors-quantity_used',
+        'face-visors-stock-levels-note',
         'face-visors-rag',
         'goggles-stock-levels',
         'goggles-quantity_used',
@@ -115,12 +116,15 @@ def get_sheet_data(site):
         'goggles-rag',
         'masks-iir-stock-levels',
         'masks-iir-quantity_used',
+        'masks-iir-stock-levels-note',
         'masks-iir-rag',
         'masks-ffp2-stock-levels',
         'masks-ffp2-quantity_used',
+        'masks-ffp2-stock-levels-note',
         'masks-ffp2-rag',
         'masks-ffp3-stock-levels',
         'masks-ffp3-quantity_used',
+        'masks-ffp3-stock-levels-note',
         'masks-ffp3-rag',
         'fit-test-solution-stock-levels',
         'fit-test-solution-quantity_used',
@@ -136,6 +140,7 @@ def get_sheet_data(site):
         'gloves-rag',
         'gowns-stock-levels',
         'gowns-quantity_used',
+        'gowns-stock-levels-note',
         'gowns-rag',
         'hand-hygiene-stock-levels',
         'hand-hygiene-quantity_used',
@@ -143,15 +148,19 @@ def get_sheet_data(site):
         'hand-hygiene-rag',
         'apron-stock-levels',
         'apron-quantity_used',
+        'apron-stock-levels-note',
         'apron-rag',
         'body-bags-stock-levels',
         'body-bags-quantity_used',
+        'body-bags-stock-levels-note',
         'body-bags-rag',
         'coveralls-stock-levels',
         'coveralls-quantity_used',
+        'coveralls-stock-levels-note',
         'coveralls-rag',
         'swabs-stock-levels',
         'swabs-quantity_used',
+        'swabs-stock-levels-note',
         'swabs-rag',
         'fit-test-solution-55ml-stock-levels',
         'fit-test-solution-55ml-quantity_used',
@@ -167,12 +176,11 @@ def get_sheet_data(site):
     ]
 
     for field in fields:
-        ss[field] = site[field]
         try:
-            ss[field] = site[field]
-            print(f'field = {field} has value {ss[field]}')
+            safe_site_data[field] = site[field]
+            print(f'field = {field} has value {safe_site_data[field]}')
         except Exception as e:
             print(e)
             print(f'problem with field = {field}')
-    print(f'ss is {ss}')
-    return ss
+    print(f'safe_site_data is {safe_site_data}')
+    return safe_site_data
