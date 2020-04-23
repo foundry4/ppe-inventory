@@ -22,4 +22,3 @@ Also, this test will need valid `gcloud` configuration e.g.
 ```
 export GOOGLE_APPLICATION_CREDENTIALS="ppe-inventory-dev.json"
 ```
-
