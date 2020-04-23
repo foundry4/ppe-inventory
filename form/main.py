@@ -168,6 +168,7 @@ def get_sheet_data(site):
         'fit-test-solution-55ml-rag',
         'non-covid19-patient-number',
         'covid19-patient-number',
+        'covid19-patient-number-suspected',
         'staff-number',
         'gowns-mutual_aid_received',
         'gowns-national_and_other_external_receipts',
