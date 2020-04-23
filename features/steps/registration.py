@@ -1,4 +1,5 @@
 from behave import *
+import logging
 
 
 @given(u'I have a valid registration link')
@@ -13,6 +14,8 @@ def step_impl(context):
 
 @when("I visit the link")
 def step_impl(context):
+    logging.info('STEP: I visit the link')
+    logging.info(f'Link => {context.link}')
     context.browser.get(context.link)
 
 
