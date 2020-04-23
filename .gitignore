@@ -6,3 +6,4 @@ worksheet-name.txt
 /.idea/
 /.env
 /behave.ini
+/barts/app.py

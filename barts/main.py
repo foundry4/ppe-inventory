@@ -7,9 +7,7 @@ import os
 
 currentTime = datetime.datetime.now()
 
-
 def barts(request):
-
     sites = {'Royal London Hospital': 'pr234ted',
              'Whipps Cross Hospital': 'el324os',
              'St Bartholomew': 'ak907atp',
