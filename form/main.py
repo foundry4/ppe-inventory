@@ -105,7 +105,6 @@ def get_sheet_data(site):
     safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site['site']))
     fields = [
         'site',
-        'code',
         'face-visors-stock-levels',
         'face-visors-quantity_used',
         'face-visors-stock-levels-note',
@@ -168,6 +167,7 @@ def get_sheet_data(site):
         'fit-test-solution-55ml-rag',
         'non-covid19-patient-number',
         'covid19-patient-number',
+        'covid19-patient-number-suspected',
         'staff-number',
         'gowns-mutual_aid_received',
         'gowns-national_and_other_external_receipts',
