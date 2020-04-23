@@ -155,4 +155,4 @@ jobs:
         pip install google-cloud-storage
         pip install google-cloud-datastore
     - name: Run the tests
-      run: behave --tags="@pipeline not @manual"
+      run: behave --tags=@pipeline,~@manual
