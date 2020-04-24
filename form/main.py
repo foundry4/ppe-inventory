@@ -21,7 +21,7 @@ def form(request):
 
     if site and request.method == 'POST':
         update_site(site, client, request, code)
-        publish_update(site)
+        publish_update(get_sheet_data(site))
         post = True
 
     # Construct a full URL to redirect to
@@ -99,3 +99,88 @@ def publish_update(site):
     future = publisher.publish(topic_path, data=data)
 
     print(f"Published update to site {site.key.name}: {future.result()}")
+
+
+def get_sheet_data(site):
+    safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site['site']))
+    fields = [
+        'site',
+        'face-visors-stock-levels',
+        'face-visors-quantity_used',
+        'face-visors-stock-levels-note',
+        'face-visors-rag',
+        'goggles-stock-levels',
+        'goggles-quantity_used',
+        'goggles-stock-levels-note',
+        'goggles-rag',
+        'masks-iir-stock-levels',
+        'masks-iir-quantity_used',
+        'masks-iir-stock-levels-note',
+        'masks-iir-rag',
+        'masks-ffp2-stock-levels',
+        'masks-ffp2-quantity_used',
+        'masks-ffp2-stock-levels-note',
+        'masks-ffp2-rag',
+        'masks-ffp3-stock-levels',
+        'masks-ffp3-quantity_used',
+        'masks-ffp3-stock-levels-note',
+        'masks-ffp3-rag',
+        'fit-test-solution-stock-levels',
+        'fit-test-solution-quantity_used',
+        'fit-test-solution-stock-levels-note',
+        'fit-test-solution-rag',
+        'fit-test-fullkit-stock-levels',
+        'fit-test-fullkit-quantity_used',
+        'fit-test-fullkit-stock-levels-note',
+        'fit-test-fullkit-rag',
+        'gloves-stock-levels',
+        'gloves-quantity_used',
+        'gloves-stock-levels-note',
+        'gloves-rag',
+        'gowns-stock-levels',
+        'gowns-quantity_used',
+        'gowns-stock-levels-note',
+        'gowns-rag',
+        'hand-hygiene-stock-levels',
+        'hand-hygiene-quantity_used',
+        'hand-hygiene-stock-levels-note',
+        'hand-hygiene-rag',
+        'apron-stock-levels',
+        'apron-quantity_used',
+        'apron-stock-levels-note',
+        'apron-rag',
+        'body-bags-stock-levels',
+        'body-bags-quantity_used',
+        'body-bags-stock-levels-note',
+        'body-bags-rag',
+        'coveralls-stock-levels',
+        'coveralls-quantity_used',
+        'coveralls-stock-levels-note',
+        'coveralls-rag',
+        'swabs-stock-levels',
+        'swabs-quantity_used',
+        'swabs-stock-levels-note',
+        'swabs-rag',
+        'fit-test-solution-55ml-stock-levels',
+        'fit-test-solution-55ml-quantity_used',
+        'fit-test-solution-55ml-stock-levels-note',
+        'fit-test-solution-55ml-rag',
+        'non-covid19-patient-number',
+        'covid19-patient-number',
+        'covid19-patient-number-suspected',
+        'staff-number',
+        'gowns-mutual_aid_received',
+        'gowns-national_and_other_external_receipts',
+        'coveralls-mutual_aid_received',
+        'coveralls-national_and_other_external_receipts'
+    ]
+
+    for field in fields:
+        try:
+            safe_site_data[field] = site[field]
+            print(f'field = {field} has value {safe_site_data[field]}')
+        except Exception as e:
+            print(e)
+            print(f'problem with field = {field}')
+    print(f'safe_site_data is {safe_site_data}')
+    return safe_site_data

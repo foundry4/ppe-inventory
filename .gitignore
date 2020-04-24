@@ -5,3 +5,5 @@ worksheet-name.txt
 .gcloudignore
 /.idea/
 /.env
+/behave.ini
+/barts/app.py

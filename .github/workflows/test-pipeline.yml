@@ -12,6 +12,7 @@ env:
   SA_EMAIL: ${{ secrets.TEST_SA_EMAIL }}
   SA_KEY: ${{ secrets.TEST_SA_KEY }}
   PROJECT_ID: ${{ secrets.TEST_PROJECT_ID }}
+  BUCKET_NAME: ${{ secrets.TEST_BUCKET_NAME }}
   DOMAIN: "europe-west2-${{ secrets.TEST_PROJECT_ID }}.cloudfunctions.net"
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: ${{ secrets.TEST_SHEET_ID }}
@@ -54,8 +55,8 @@ jobs:
     # Copy static files
     - name: Copy asset files to bucket and config access
       run: |
-        gsutil rsync -r static gs://${{ env.PROJECT_ID }}
-        gsutil iam ch allUsers:objectViewer gs://${{ env.PROJECT_ID }}
+        gsutil rsync -r static gs://${{ env.BUCKET_NAME }}
+        gsutil iam ch allUsers:objectViewer gs://${{ env.BUCKET_NAME }}
 
   deploy-form-function:
     needs: gcp-setup
@@ -151,5 +152,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install behave
         pip install selenium
+        pip install google-cloud-storage
+        pip install google-cloud-datastore
     - name: Run the tests
-      run: behave
+      run: behave --tags=@pipeline,~@manual
