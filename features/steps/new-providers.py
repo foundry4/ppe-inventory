@@ -43,7 +43,9 @@ def step_impl(context):
 def step_impl(context):
     print(u'STEP: When the input file is processed')
     os.system('pwd')
-    os.system(f'python3 scripts/new-providers/new-providers.py {os.getenv("DOMAIN")}')
+    command = 'python3 scripts/new-providers/new-providers.py ' + str(os.getenv('DOMAIN')) + ' ' + str(os.getenv('INPUT_FILE'))
+    print(command)
+    os.system(command)
 
 
 @step('"{provider}" is updated with the original link')
