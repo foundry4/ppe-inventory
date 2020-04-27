@@ -39,12 +39,12 @@
 <h2>Today's community site stock assessment ratings across North East London</h2>
 
 <div class="nhsuk-width-container">
-  <main class="nhsuk-main-wrapper" id="maincontent">
+
     <div style="text-align:center">
       <table>
         <tr>
-          <td style="top-alignment:middle">
-            <span class="dot" style="background-color:#951D14"></span>Up to one day
+          <td>
+            <span class="dot" style="background-color:#951D14"></span> Up to one day
           </td>
           <td>
             <span class="dot" style="background-color:#D5481B"></span> 1-2 days
@@ -57,6 +57,7 @@
           </td>
       </table>
     </div>
+    <main class="nhsuk-main-wrapper" id="maincontent">
     <div class="nhsuk-grid-row">
       <div class="nhsuk-grid-column-full">
         {% for item in items %}
@@ -71,19 +72,19 @@
                       <b>{{item['name']}}</b>
                     </td>
                   </tr>
-                  {% if item['highlight']=='maroon' %}<tr class="highlight-maroon" >{% else %}<tr>{% endif %}
+                  {% if item['highlight']=='under_one' %}<tr class="highlight-maroon" >{% else %}<tr>{% endif %}
                       <td>Under 1 day</td>
                       <td>{{item['under_one']}}</td>
                   </tr>
-                  {% if item['highlight']=='red' %}<tr class="highlight-red" >{% else %}<tr>{% endif %}
+                  {% if item['highlight']=='one_two' %}<tr class="highlight-red" >{% else %}<tr>{% endif %}
                       <td>1-2 days</td>
                       <td>{{item['one_two']}}</td>
                   </tr>
-                  {% if item['highlight']=='amber' %}<tr class="highlight-amber" >{% else %}<tr>{% endif %}
+                  {% if item['highlight']=='two_three' %}<tr class="highlight-amber" >{% else %}<tr>{% endif %}
                     <td>2-3 days</td>
                     <td>{{item['two_three']}}</td>
                   </tr>
-                  {% if item['highlight']=='green' %}<tr class="highlight-green" >{% else %}<tr>{% endif %}
+                  {% if item['highlight']=='over_three' %}<tr class="highlight-green" >{% else %}<tr>{% endif %}
                     <td>3+ days</td>
                     <td>{{item['over_three']}}</td>
                   </tr>
