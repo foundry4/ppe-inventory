@@ -7,3 +7,5 @@ worksheet-name.txt
 /.env
 /behave.ini
 /barts/app.py
+/register/app.py
+/dashboard/app.py
