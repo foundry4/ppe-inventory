@@ -77,6 +77,7 @@
 
 <input type="hidden" id="site" name="site" value="{{ site.key.name }}">
 
+
 <!-- Apron -->
 <fieldset class="nhsuk-fieldset">
 
@@ -106,7 +107,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="apron-1" type="radio" name="apron-rag" value="one-or-less" {% if site['apron-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="apron-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -122,9 +123,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="apron-3" type="radio" name="apron-rag" value="three-plus" {% if site['apron-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="apron-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="apron-less-than-week" type="radio" name="apron-rag" value="less-than-week" {% if site['apron-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="apron-less-than-week">
+        3-7 days
+      </label>
+    </div>
+        <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="apron-more-than-week" type="radio" name="apron-rag" value="more-than-week" {% if site['apron-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="apron-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -172,7 +179,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="gloves-1" type="radio" name="gloves-rag" value="one-or-less" {% if site['gloves-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="gloves-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -188,9 +195,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="gloves-3" type="radio" name="gloves-rag" value="three-plus" {% if site['gloves-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="gloves-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="gloves-less-than-week" type="radio" name="gloves-rag" value="less-than-week" {% if site['gloves-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="gloves-less-than-week">
+         3-7 days
+      </label>
+    </div>
+   <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gloves-more-than-week" type="radio" name="gloves-rag" value="more-than-week" {% if site['gloves-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="gloves-more-than-week">
+         > 1 week
       </label>
     </div>
   </div>
@@ -229,7 +242,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-iir-1" type="radio" name="masks-iir-rag" value="one-or-less" {% if site['masks-iir-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -245,9 +258,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="masks-iir-3" type="radio" name="masks-iir-rag" value="three-plus" {% if site['masks-iir-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="masks-iir-less-than-week" type="radio" name="masks-iir-rag" value="less-than-week" {% if site['masks-iir-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-less-than-week">
+        3-7 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-iir-more-than-week" type="radio" name="masks-iir-rag" value="more-than-week" {% if site['masks-iir-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -295,7 +314,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="hand-hygiene-1" type="radio" name="hand-hygiene-rag" value="one-or-less" {% if site['hand-hygiene-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -311,9 +330,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="hand-hygiene-3" type="radio" name="hand-hygiene-rag" value="three-plus" {% if site['hand-hygiene-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="hand-hygiene-less-than-week" type="radio" name="hand-hygiene-rag" value="less-than-week" {% if site['hand-hygiene-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-less-than-week">
+        3-7 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-more-than-week" type="radio" name="hand-hygiene-rag" value="more-than-week" {% if site['hand-hygiene-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -351,7 +376,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="face-visors-1" type="radio" name="face-visors-rag" value="one-or-less" {% if site['face-visors-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="face-visors-1">
-        &lt;1 day
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -367,9 +392,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="face-visors-3" type="radio" name="face-visors-rag" value="three-plus" {% if site['face-visors-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="face-visors-less-than-week" type="radio" name="face-visors-rag" value="less-than-week" {% if site['face-visors-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-less-than-week">
+        3-7 days
+      </label>
+    </div>
+        <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="face-visors-more-than-week" type="radio" name="face-visors-rag" value="more-than-week" {% if site['face-visors-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="face-visors-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -417,7 +448,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="goggles-1" type="radio" name="goggles-rag" value="one-or-less" {% if site['goggles-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="goggles-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -433,9 +464,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="goggles-3" type="radio" name="goggles-rag" value="three-plus" {% if site['goggles-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="goggles-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="goggles-less-than-week" type="radio" name="goggles-rag" value="less-than-week" {% if site['goggles-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="goggles-less-than-week">
+        3-7 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="goggles-more-than-week" type="radio" name="goggles-rag" value="more-than-week" {% if site['goggles-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="goggles-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -473,7 +510,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-ffp3-1" type="radio" name="masks-ffp3-rag" value="one-or-less" {% if site['masks-ffp3-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -489,9 +526,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="masks-ffp3-3" type="radio" name="masks-ffp3-rag" value="three-plus" {% if site['masks-ffp3-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="masks-ffp3-less-than-week" type="radio" name="masks-ffp3-rag" value="less-than-week" {% if site['masks-ffp3-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-less-than-week">
+        3-7 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp3-more-than-week" type="radio" name="masks-ffp3-rag" value="more-than-week" {% if site['masks-ffp3-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -529,7 +572,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-ffp2-1" type="radio" name="masks-ffp2-rag" value="one-or-less" {% if site['masks-ffp2-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -545,9 +588,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="masks-ffp2-3" type="radio" name="masks-ffp2-rag" value="three-plus" {% if site['masks-ffp2-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="masks-ffp2-less-than-week" type="radio" name="masks-ffp2-rag" value="less-than-week" {% if site['masks-ffp2-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-less-than-week">
+        3-7 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="masks-ffp2-more-than-week" type="radio" name="masks-ffp2-rag" value="more-than-week" {% if site['masks-ffp2-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
@@ -585,7 +634,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="gowns-1" type="radio" name="gowns-rag" value="one-or-less" {% if site['gowns-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="gowns-1">
-        &lt;1
+        &lt; 1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -601,9 +650,15 @@
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="gowns-3" type="radio" name="gowns-rag" value="three-plus" {% if site['gowns-rag'] == "three-plus" %}checked{% endif %}>
-      <label class="nhsuk-label nhsuk-radios__label" for="gowns-3">
-        &gt;3 days
+      <input class="nhsuk-radios__input" id="gowns-less-than-week" type="radio" name="gowns-rag" value="less-than-week" {% if site['gowns-rag'] == "less-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="gowns-less-than-week">
+        3-7 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="gowns-more-than-week" type="radio" name="gowns-rag" value="more-than-week" {% if site['gowns-rag'] == "more-than-week" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="gowns-more-than-week">
+        > 1 week
       </label>
     </div>
   </div>
