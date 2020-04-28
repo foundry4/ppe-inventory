@@ -20,6 +20,8 @@ def barts(request):
     landing = request.args.get('landing')
     name = request.args.get('site')
     code = request.args.get('code')
+    sheet_id = os.getenv("SHEET_ID")
+
     client = datastore.Client()
     print(f'landing:{landing};name:{name};code:{code}')
 
@@ -51,6 +53,7 @@ def barts(request):
     response = make_response(render_template(template,
                                              site=site,
                                              sites=sites,
+                                             sheet_id=sheet_id,
                                              form_action=form_action,
                                              landingPage=landing_page,
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
