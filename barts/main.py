@@ -23,7 +23,7 @@ def barts(request):
     sheet_id = os.getenv("SHEET_ID")
 
     client = datastore.Client()
-    print(f'landing:{landing};name:{name};code:{code}')
+    print(f'landing:{landing};name:{name};code:{code};sheet_id{sheet_id}')
 
     if name and code:
         site = get_site(name, code, client)
