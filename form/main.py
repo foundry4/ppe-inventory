@@ -11,6 +11,7 @@ currentTime = datetime.datetime.now()
 def form(request):
     name = request.cookies.get('site')
     code = request.cookies.get('code')
+    sheet_id = os.getenv("SHEET_ID")
 
     client = datastore.Client()
 
@@ -43,6 +44,7 @@ def form(request):
 
     response = make_response(render_template(template,
                                              site=site,
+                                             sheet_id=sheet_id,
                                              form_action=form_action,
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
