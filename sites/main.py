@@ -69,9 +69,3 @@ def search(request):
                            search_type=search_type,
                            args=args,
                            result_label=result_label)
-
-
-@app.route('/')
-def sites(request):
-    print(request)
-    return "Home page"
