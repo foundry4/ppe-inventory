@@ -33,7 +33,7 @@ def search(request):
             query.add_filter('pcn', '=', pcn)
             query.add_filter('service_type', '=', service_type)
             results = list(query.fetch())
-        if request_args['search_type'] == PARENT_SEARCH:
+        if request_args['search_type'] == CHILDREN_SEARCH:
             search_type = 'Search for child sites'
             parent = request_args['parent']
             result_label = f'Results using filter values Parent: {parent}'
