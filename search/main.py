@@ -15,7 +15,7 @@ def search(request):
     # Instantiates a client
     datastore_client = datastore.Client()
     query = datastore_client.query(kind='Site')
-    args=[]
+    args = []
     results = []
     if request_args:
         if request_args['search_type'] == LINKS_SEARCH:
