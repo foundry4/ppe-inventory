@@ -7,8 +7,14 @@ CHILDREN_SEARCH = 'children'
 app = Flask(__name__)
 
 
-@app.route('/search')
+@app.route('/')
 def sites(request):
+    print(request)
+    return "Home page"
+
+
+@app.route('/search')
+def search(request):
     print(request)
 
     request_args = request.args
