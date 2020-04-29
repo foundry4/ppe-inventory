@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <head>
-  <title>Saying Hello</title>
+    <title>Saying Hello</title>
 </head>
 <body>
-  {% for site in sites %}
-  Hello, <b>{{ site }}!</b><br>
-  {% endfor %}
+{% for site in sites %}
+    <ul>
+        <li>
+            <a href="{{ site }}">Link to site</a>
+        </li>
+    </ul>
+{% endfor %}
 </body>

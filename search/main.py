@@ -33,6 +33,6 @@ def search(request):
     sites = []
     for site in results:
         print(site['site'])
-        sites.append(site['site'])
+        sites.append(site['link'])
 
     return render_template('results.html', sites=sites)
