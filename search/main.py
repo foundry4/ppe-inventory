@@ -1,11 +1,5 @@
-from flask import request, make_response, redirect, render_template, abort, flash, url_for
+from flask import render_template
 from google.cloud import datastore
-from google.cloud import pubsub_v1
-import datetime
-import json
-import os
-
-currentTime = datetime.datetime.now()
 
 LINKS_SEARCH = 'links'
 CHILDREN_SEARCH = 'children'
@@ -21,7 +15,7 @@ def search(request):
     # Instantiates a client
     datastore_client = datastore.Client()
     query = datastore_client.query(kind='Site')
-    results=[]
+    results = []
     if request_args:
         if request_args['search_type'] == LINKS_SEARCH:
             search_type = 'Search for community sites'
