@@ -28,7 +28,7 @@ def search(request):
             borough = request_args['borough']
             pcn = request_args['pcn']
             service_type = request_args['service_type']
-            results_label = f'Results using filter values  Borough: {borough}  PCN: {pcn}  Service Type: {service_type}'
+            result_label = f'Results using filter values  Borough: {borough}  PCN: {pcn}  Service Type: {service_type}'
             query.add_filter('borough', '=', borough)
             query.add_filter('pcn', '=', pcn)
             query.add_filter('service_type', '=', service_type)
