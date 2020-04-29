@@ -138,7 +138,7 @@ jobs:
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
 
-  deploy-search-function:
+  deploy-sites-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
     steps:
@@ -151,12 +151,12 @@ jobs:
           service_account_key: ${{ env.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
-      # Deploy serach function
-      - name: Deploy search function
+      # Deploy sites function
+      - name: Deploy sites function
         run: |
-          cd search
-          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-          gcloud functions describe search --region=europe-west2 | grep url
+          cd sites
+          gcloud functions deploy sites --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions describe sites --region=europe-west2 | grep url
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-search-function]
