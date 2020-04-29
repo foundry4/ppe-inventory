@@ -15,6 +15,7 @@ def search(request):
     # Instantiates a client
     datastore_client = datastore.Client()
     query = datastore_client.query(kind='Site')
+    args=[]
     results = []
     if request_args:
         if request_args['search_type'] == LINKS_SEARCH:
@@ -22,7 +23,10 @@ def search(request):
             borough = request_args['borough']
             pcn = request_args['pcn']
             service_type = request_args['service_type']
-            result_label = f'Results using filter values <p> Borough: {borough} </p><p>  PCN: {pcn} </p><p> Service Type: {service_type}</p>'
+            result_label = f'Sites filtered by:'
+            args.append(f'Borough: {borough}')
+            args.append(f'PCN: {pcn}')
+            args.append(f'Service Type: {service_type}')
             query.add_filter('borough', '=', borough)
             query.add_filter('pcn', '=', pcn)
             query.add_filter('service_type', '=', service_type)
@@ -30,7 +34,8 @@ def search(request):
         if request_args['search_type'] == CHILDREN_SEARCH:
             search_type = 'Search for child sites'
             parent = request_args['parent']
-            result_label = f'Results using filter values <p> Parent: {parent}</p>'
+            result_label = f'Sites filtered by:'
+            args.append(f'Parent: {parent}')
             query.add_filter('parent', '=', parent)
             results = list(query.fetch())
     sites = []
@@ -41,4 +46,5 @@ def search(request):
                            sites=sites,
                            assets='https://storage.googleapis.com/ppe-inventory',
                            search_type=search_type,
+                           args=args,
                            result_label=result_label)

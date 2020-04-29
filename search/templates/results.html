@@ -69,6 +69,9 @@
                 <h1 class="govuk-heading-xl">Search Results Page</h1>
                 <h2>{{ search_type }}</h2>
                 <h3>{{ result_label }}</h3>
+            {% for arg in args %}
+                <h4> arg </h4>
+            {% endfor %}
                 {% for site in sites %}
                     <ul>
                         <li>
