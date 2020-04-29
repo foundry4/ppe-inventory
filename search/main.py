@@ -8,7 +8,7 @@ import os
 currentTime = datetime.datetime.now()
 
 LINKS_SEARCH = 'links'
-PARENT_SEARCH = 'parent'
+CHILDREN_SEARCH = 'children'
 
 
 def search(request):
@@ -21,7 +21,7 @@ def search(request):
     # Instantiates a client
     datastore_client = datastore.Client()
     query = datastore_client.query(kind='Site')
-
+    results=[]
     if request_args:
         if request_args['search_type'] == LINKS_SEARCH:
             search_type = 'Search for community sites'
@@ -39,15 +39,12 @@ def search(request):
             result_label = f'Results using filter values Parent: {parent}'
             query.add_filter('parent', '=', parent)
             results = list(query.fetch())
-    results = list(query.fetch())
-    print(results)
     sites = []
-    for site in results:
-        print(site['site'])
-        sites.append(site['link'])
+    for result in results:
+        sites.append({'link': result['link'], 'site': result['site']})
 
     return render_template('results.html',
-                           sites=results,
+                           sites=sites,
                            assets='https://storage.googleapis.com/ppe-inventory',
                            search_type=search_type,
-                           results_label=result_label)
+                           result_label=result_label)
