@@ -22,7 +22,7 @@ def search(request):
             borough = request_args['borough']
             pcn = request_args['pcn']
             service_type = request_args['service_type']
-            result_label = f'Results using filter values  Borough: {borough}  PCN: {pcn}  Service Type: {service_type}'
+            result_label = f'Results using filter values <p> Borough: {borough} </p><p>  PCN: {pcn} </p><p> Service Type: {service_type}</p>'
             query.add_filter('borough', '=', borough)
             query.add_filter('pcn', '=', pcn)
             query.add_filter('service_type', '=', service_type)
@@ -30,7 +30,7 @@ def search(request):
         if request_args['search_type'] == CHILDREN_SEARCH:
             search_type = 'Search for child sites'
             parent = request_args['parent']
-            result_label = f'Results using filter values Parent: {parent}'
+            result_label = f'Results using filter values <p> Parent: {parent}</p>'
             query.add_filter('parent', '=', parent)
             results = list(query.fetch())
     sites = []
