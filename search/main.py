@@ -11,4 +11,4 @@ currentTime = datetime.datetime.now()
 def search(request):
     print(request)
 
-    return 'hello!'
+    return render_template('hello.html', places=["Hospital 1", "Hospital 2"])
