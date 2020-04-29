@@ -35,4 +35,4 @@ def search(request):
         print(site['site'])
         sites.append(site['link'])
 
-    return render_template('results.html', sites=results)
+    return render_template('results.html', sites=results, assets='https://storage.googleapis.com/ppe-inventory')
