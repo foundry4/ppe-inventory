@@ -69,21 +69,21 @@
 </header>
 
 <div class="nhsuk-width-container">
-<main class="nhsuk-main-wrapper" id="maincontent">
-<div class="nhsuk-grid-row">
-<div class="nhsuk-grid-column-full">
+    <main class="nhsuk-main-wrapper" id="maincontent">
+        <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-full">
 
-<h1 class="govuk-heading-xl">Search Results Page</h1>
-{% for site in sites %}
-    <ul>
-        <li>
-            <a href="{{ site["link"] }}">{{ site["site"] }}</a>
-        </li>
-    </ul>
-{% endfor %}
-</div>
-</div>
-</main>
+                <h1 class="govuk-heading-xl">Search Results Page</h1>
+                {% for site in sites %}
+                    <ul>
+                        <li>
+                            <a href="{{ site["link"] }}">{{ site["site"] }}</a>
+                        </li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
 </div>
 
 <footer role="contentinfo">
