@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <!--[if lt IE 9]>
-<html class="ie8" lang="en"><![endif]--><!--[if IE 9]>
-<html class="ie9" lang="en"><![endif]--><!--[if gt IE 9]><!-->
-<html lang="en" style="background-color: #f0f4f5;"><!--<![endif]-->
+<html class="ie8" lang="en">
+<![endif]-->
+<!--[if IE 9]>
+<html class="ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]>
+<html lang="en" style="background-color: #f0f4f5;">
+<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -63,6 +68,11 @@
     </div>
 </header>
 
+<div class="nhsuk-width-container">
+<main class="nhsuk-main-wrapper" id="maincontent">
+<div class="nhsuk-grid-row">
+<div class="nhsuk-grid-column-full">
+
 <h1 class="govuk-heading-xl">Search Results Page</h1>
 {% for site in sites %}
     <ul>
@@ -71,7 +81,10 @@
         </li>
     </ul>
 {% endfor %}
-
+</div>
+</div>
+</main>
+</div>
 
 <footer role="contentinfo">
     <div class="nhsuk-footer" id="nhsuk-footer">
