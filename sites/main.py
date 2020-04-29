@@ -1,10 +1,13 @@
-from flask import render_template
+from flask import Flask, render_template
 from google.cloud import datastore
 
 LINKS_SEARCH = 'links'
 CHILDREN_SEARCH = 'children'
 
+app = Flask(__name__)
 
+
+@app.route('/search')
 def sites(request):
     print(request)
 
@@ -38,12 +41,12 @@ def sites(request):
             args.append(f'Parent = {parent}')
             query.add_filter('parent', '=', parent)
             results = list(query.fetch())
-    sites = []
+    filtered_sites = []
     for result in results:
-        sites.append({'link': result['link'], 'site': result['site']})
+        filtered_sites.append({'link': result['link'], 'site': result['site']})
 
     return render_template('results.html',
-                           sites=sites,
+                           sites=filtered_sites,
                            assets='https://storage.googleapis.com/ppe-inventory',
                            search_type=search_type,
                            args=args,
