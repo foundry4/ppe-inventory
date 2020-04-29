@@ -154,5 +154,6 @@ jobs:
         pip install selenium
         pip install google-cloud-storage
         pip install google-cloud-datastore
+        pip install pandas
     - name: Run the tests
       run: behave --tags=@pipeline,~@manual
