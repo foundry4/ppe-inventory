@@ -154,9 +154,9 @@ jobs:
       # Deploy serach function
       - name: Deploy search function
         run: |
-          cd serach
-          gcloud functions deploy serach --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-          gcloud functions describe serach --region=europe-west2 | grep url
+          cd search
+          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions describe search --region=europe-west2 | grep url
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-search-function]
