@@ -152,11 +152,11 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
       # Deploy sites function
-      - name: Deploy sites function
+      - name: Deploy search function
         run: |
-          cd sites
-          gcloud functions deploy sites --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-          gcloud functions describe sites --region=europe-west2 | grep url
+          cd search
+          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions describe search --region=europe-west2 | grep url
 
   deploy-sites-function:
     needs: gcp-setup
