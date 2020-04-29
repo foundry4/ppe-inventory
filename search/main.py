@@ -35,4 +35,4 @@ def search(request):
         print(site['site'])
         sites.append(site['link'])
 
-    return render_template('results.html', sites=sites)
+    return render_template('results.html', sites=results)

@@ -7,7 +7,7 @@
 {% for site in sites %}
     <ul>
         <li>
-            <a href="{{ site }}">Link to site</a>
+            <a href="{{ site["link"] }}">{{ site["site"] }}</a>
         </li>
     </ul>
 {% endfor %}
