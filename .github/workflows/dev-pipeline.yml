@@ -159,7 +159,7 @@ jobs:
           gcloud functions describe sites --region=europe-west2 | grep url
 
   tests:
-    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-search-function]
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-sites-function]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
