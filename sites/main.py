@@ -7,10 +7,22 @@ CHILDREN_SEARCH = 'children'
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/sites')
 def sites(request):
     print(request)
-    return "Home page"
+    return "Home page" + request
+
+
+@app.route('/input')
+def input_stock_data(request):
+    print(request)
+    return "INPUT" + request
+
+
+@app.route('/register')
+def register_new_site(request):
+    print(request)
+    return "REGISTER" + request
 
 
 @app.route('/search')

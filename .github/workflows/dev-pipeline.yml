@@ -138,6 +138,26 @@ jobs:
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
 
+  deploy-search-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy sites function
+      - name: Deploy sites function
+        run: |
+          cd sites
+          gcloud functions deploy sites --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions describe sites --region=europe-west2 | grep url
+
   deploy-sites-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
