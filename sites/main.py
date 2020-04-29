@@ -5,7 +5,7 @@ LINKS_SEARCH = 'links'
 CHILDREN_SEARCH = 'children'
 
 
-def search(request):
+def sites(request):
     print(request)
 
     request_args = request.args
