@@ -9,18 +9,6 @@ currentTime = datetime.datetime.now()
 
 
 def search(request):
-    search_type = request.args.get('search_type')
+    print(request)
 
-    client = datastore.Client()
-
-    # Construct a full URL to redirect to
-    # otherwise we seem to end up on http
-    domain = os.getenv('DOMAIN')
-
-    response = make_response(render_template('results.htm',
-                                             currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
-                                             assets='https://storage.googleapis.com/ppe-inventory',
-                                             data={}
-                                             ))
-
-    return response
+    return 'hello!'
