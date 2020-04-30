@@ -6250,3 +6250,11 @@ b {
       background: none;
       color: #212b32;
       top: 0; } }
+
+
+
+.nhsuk-list-signage {
+  list-style: none;
+  padding-left: 0;
+  column-gap: 32px;
+}
