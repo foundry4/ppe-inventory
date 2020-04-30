@@ -10,6 +10,7 @@
       }
       .highlight-maroon{
           background-color:#951d14;
+          color: white;
           border-color: #951D14;
           border-style: solid;
       }
@@ -21,6 +22,11 @@
       .highlight-amber{
           background-color:#ffa620;
           border-color: #FFA620;
+          border-style: solid;
+      }
+      .highlight-lightgreen{
+          background-color:#65eba3;
+          border-color: #65eba3;
           border-style: solid;
       }
       .highlight-green{
@@ -53,7 +59,10 @@
             <span class="dot" style="background-color:#FFA620"></span> 2-3 days
           </td>
           <td>
-            <span class="dot" style="background-color:#2AB369"></span> 3+ days
+            <span class="dot" style="background-color:#65eba3"></span> 3-7 days
+          </td>
+          <td>
+            <span class="dot" style="background-color:#2AB369"></span> > 1 week
           </td>
       </table>
     </div>
@@ -84,9 +93,13 @@
                     <td>2-3 days</td>
                     <td>{{item['two_three']}}</td>
                   </tr>
-                  {% if item['highlight']=='over_three' %}<tr class="highlight-green" >{% else %}<tr>{% endif %}
-                    <td>3+ days</td>
-                    <td>{{item['over_three']}}</td>
+                  {% if item['highlight']=='less-than-week' %}<tr class="highlight-lightgreen" >{% else %}<tr>{% endif %}
+                    <td>3-7 days</td>
+                    <td>{{item['less-than-week']}}</td>
+                  </tr>
+                   {% if item['highlight']=='more-than-week' %}<tr class="highlight-green" >{% else %}<tr>{% endif %}
+                    <td>Over 1 week </td>
+                    <td>{{item['more-than-week']}}</td>
                   </tr>
                   <tr>
                     <td colspan="2">
