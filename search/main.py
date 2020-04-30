@@ -8,7 +8,10 @@ CHILDREN_SEARCH = 'children'
 
 def search(request):
     print(request)
-    return "Hello from search!"
+
+    search_type='SEARCH TYPE'
+    args=[]
+    result_label='RESULT LABEL'
     # request_args = request.args
     # search_type = 'Invalid search type'
     # result_label = 'No results'
@@ -39,13 +42,13 @@ def search(request):
     #         args.append(f'Parent = {parent}')
     #         query.add_filter('parent', '=', parent)
     #         results = list(query.fetch())
-    # sites = []
+    sites = []
     # for result in results:
     #     sites.append({'link': result['link'], 'site': result['site']})
     #
-    # return render_template('results.html',
-    #                        sites=sites,
-    #                        assets='https://storage.googleapis.com/' + os.getenv('BUCKET_NAME'),
-    #                        search_type=search_type,
-    #                        args=args,
-    #                        result_label=result_label)
+    return render_template('results.html',
+                           sites=sites,
+                           assets='https://storage.googleapis.com/' + os.getenv('BUCKET_NAME'),
+                           search_type=search_type,
+                           args=args,
+                           result_label=result_label)
