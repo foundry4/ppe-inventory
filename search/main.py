@@ -9,9 +9,9 @@ CHILDREN_SEARCH = 'children'
 def search(request):
     print(request)
 
-    search_type='SEARCH TYPE'
-    args=[]
-    result_label='RESULT LABEL'
+    search_type = 'SEARCH TYPE'
+    args = []
+    result_label = 'RESULT LABEL'
     # request_args = request.args
     # search_type = 'Invalid search type'
     # result_label = 'No results'
