@@ -68,6 +68,7 @@ def get_site(name, code, client):
 
 
 def update_site(site, client, request, code):
+
     acute = site.get('acute')
     print(f"Updating site: {site}/{code}")
     # Update the site
