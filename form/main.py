@@ -73,6 +73,8 @@ def update_site(site, client, request, code):
     # Update the site
     site.update(request.form)
 
+    site["last_update"] = datetime.datetime.now()
+
     # Values not to change
     site['site'] = site.key.name
     site['acute'] = acute

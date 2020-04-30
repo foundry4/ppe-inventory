@@ -1,7 +1,23 @@
+#
+# This script is intended to create or update sites for the Barts Group and TEST.
+#
+# Pass the PROD, TEST or DEV base url as a commandline argument. For example:
+#
+#   $ python3 create-acute-and-test-sites.py https://********.cloudfunctions.net
+#
+# An attempt is made to create a new record for each of the entries in this file.
+# If the provider already exists then the record is updated with the values from this file
+# but the code value is not changed so that the provider's link remains valid.
+#
+# The script will try to use the credentials of a locally configured service account so it
+# is important to provide the key file as an environment variable e.g.
+#
+#   $ export GOOGLE_APPLICATION_CREDENTIALS="ppe-inventory-dev.json"
+#
+
 from google.cloud import datastore
 import uuid
 import sys
-import os
 
 baseUrl = ''
 if len(sys.argv) > 1:
@@ -10,7 +26,7 @@ else:
     print('Missing arguments i.e. the base url for the target environment is required.')
     sys.exit(1)
 
-print('Creating Acute and TEST users')
+print('Creating Barts Group sites and TEST site')
 
 
 def get_test_site():
@@ -50,7 +66,7 @@ def get_community_site(provider, parent, borough, pcn, service_type):
 
 
 def create_site(provider_data):
-    print(f'creating site: {provider_data}')
+    print(f'Processing provider data: {provider_data}')
     # Instantiates a client
     datastore_client = datastore.Client()
     site = provider_data['provider'].replace("&", "and").strip()
@@ -78,9 +94,10 @@ def create_site(provider_data):
     print(datastore_client.get(site_key))
 
 
+# TEST site with code 12345
 create_site(get_test_site())
 
-create_site(get_acute_site('Barts', 'Barts Group'))
+# The Barts Group
 create_site(get_acute_site('East London NHS Foundation Trust', 'Barts Group'))
 create_site(get_acute_site('Homerton', 'Barts Group'))
 create_site(get_acute_site('Mile End Hospital', 'Barts Group'))

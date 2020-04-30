@@ -41,7 +41,7 @@ def search(request):
             results = list(query.fetch())
     sites = []
     for result in results:
-        sites.append({'link': result['link'], 'site': result['site']})
+        sites.append({'link': result['link'], 'provider': result['provider'], 'last_update': result['last_update']})
 
     return render_template('results.html',
                            sites=sites,
