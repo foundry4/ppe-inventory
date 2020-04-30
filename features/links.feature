@@ -8,7 +8,7 @@ Feature: Retrieve filtered set of links for Community Sites
     Then I can see the Links Result page
     And I am shown links for the matching "<Sites>"
     Examples:
-      | Borough            | PCN       | Service Type                 | Sites  |
-      | Test borough       | West Four | Primary Care - GP Federation | Links Site Four LS4 5TY |
+      | Borough            | PCN       | Service Type                 | Sites                                             |
+      | Barking & Dagenham | East      | Primary Care - GP Federation | Links Site Four LS4 5TY                           |
       | Havering           | West Four | Primary Care - GP Federation | Links Site Nine LS9 4RT, Links Site Seven LS7 5TY |
-      | Barking & Dagenham | South Six | Primary Care - GP Federation | Links Site Five LS5 12PL, Links Site Six LS6 4RT |
+      | Barking & Dagenham | South Six | Primary Care - GP Federation | Links Site Five LS5 12PL, Links Site Six LS6 4RT  |

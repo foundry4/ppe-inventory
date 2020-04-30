@@ -36,7 +36,7 @@ def step_impl(context, borough, pcn, service_type):
     datastore_client = datastore.Client()
     query = datastore_client.query(kind='Site')
     query.add_filter('borough', '=', borough)
-    query.add_filter('pcn', '=', pcn)
+    query.add_filter('pcn_network', '=', pcn)
     query.add_filter('service_type', '=', service_type)
     # query.order = ['site']
     # query = datastore_client.query()

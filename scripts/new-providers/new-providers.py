@@ -107,6 +107,7 @@ def get_email(email_input):
             v = validate_email(email)
             email = v["email"].lower()
         except EmailNotValidError as e:
+            email = ''
             logging.error(f'{str(e)}  [{email}] from [{email_input}]')
     return email
 

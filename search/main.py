@@ -1,5 +1,6 @@
 from flask import render_template
 from google.cloud import datastore
+import os
 
 LINKS_SEARCH = 'links'
 CHILDREN_SEARCH = 'children'
@@ -28,7 +29,7 @@ def search(request):
             args.append(f'PCN = {pcn}')
             args.append(f'Service Type = {service_type}')
             query.add_filter('borough', '=', borough)
-            query.add_filter('pcn', '=', pcn)
+            query.add_filter('pcn_network', '=', pcn)
             query.add_filter('service_type', '=', service_type)
             results = list(query.fetch())
         if request_args['search_type'] == CHILDREN_SEARCH:
@@ -44,7 +45,7 @@ def search(request):
 
     return render_template('results.html',
                            sites=sites,
-                           assets='https://storage.googleapis.com/ppe-inventory',
+                           assets='https://storage.googleapis.com/' + os.getenv('BUCKET_NAME'),
                            search_type=search_type,
                            args=args,
                            result_label=result_label)

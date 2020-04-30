@@ -38,7 +38,9 @@
           crossorigin>
     <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" rel="preload" as="font"
           crossorigin>
+
     <link href="{{ assets }}/assets/nhsuk.css" rel="stylesheet">
+
     <link rel="shortcut icon" href="{{ assets }}/assets/favicons/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{ assets }}/assets/favicons/apple-touch-icon-180x180.png">
     <link rel="mask-icon" href="{{ assets }}/assets/favicon.svg" color="#005eb8">
@@ -82,7 +84,8 @@
                                     <image class="nhsuk-icon__chevron-right nhsuk-icon__chevron-right--fallback"
                                            xlink:href=""></image>
                                 </svg>
-                                {{ site["site"] }}
+                                <h3>{{ site["site"] }}</h3>
+                                <span>Last updated 17:50, Sun 5 Apr 2020 (placeholder)</span>
                             </a>
                         </li>
                     {% endfor %}
