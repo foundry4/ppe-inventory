@@ -135,9 +135,29 @@ jobs:
         cd barts
         gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
         gcloud functions describe barts --region=europe-west2 | grep url
+   
+  deploy-dashboard-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '286.0.0'
+        service_account_email: ${{ env.SA_EMAIL }}
+        service_account_key: ${{ env.SA_KEY }}
+        project_id: ${{ env.PROJECT_ID }}
+        export_default_credentials: true
+    # Deploy barts function
+    - name: Deploy dashboard function
+      run: |
+        cd dashboard
+        gcloud functions deploy dashboard --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+        gcloud functions describe dashboard --region=europe-west2 | grep url 
 
   tests:
-    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function]
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
