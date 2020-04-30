@@ -53,8 +53,13 @@ def get_dataframe(sites, item_names):
         lambda x: 0 if x['stock-level'] == 0 else np.nan if x['quantity_used'] == 0 else x['stock-level'] / x[
             'quantity_used'], axis=1)
     df.dropna(inplace=True)
-    df['rag'] = df['weekly'].apply(lambda
-                                       x: 'under_one' if x < 1 else 'one_two' if x < 2 else 'two_three' if x < 3 else 'less-than-week' if x < 7 else 'more-than-week')
+    df['rag'] = \
+        df['weekly'].apply(
+            lambda x: 'under_one' if x < 1
+                else 'one_two' if x < 2
+                else 'two_three' if x < 3
+                else 'less-than-week' if x < 7
+                else 'more-than-week')
     return df
 
 
