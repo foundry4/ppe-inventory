@@ -43,11 +43,9 @@ def search(request):
     for result in results:
         sites.append({'link': result['link'], 'site': result['site']})
 
-    return str(sites) + "\n" + f'(BUCKET_NAME = {os.getenv("BUCKET_NAME")}'
-
-    # return render_template('results.html',
-    #                        sites=sites,
-    #                        assets='https://storage.googleapis.com/' + os.getenv('BUCKET_NAME'),
-    #                        search_type=search_type,
-    #                        args=args,
-    #                        result_label=result_label)
+    return render_template('results.html',
+                           sites=sites,
+                           assets='https://storage.googleapis.com/' + os.getenv('BUCKET_NAME'),
+                           search_type=search_type,
+                           args=args,
+                           result_label=result_label)
