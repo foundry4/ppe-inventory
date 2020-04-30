@@ -43,7 +43,7 @@ def search(request):
     for result in results:
         sites.append({'link': result['link'], 'site': result['site']})
 
-    return sites
+    return str(sites)
 
     # return render_template('results.html',
     #                        sites=sites,
