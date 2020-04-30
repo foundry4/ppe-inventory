@@ -72,8 +72,8 @@
                 {% for arg in args %}
                     <p> {{ arg }} </p>
                 {% endfor %}
-                {% for site in sites %}
-                    <ul class="nhsuk-list-signage">
+                <ul class="nhsuk-list-signage">
+                    {% for site in sites %}
                         <li>
                             <a href="{{ site["link"] }}">
                                 <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg"
@@ -85,8 +85,8 @@
                                 {{ site["site"] }}
                             </a>
                         </li>
-                    </ul>
-                {% endfor %}
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </main>
