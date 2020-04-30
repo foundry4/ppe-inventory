@@ -79,6 +79,7 @@ def update_site(site, client, request, code):
     site['site'] = site.key.name
     site['acute'] = acute
     site['code'] = code
+    site['updated'] = datetime.datetime.now()
 
     print(f"Updating site {site}")
     client.put(site)
