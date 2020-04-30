@@ -75,7 +75,7 @@ jobs:
       - name: Deploy form function
         run: |
           cd form
-          gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe form --region=europe-west2 | grep url
 
   deploy-register-function:
@@ -95,7 +95,7 @@ jobs:
       - name: Deploy register function
         run: |
           cd register
-          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe register --region=europe-west2 | grep url
 
   deploy-sheets-function:
@@ -115,7 +115,7 @@ jobs:
       - name: Deploy sheets function
         run: |
           cd sheets
-          gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS_MAX_ONE }}
+          gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS_MAX_ONE }}
           gcloud functions describe form --region=europe-west2 | grep url
 
   deploy-barts-function:
@@ -135,7 +135,7 @@ jobs:
       - name: Deploy barts function
         run: |
           cd barts
-          gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe barts --region=europe-west2 | grep url
 
   deploy-search-function:
@@ -155,7 +155,7 @@ jobs:
       - name: Deploy search function
         run: |
           cd search
-          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe search --region=europe-west2 | grep url
 
   tests:
