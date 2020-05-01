@@ -68,23 +68,21 @@
         <div class="nhsuk-grid-row">
             <div class="nhsuk-grid-column-full">
 
-                <h1 class="govuk-heading-xl">Search Results Page</h1>
-                <h2>{{ search_type }}</h2>
-                <h3>{{ result_label }}</h3>
-                {% for arg in args %}
-                    <p> {{ arg }} </p>
-                {% endfor %}
+                <h1 class="govuk-heading-xl" style="padding-top: 2rem">{{ result_label }} </h1>
+{#                {% for arg in args %}#}
+{#                    <p> {{ arg }} </p>#}
+{#                {% endfor %}#}
                 <ul class="nhsuk-list-signage">
                     {% for site in sites %}
                         <li>
                             <a href="{{ site["link"] }}">
                                 <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                     viewBox="0 0 36 36" aria-hidden="true" focusable="false">
                                     <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
                                     <image class="nhsuk-icon__chevron-right nhsuk-icon__chevron-right--fallback"
                                            xlink:href=""></image>
                                 </svg>
-                                <h3>{{ site["provider"] }}</h3>
+                                <h3 style="margin-bottom: 0">{{ site["provider"] }}</h3>
                                 <span>Last updated {{ site["dt"]}}</span>
                             </a>
                         </li>

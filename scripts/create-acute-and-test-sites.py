@@ -26,7 +26,7 @@ else:
     print('Missing arguments i.e. the base url for the target environment is required.')
     sys.exit(1)
 
-print('Creating Barts Group sites and TEST site')
+print('Creating Barts Health sites and TEST site')
 
 
 def get_test_site():
@@ -98,15 +98,15 @@ def create_site(provider_data):
 create_site(get_test_site())
 
 # The Barts Group
-create_site(get_acute_site('East London NHS Foundation Trust', 'Barts Group'))
-create_site(get_acute_site('Homerton', 'Barts Group'))
-create_site(get_acute_site('Mile End Hospital', 'Barts Group'))
-create_site(get_acute_site('NEL Emergency Store', 'Barts Group'))
-create_site(get_acute_site('NELFT', 'Barts Group'))
-create_site(get_acute_site('Newham Hospital', 'Barts Group'))
-create_site(get_acute_site('Nightingale Hospital', 'Barts Group'))
-create_site(get_acute_site('Queens', 'Barts Group'))
-create_site(get_acute_site('Queens and King George', 'Barts Group'))
-create_site(get_acute_site('Royal London Hospital', 'Barts Group'))
-create_site(get_acute_site('St Bartholomew', 'Barts Group'))
-create_site(get_acute_site('Whipps Cross Hospital', 'Barts Group'))
+create_site(get_acute_site('East London NHS Foundation Trust', 'Barts Health'))
+create_site(get_acute_site('Homerton', 'Barts Health'))
+create_site(get_acute_site('Mile End Hospital', 'Barts Health'))
+create_site(get_acute_site('NEL Emergency Store', 'Barts Health'))
+create_site(get_acute_site('NELFT', 'Barts Health'))
+create_site(get_acute_site('Newham Hospital', 'Barts Health'))
+create_site(get_acute_site('Nightingale Hospital', 'Barts Health'))
+create_site(get_acute_site('Queens', 'Barts Health'))
+create_site(get_acute_site('Queens and King George', 'Barts Health'))
+create_site(get_acute_site('Royal London Hospital', 'Barts Health'))
+create_site(get_acute_site('St Bartholomew', 'Barts Health'))
+create_site(get_acute_site('Whipps Cross Hospital', 'Barts Health'))
