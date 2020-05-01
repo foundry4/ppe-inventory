@@ -2,33 +2,32 @@ from behave import *
 from google.cloud import datastore
 import os
 import uuid
-import time
 import urllib
 
 
-@given('the expected community sites exist')
+@given('the expected sites exist')
 def step_impl(context):
     print(f'STEP: Given the expected community sites exist')
     create_site(context, site='Site One LS1 5TY', borough='Barking & Dagenham', pcn='Test East',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group One')
     create_site(context, site='Site Two LS2 12PL', borough='Barking & Dagenham', pcn='Test East',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group One')
     create_site(context, site='Site Three LS3 4RT', borough='City and Hackney', pcn='West Four',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group One')
     create_site(context, site='Site Four LS4 5TY', borough='Barking & Dagenham', pcn='Test East',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group One')
     create_site(context, site='Site Five LS5 12PL', borough='Newham', pcn='Test Central',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group One')
     create_site(context, site='Site Six LS6 4RT', borough='Newham', pcn='Test Central',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group Two')
     create_site(context, site='Site Seven LS7 5TY', borough='Havering', pcn='Test West Four',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group Two')
     create_site(context, site='Site Eight LS8 12PL', borough='Havering', pcn='East Five',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group Three')
     create_site(context, site='Site Nine LS9 4RT', borough='Havering', pcn='Test West Four',
-                service_type='Primary Care - GP Federation')
+                service_type='Primary Care - GP Federation', parent='Test Group Two')
     create_site(context, site='Site Ten LS10 4RT', borough='Barking & Dagenham', pcn='West Four',
-                service_type='Some other service type')
+                service_type='Some other service type', parent='Test Group Two')
 
 
 @when('I search for sites matching "{borough}", "{pcn}" and "{service_type}"')
@@ -68,12 +67,12 @@ def step_impl(context, sites):
     print(f'STEP: And I am shown links for the matching {sites}')
     site_names = sites.split(',')
     for s in site_names:
-        context.browser.find_element_by_name(s)
-        print(s)
-    time.sleep(2)
+        print(s.strip() in context.browser.page_source)
+        print(s.strip())
+        assert s.strip() in context.browser.page_source
 
 
-def create_site(context, site, borough, pcn, service_type):
+def create_site(context, site, borough, pcn, service_type, parent):
     context.domain = os.getenv('DOMAIN')
     # Instantiates a client
     datastore_client = datastore.Client()
@@ -90,5 +89,38 @@ def create_site(context, site, borough, pcn, service_type):
     site_entity['borough'] = borough
     site_entity['pcn_network'] = pcn
     site_entity['service_type'] = service_type
+    site_entity['parent'] = parent
     datastore_client.put(site_entity)
     print(datastore_client.get(site_key))
+
+
+
+@given("the expected child sites exist")
+def step_impl(context):
+    raise NotImplementedError(u'STEP: Given the expected child sites exist')
+
+
+@when('I search for child sites matching "{parent}"')
+def step_impl(context, parent):
+    print(f'STEP: When I search for sites matching {parent}')
+    context.parent = parent
+    # Instantiates a client
+    datastore_client = datastore.Client()
+    query = datastore_client.query(kind='Site')
+    query.add_filter('parent', '=', parent)
+    results = list(query.fetch())
+    print(query)
+    print(results)
+    for site in results:
+        print(site['site'])
+
+
+@then('I can see the Children Result page')
+def step_impl(context):
+    print(f'STEP: Then I can see the Children Result page')
+    safe_parent = urllib.parse.quote(context.parent)
+    query_params = f'search_type=children&parent={safe_parent}'
+    print(query_params)
+    url = f'{context.base_url}/search?{query_params}'
+    context.browser.get(url)
+    print(url)

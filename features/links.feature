@@ -3,7 +3,7 @@ Feature: Retrieve filtered set of links for Community Sites
   Searching with values for Borough, PCN and Service Type will present only those sites that match all criteria.
 
   Scenario Outline: Retrieve filtered list of site links
-    Given the expected community sites exist
+    Given the expected sites exist
     When I search for sites matching "<Borough>", "<PCN>" and "<Service Type>"
     Then I can see the Links Result page
     And I am shown links for the matching "<Sites>"
