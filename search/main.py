@@ -42,9 +42,6 @@ def search(request):
             results = list(query.fetch())
     sites = []
 
-    tz_London = pytz.timezone('Europe/London')
-    datetime_London = datetime.now(tz_London)
-    print("London time:", datetime_London.strftime("%H:%M:%S"))
 
     for result in results:
         if result.get('last_update') is None:
