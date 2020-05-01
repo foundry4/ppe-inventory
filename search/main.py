@@ -1,3 +1,4 @@
+import pytz
 from flask import render_template
 from google.cloud import datastore
 import os
@@ -40,8 +41,18 @@ def search(request):
             query.add_filter('parent', '=', parent)
             results = list(query.fetch())
     sites = []
+
+    tz_London = pytz.timezone('Europe/London')
+    datetime_London = datetime.now(tz_London)
+    print("London time:", datetime_London.strftime("%H:%M:%S"))
+
     for result in results:
-        sites.append({'link': result['link'], 'provider': result['provider'], 'last_update': result['last_update']})
+        if result.get('last_update') is None:
+            dt = ' - not recorded'
+        else:
+            dt = result['last_update'].strftime("%H:%M, %a %d %b %Y %z")
+        sites.append(
+            {'link': result['link'], 'provider': result['site'], 'dt': dt})
 
     return render_template('results.html',
                            sites=sites,
