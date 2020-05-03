@@ -158,42 +158,42 @@ jobs:
           gcloud functions deploy dashboard --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
           gcloud functions describe dashboard --region=europe-west2 | grep url
 
-    deploy-search-function:
-      needs: gcp-setup
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        # Setup gcloud CLI
-        - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-          with:
-            version: '286.0.0'
-            service_account_email: ${{ env.SA_EMAIL }}
-            service_account_key: ${{ env.SA_KEY }}
-            project_id: ${{ env.PROJECT_ID }}
-            export_default_credentials: true
-        # Deploy search function
-        - name: Deploy search function
-          run: |
-            cd search
-            gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
-            gcloud functions describe search --region=europe-west2 | grep url
+  deploy-search-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy search function
+      - name: Deploy search function
+        run: |
+          cd search
+          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions describe search --region=europe-west2 | grep url
 
-    tests:
-      needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function]
-      runs-on: macos-latest
-      steps:
-        - uses: actions/checkout@v2
-        - name: Set up Python 3.7
-          uses: actions/setup-python@v1
-          with:
-            python-version: 3.7
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install behave
-            pip install selenium
-            pip install google-cloud-storage
-            pip install google-cloud-datastore
-            pip install pandas
-        - name: Run the tests
-          run: behave --tags=@pipeline,~@manual
+  tests:
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install behave
+          pip install selenium
+          pip install google-cloud-storage
+          pip install google-cloud-datastore
+          pip install pandas
+      - name: Run the tests
+        run: behave --tags=@pipeline,~@manual
