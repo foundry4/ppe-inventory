@@ -65,12 +65,24 @@ def sites():
 @app.route('/sites/<site_param>')
 @oidc.require_login
 def site(site_param):
-    if site_param == 'DUMMY':
-        site_entity = 'DUMMY entity'
-    else:
-        key = client.key('Site', site_param)
-        site_entity = client.get(key)
-    return render_template('form.html', site_entity=site_entity)
+    print(site_param)
+    return render_template('sites.html',
+                           sites=[],
+                           search_type='search_type',
+                           args='args',
+                           result_label='Sites page')
+
+
+#
+# @app.route('/sites/<site_param>')
+# @oidc.require_login
+# def site(site_param):
+#     if site_param == 'DUMMY':
+#         site_entity = 'DUMMY entity'
+#     else:
+#         key = client.key('Site', site_param)
+#         site_entity = client.get(key)
+#     return render_template('form.html', site_entity=site_entity)
 
 
 @app.route('/dashboard')
