@@ -201,8 +201,7 @@ jobs:
             gcloud run deploy --image gcr.io/ppe-inventory-dev/flask-fire
 
   tests:
-    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-search-function, deploy-portal]
-    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function]
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function, deploy-portal]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
