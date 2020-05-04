@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO, filename="tests.log")
 
 
 def before_all(context):
-    context.base_portal_url = "https://" + os.getenv('PORTAL')
+    context.portal_base_url = "https://" + os.getenv('PORTAL')
     context.base_url = "https://" + os.getenv('DOMAIN')
     context.valid_provider_name = os.getenv('VALID_PROVIDER_NAME')
     context.valid_provider_code = os.getenv('VALID_PROVIDER_CODE')
