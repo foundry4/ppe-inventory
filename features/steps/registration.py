@@ -21,7 +21,7 @@ def step_impl(context):
 
 @then("I can see the form page")
 def step_impl(context):
-    assert context.browser.current_url == context.base_url + "/sites/12345"
+    assert context.browser.current_url == context.portal_base_url + "/sites/12345"
 
 
 @step("I see the provider's stock form")
