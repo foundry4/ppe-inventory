@@ -28,6 +28,7 @@ def form(request):
     # otherwise we seem to end up on http
     domain = os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
+    dashboard_link = f'https://{domain}/dashboard'
 
     if post:
         template = 'success.html'
@@ -44,6 +45,7 @@ def form(request):
     response = make_response(render_template(template,
                                              site=site,
                                              form_action=form_action,
+                                             dashboard_link=dashboard_link,
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
                                              data={}
@@ -68,6 +70,7 @@ def get_site(name, code, client):
 
 
 def update_site(site, client, request, code):
+
     acute = site.get('acute')
     print(f"Updating site: {site}/{code}")
     # Update the site
@@ -79,6 +82,7 @@ def update_site(site, client, request, code):
     site['site'] = site.key.name
     site['acute'] = acute
     site['code'] = code
+    site['updated'] = datetime.datetime.now()
 
     print(f"Updating site {site}")
     client.put(site)

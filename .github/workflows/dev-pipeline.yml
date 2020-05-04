@@ -96,7 +96,7 @@ jobs:
       - name: Deploy register function
         run: |
           cd register
-          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=PORTAL=${{ env.PORTAL }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe register --region=europe-west2 | grep url
 
   deploy-sheets-function:
@@ -139,6 +139,26 @@ jobs:
           gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe barts --region=europe-west2 | grep url
 
+  deploy-dashboard-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy dashboard function
+      - name: Deploy dashboard function
+        run: |
+          cd dashboard
+          gcloud functions deploy dashboard --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+          gcloud functions describe dashboard --region=europe-west2 | grep url
+
   deploy-search-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
@@ -152,7 +172,7 @@ jobs:
           service_account_key: ${{ env.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
-      # Deploy sites function
+      # Deploy search function
       - name: Deploy search function
         run: |
           cd search
@@ -182,6 +202,7 @@ jobs:
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-search-function, deploy-portal]
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function]
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2

@@ -13,6 +13,13 @@ def dashboard(request):
 
 def render_dashboard():
     sites = get_sites()
+
+    updated_sites = [site.get('last_update') for site in sites if
+                     site.get('last_update') and site.get('last_update').date() >= (
+                                 datetime.date.today() - datetime.timedelta(days=7))]
+
+    print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
+
     template = 'dashboard.html'
 
     item_names = {'face-visors': 'Face Visors',
@@ -33,6 +40,8 @@ def render_dashboard():
     response = make_response(render_template(template,
                                              item_count=len(sorted_items),
                                              items=sorted_items,
+                                             site_count = len(sites),
+                                             updated_site_count = len(updated_sites),
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
                                              data={}
@@ -53,8 +62,13 @@ def get_dataframe(sites, item_names):
         lambda x: 0 if x['stock-level'] == 0 else np.nan if x['quantity_used'] == 0 else x['stock-level'] / x[
             'quantity_used'], axis=1)
     df.dropna(inplace=True)
-    df['rag'] = df['weekly'].apply(lambda
-                                       x: 'under_one' if x < 1 else 'one_two' if x < 2 else 'two_three' if x < 3 else 'less-than-week' if x < 7 else 'more-than-week')
+    df['rag'] = \
+        df['weekly'].apply(
+            lambda x: 'under_one' if x < 1
+                else 'one_two' if x < 2
+                else 'two_three' if x < 3
+                else 'less-than-week' if x < 7
+                else 'more-than-week')
     return df
 
 
@@ -69,15 +83,15 @@ def get_ppe_item(item_names, name, df):
         ppe_item = {
             'name': name,
             'display_name' : item_names[name],
-            'under_one': '{:.2%}'.format(
+            'under_one': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'under_one')]) / len(df[(df['item'] == name)])),
-            'one_two': '{:.2%}'.format(
+            'one_two': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'one_two')]) / len(df[(df['item'] == name)])),
-            'two_three': '{:.2%}'.format(
+            'two_three': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'two_three')]) / len(df[(df['item'] == name)])),
-            'less-than-week': '{:.2%}'.format(
+            'less-than-week': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'less-than-week')]) / len(df[(df['item'] == name)])),
-            'more-than-week': '{:.2%}'.format(
+            'more-than-week': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'more-than-week')]) / len(df[(df['item'] == name)])),
         }
 
@@ -93,11 +107,11 @@ def get_ppe_item(item_names, name, df):
     return {
         'name': name,
         'display_name': item_names[name],
-        'under_one': '{:.2%}'.format(0),
-        'one_two': '{:.2%}'.format(0),
-        'two_three': '{:.2%}'.format(0),
-        'less-than-week': '{:.2%}'.format(0),
-        'more-than-week': '{:.2%}'.format(0),
+        'under_one': '{:.0%}'.format(0),
+        'one_two': '{:.0%}'.format(0),
+        'two_three': '{:.0%}'.format(0),
+        'less-than-week': '{:.0%}'.format(0),
+        'more-than-week': '{:.0%}'.format(0),
         'highlight': 'under_one'
     }
 
