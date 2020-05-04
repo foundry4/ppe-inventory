@@ -28,116 +28,116 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: echo YOU ARE ON ${{ github.ref }} branch
+      - run: echo YOU ARE ON ${{ github.ref }} BRANCH
       - run: env
 
   gcp-setup:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Deploying to ${{ env.ENVIRONMENT }} environment"
-    - uses: actions/checkout@v2
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '286.0.0'
-        service_account_email: ${{ env.SA_EMAIL }}
-        service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-        export_default_credentials: true
-    # Enable cloud functions api
-    - name: Enable API services
-      run: |
-        gcloud services enable cloudfunctions.googleapis.com
-        gcloud services enable sheets.googleapis.com
-    # Configure pubsub topics
-    - name: Setup pubsub topics
-      run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
-    # Copy static files
-    - name: Copy asset files to bucket and config access
-      run: |
-        gsutil rsync -r static gs://${{ env.BUCKET_NAME }}
-        gsutil iam ch allUsers:objectViewer gs://${{ env.BUCKET_NAME }}
+      - run: echo "Deploying to ${{ env.ENVIRONMENT }} environment"
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Enable cloud functions api
+      - name: Enable API services
+        run: |
+          gcloud services enable cloudfunctions.googleapis.com
+          gcloud services enable sheets.googleapis.com
+      # Configure pubsub topics
+      - name: Setup pubsub topics
+        run: gcloud pubsub topics describe form-submissions || gcloud pubsub topics create form-submissions
+      # Copy static files
+      - name: Copy asset files to bucket and config access
+        run: |
+          gsutil rsync -r static gs://${{ env.BUCKET_NAME }}
+          gsutil iam ch allUsers:objectViewer gs://${{ env.BUCKET_NAME }}
 
   deploy-form-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '286.0.0'
-        service_account_email: ${{ env.SA_EMAIL }}
-        service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-        export_default_credentials: true
-    # Deploy form function
-    - name: Deploy form function
-      run: |
-        cd form
-        gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-        gcloud functions describe form --region=europe-west2 | grep url
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy form function
+      - name: Deploy form function
+        run: |
+          cd form
+          gcloud functions deploy form --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions describe form --region=europe-west2 | grep url
 
   deploy-register-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '286.0.0'
-        service_account_email: ${{ env.SA_EMAIL }}
-        service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-        export_default_credentials: true
-    # Deploy register function
-    - name: Deploy register function
-      run: |
-        cd register
-        gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-        gcloud functions describe register --region=europe-west2 | grep url
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy register function
+      - name: Deploy register function
+        run: |
+          cd register
+          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions describe register --region=europe-west2 | grep url
 
   deploy-sheets-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '286.0.0'
-        service_account_email: ${{ env.SA_EMAIL }}
-        service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-        export_default_credentials: true
-    # Deploy sheets function
-    - name: Deploy sheets function
-      run: |
-        cd sheets
-        gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }} ${{ env.OPTIONS_MAX_ONE }}
-        gcloud functions describe form --region=europe-west2 | grep url
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy sheets function
+      - name: Deploy sheets function
+        run: |
+          cd sheets
+          gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS_MAX_ONE }}
+          gcloud functions describe form --region=europe-west2 | grep url
 
   deploy-barts-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '286.0.0'
-        service_account_email: ${{ env.SA_EMAIL }}
-        service_account_key: ${{ env.SA_KEY }}
-        project_id: ${{ env.PROJECT_ID }}
-        export_default_credentials: true
-    # Deploy barts function
-    - name: Deploy barts function
-      run: |
-        cd barts
-        gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-        gcloud functions describe barts --region=europe-west2 | grep url
-   
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy barts function
+      - name: Deploy barts function
+        run: |
+          cd barts
+          gcloud functions deploy barts --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions describe barts --region=europe-west2 | grep url
+
   deploy-dashboard-function:
     needs: gcp-setup
     runs-on: ubuntu-latest
@@ -151,29 +151,49 @@ jobs:
         service_account_key: ${{ env.SA_KEY }}
         project_id: ${{ env.PROJECT_ID }}
         export_default_credentials: true
-    # Deploy barts function
+    # Deploy dashboard function
     - name: Deploy dashboard function
       run: |
         cd dashboard
         gcloud functions deploy dashboard --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-        gcloud functions describe dashboard --region=europe-west2 | grep url 
+        gcloud functions describe dashboard --region=europe-west2 | grep url
+
+  deploy-search-function:
+    needs: gcp-setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy search function
+      - name: Deploy search function
+        run: |
+          cd search
+          gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions describe search --region=europe-west2 | grep url
 
   tests:
-    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function]
+    needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function]
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install behave
-        pip install selenium
-        pip install google-cloud-storage
-        pip install google-cloud-datastore
-        pip install pandas
-    - name: Run the tests
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install behave
+          pip install selenium
+          pip install google-cloud-storage
+          pip install google-cloud-datastore
+          pip install pandas
+      - name: Run the tests
       run: behave --tags=@pipeline,~@manual
