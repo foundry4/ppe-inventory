@@ -11,7 +11,10 @@ def register(request):
     # Construct a full URL to redirect to
     # otherwise we seem to end up on http
     domain=os.getenv('DOMAIN')
-    response = make_response(redirect(f'https://{domain}/form'))
+    # response = make_response(redirect(f'https://{domain}/form'))
+
+    portal = os.getenv('PORTAL')
+    response = make_response(redirect(f'https://{portal}/sites/code'))
 
     if site and code:
         print(f"Setting cookie site={site}, code={code}")

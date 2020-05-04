@@ -14,6 +14,7 @@ env:
   PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
   BUCKET_NAME: ${{ secrets.DEV_BUCKET_NAME }}
   DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
+  PORTAL: ${{ secrets.DEV_PORTAL }}
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
   COMMUNITY_SHEET_ID: ${{ secrets.DEV_COMMUNITY_SHEET_ID }}
@@ -95,7 +96,7 @@ jobs:
       - name: Deploy register function
         run: |
           cd register
-          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=PORTAL=${{ env.PORTAL }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe register --region=europe-west2 | grep url
 
   deploy-sheets-function:
@@ -157,6 +158,27 @@ jobs:
           cd search
           gcloud functions deploy search --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe search --region=europe-west2 | grep url
+
+  deploy-portal:
+    needs: gcp-setup
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        # Setup gcloud CLI
+        - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+          with:
+            version: '286.0.0'
+            service_account_email: ${{ env.SA_EMAIL }}
+            service_account_key: ${{ env.SA_KEY }}
+            project_id: ${{ env.PROJECT_ID }}
+            export_default_credentials: true
+        # Deploy sites function
+        - name: Deploy portal
+          run: |
+            cd server
+            gcloud info
+            gcloud builds submit --tag gcr.io/ppe-inventory-dev/flask-fire
+            gcloud run deploy --image gcr.io/ppe-inventory-dev/flask-fire
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-search-function]

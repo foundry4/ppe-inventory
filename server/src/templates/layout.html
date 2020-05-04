@@ -31,7 +31,7 @@
     <meta name="twitter:site" content="@nhsuk">
     <meta name="twitter:creator" content="@notbinary_">
 
-    <script src="static/assets/nhsuk.js" defer></script>
+    <script src="/static/assets/nhsuk.js" defer></script>
     <link href="https://www.nhs.uk/" rel="preconnect">
     <link href="https://assets.nhs.uk/" rel="preconnect" crossorigin>
     <link type="font/woff2" src="static/assets/fonts/FrutigerLTW01-55Roman.woff2" as="font"
@@ -39,7 +39,7 @@
     <link type="font/woff2" src="static/assets/fonts/FrutigerLTW01-65Bold.woff2" as="font"
           crossorigin>
 
-    <link type="text/css" href="static/assets/nhsuk.css" rel="stylesheet">
+    <link type="text/css" href="/static/assets/nhsuk.css" rel="stylesheet">
 
     <link rel="shortcut icon" src="static/assets/favicons/favicon.ico"
           type="image/x-icon">
@@ -87,6 +87,15 @@
         <div class="nhsuk-grid-row">
             <nav class="nhsuk-grid-column-full">
 
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class=flashes>
+                            {% for message in messages %}
+                                <h3>{{ message }}</h3>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
                 {% block body %}{% endblock %}
         </div>
 </div>

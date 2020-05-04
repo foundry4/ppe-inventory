@@ -4,4 +4,12 @@
 
 {% block body %}
     <h1>This is the sites page</h1>
+
+    {% if sites %}
+        <ul class=sites>
+            {% for site in sites %}
+                <li><a href="sites/{{ site['code'] }}">{{ site['site'] }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

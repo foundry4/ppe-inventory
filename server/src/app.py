@@ -3,7 +3,7 @@ import datetime
 import time
 from pprint import pprint
 
-from flask import Flask, render_template, make_response, redirect, url_for, g
+from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash
 import os
 
 from flask_oidc import OpenIDConnect
@@ -12,6 +12,7 @@ from google.cloud import pubsub_v1
 from okta import UsersClient
 
 app = Flask(__name__)
+app.secret_key = 'secret key required for cookies and flash messages'
 
 client_secrets = {'web': {
     'client_id': os.getenv('OKTA_CLIENT_ID'),
@@ -40,7 +41,7 @@ okta_client = UsersClient(os.getenv('OKTA_ORG_URL'), os.getenv('OKTA_AUTH_TOKEN'
 
 currentTime = datetime.datetime.now()
 
-client = datastore.Client()
+datastore_client = datastore.Client()
 
 
 @app.route('/')
@@ -55,34 +56,41 @@ def index():
 @app.route('/sites')
 @oidc.require_login
 def sites():
+    sites_to_display = get_sites_for_user(g.user.profile.email)
+    # print(sites_to_display)
+    # site_list = []
+    for se in sites_to_display:
+        print(se)
+    #     site_list.append(se['code'])
+    # print(site_list)
     return render_template('sites.html',
-                           sites=[],
+                           sites=sites_to_display,
                            search_type='search_type',
                            args='args',
                            result_label='Sites page')
+
+
 
 
 @app.route('/sites/<site_param>')
 @oidc.require_login
 def site(site_param):
-    print(site_param)
-    return render_template('sites.html',
-                           sites=[],
-                           search_type='search_type',
-                           args='args',
-                           result_label='Sites page')
+    site_entity = None
+    for s in get_sites_for_user(g.user.profile.email):
+        if s['code'] == site_param:
+            site_entity = s
+    if site_entity:
+        return render_template('form.html', site=site_entity)
+    else:
+        flash(f'You do not have permission to access site: {site_param}')
+        return redirect(url_for('.index'))
 
 
-#
-# @app.route('/sites/<site_param>')
-# @oidc.require_login
-# def site(site_param):
-#     if site_param == 'DUMMY':
-#         site_entity = 'DUMMY entity'
-#     else:
-#         key = client.key('Site', site_param)
-#         site_entity = client.get(key)
-#     return render_template('form.html', site_entity=site_entity)
+@app.route('/sites/<site_param>', methods=["POST"])
+@oidc.require_login
+def site_update(site_param):
+    flash(f'Stock form successfully processed for site: {site_param}')
+    return redirect(url_for('.index'))
 
 
 @app.route('/dashboard')
@@ -117,6 +125,20 @@ def inject_user_into_each_request():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+
+
+def get_sites_for_user(user_email):
+    key = datastore_client.key('User', user_email)
+    user = datastore_client.get(key)
+    sites_for_user = []
+    for s in user['sites']:
+        query = datastore_client.query(kind='Site')
+        query.add_filter('code', '=', s)
+        result = list(query.fetch())
+        print(result)
+        sites_for_user.append(result[0])
+    print(sites_for_user)
+    return sites_for_user
 
 
 def form(request):
