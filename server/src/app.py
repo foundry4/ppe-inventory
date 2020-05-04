@@ -68,7 +68,7 @@ def site(site_param):
     query = datastore_client.query(kind='Site')
     query.add_filter('code', '=', site_param)
     result = list(query.fetch())
-    if result[0]:
+    if result:
         return render_template('form.html', site=result[0])
     else:
         flash(f'The site with code: {site_param} cannot be found')
