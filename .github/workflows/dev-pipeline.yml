@@ -182,23 +182,23 @@ jobs:
   deploy-portal:
     needs: gcp-setup
     runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        # Setup gcloud CLI
-        - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-          with:
-            version: '286.0.0'
-            service_account_email: ${{ env.SA_EMAIL }}
-            service_account_key: ${{ env.SA_KEY }}
-            project_id: ${{ env.PROJECT_ID }}
-            export_default_credentials: true
-        # Deploy portal
-        - name: Deploy portal
-          run: |
-            cd server
-            gcloud info
-            gcloud builds submit --tag gcr.io/ppe-inventory-dev/flask-fire
-            gcloud run deploy --image gcr.io/ppe-inventory-dev/flask-fire
+    steps:
+      - uses: actions/checkout@v2
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ env.SA_EMAIL }}
+          service_account_key: ${{ env.SA_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
+          export_default_credentials: true
+      # Deploy portal
+      - name: Deploy portal
+        run: |
+          cd server
+          gcloud info
+          gcloud builds submit --tag gcr.io/ppe-inventory-dev/flask-fire
+          gcloud run deploy --image gcr.io/ppe-inventory-dev/flask-fire
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function, deploy-portal]
