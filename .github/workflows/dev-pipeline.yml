@@ -96,7 +96,7 @@ jobs:
       - name: Deploy register function
         run: |
           cd register
-          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=PORTAL=${{ env.PORTAL }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe register --region=europe-west2 | grep url
 
   deploy-sheets-function:
