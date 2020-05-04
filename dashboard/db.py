@@ -4,9 +4,10 @@ from google.cloud import datastore
 def get_sites():
     client = datastore.Client()
     query = client.query(kind='Site')
+    query.add_filter('acute', '=', 'no')
     sites = list(query.fetch())
 
-    return [site for site in sites if site.get('acute') != 'yes']
+    return sites
 
 
 def get_site(name, code):
