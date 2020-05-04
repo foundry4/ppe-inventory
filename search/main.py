@@ -9,7 +9,7 @@ CHILDREN_SEARCH = 'children'
 
 
 def utc_to_local(utc_dt):
-    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz='Europe/London')
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=pytz.timezone('Europe/London'))
 
 
 def search(request):
