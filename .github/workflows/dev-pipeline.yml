@@ -198,7 +198,7 @@ jobs:
           cd server
           gcloud info
           gcloud builds submit --tag gcr.io/ppe-inventory-dev/flask-fire
-          gcloud run deploy --image gcr.io/ppe-inventory-dev/flask-fire
+          gcloud run deploy flask-fire --image gcr.io/ppe-inventory-dev/flask-fire --platform managed --region europe-west1
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function, deploy-portal]
