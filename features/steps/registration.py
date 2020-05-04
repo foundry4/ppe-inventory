@@ -21,11 +21,15 @@ def step_impl(context):
 
 @then("I can see the form page")
 def step_impl(context):
+    print(f'context.browser.current_url = {context.browser.current_url}')
+    print(f'context.portal_base_url + "/sites/12345" = {context.portal_base_url + "/sites/12345"}')
     assert context.browser.current_url == context.portal_base_url + "/sites/12345"
 
 
 @step("I see the provider's stock form")
 def step_impl(context):
+    print(f'context.browser.title = {context.browser.title}')
+    print(f'context.valid_provider_name + " | Site Form for TEST" = {context.valid_provider_name + " | Site Form for TEST"}')
     assert context.browser.title == context.valid_provider_name + " | Site Form for TEST"
 
 

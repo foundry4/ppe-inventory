@@ -32,10 +32,8 @@ app.config['OIDC_COOKIE_SECURE'] = os.getenv('OIDC_COOKIE_SECURE')
 app.config['OIDC_CALLBACK_ROUTE'] = os.getenv('OIDC_CALLBACK_ROUTE')
 app.config['OIDC_SCOPES'] = ["openid", "email", "profile"]
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-oidc = OpenIDConnect(app)
 
-pprint(app.config)
-pprint(oidc.client_secrets)
+oidc = OpenIDConnect(app)
 
 okta_client = UsersClient(os.getenv('OKTA_ORG_URL'), os.getenv('OKTA_AUTH_TOKEN'))
 
