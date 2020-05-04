@@ -13,6 +13,13 @@ def dashboard(request):
 
 def render_dashboard():
     sites = get_sites()
+
+    updated_sites = [site.get('last_update') for site in sites if
+                     site.get('last_update') and site.get('last_update').date() >= (
+                                 datetime.date.today() - datetime.timedelta(days=7))]
+
+    print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
+
     template = 'dashboard.html'
 
     item_names = {'face-visors': 'Face Visors',
@@ -33,6 +40,8 @@ def render_dashboard():
     response = make_response(render_template(template,
                                              item_count=len(sorted_items),
                                              items=sorted_items,
+                                             site_count = len(sites),
+                                             updated_site_count = len(updated_sites),
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
                                              data={}
