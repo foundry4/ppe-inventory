@@ -21,12 +21,12 @@ def step_impl(context):
 
 @then("I can see the form page")
 def step_impl(context):
-    assert context.browser.current_url == context.base_url + "/form"
+    assert context.browser.current_url == context.base_url + "/sites/12345"
 
 
 @step("I see the provider's stock form")
 def step_impl(context):
-    assert context.browser.title == context.valid_provider_name + " - PPE Stock"
+    assert context.browser.title == context.valid_provider_name + " | Site Form for TEST"
 
 
 @step("I see that I am denied access")

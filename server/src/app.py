@@ -56,38 +56,41 @@ def index():
 @app.route('/sites')
 @oidc.require_login
 def sites():
-    sites_to_display = get_sites_for_user(g.user.profile.email)
-    # print(sites_to_display)
-    # site_list = []
-    for se in sites_to_display:
-        print(se)
-    #     site_list.append(se['code'])
-    # print(site_list)
     return render_template('sites.html',
-                           sites=sites_to_display,
+                           sites=get_sites_for_user(g.user.profile.email),
                            search_type='search_type',
                            args='args',
                            result_label='Sites page')
 
 
-
-
 @app.route('/sites/<site_param>')
-@oidc.require_login
 def site(site_param):
-    site_entity = None
-    for s in get_sites_for_user(g.user.profile.email):
-        if s['code'] == site_param:
-            site_entity = s
-    if site_entity:
-        return render_template('form.html', site=site_entity)
+    query = datastore_client.query(kind='Site')
+    query.add_filter('code', '=', site_param)
+    result = list(query.fetch())
+    if result[0]:
+        return render_template('form.html', site=result[0])
     else:
-        flash(f'You do not have permission to access site: {site_param}')
+        flash(f'The site with code: {site_param} cannot be found')
         return redirect(url_for('.index'))
 
 
+# @app.route('/sites/<site_param>')
+# @oidc.require_login
+# def site(site_param):
+#     site_entity = None
+#     for s in get_sites_for_user(g.user.profile.email):
+#         if s['code'] == site_param:
+#             site_entity = s
+#     if site_entity:
+#         return render_template('form.html', site=site_entity)
+#     else:
+#         flash(f'You do not have permission to access site: {site_param}')
+#         return redirect(url_for('.index'))
+
+
 @app.route('/sites/<site_param>', methods=["POST"])
-@oidc.require_login
+# @oidc.require_login
 def site_update(site_param):
     flash(f'Stock form successfully processed for site: {site_param}')
     return redirect(url_for('.index'))
