@@ -83,15 +83,15 @@ def get_ppe_item(item_names, name, df):
         ppe_item = {
             'name': name,
             'display_name' : item_names[name],
-            'under_one': '{:.2%}'.format(
+            'under_one': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'under_one')]) / len(df[(df['item'] == name)])),
-            'one_two': '{:.2%}'.format(
+            'one_two': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'one_two')]) / len(df[(df['item'] == name)])),
-            'two_three': '{:.2%}'.format(
+            'two_three': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'two_three')]) / len(df[(df['item'] == name)])),
-            'less-than-week': '{:.2%}'.format(
+            'less-than-week': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'less-than-week')]) / len(df[(df['item'] == name)])),
-            'more-than-week': '{:.2%}'.format(
+            'more-than-week': '{:.0%}'.format(
                 len(df[(df['item'] == name) & (df['rag'] == 'more-than-week')]) / len(df[(df['item'] == name)])),
         }
 
@@ -107,11 +107,11 @@ def get_ppe_item(item_names, name, df):
     return {
         'name': name,
         'display_name': item_names[name],
-        'under_one': '{:.2%}'.format(0),
-        'one_two': '{:.2%}'.format(0),
-        'two_three': '{:.2%}'.format(0),
-        'less-than-week': '{:.2%}'.format(0),
-        'more-than-week': '{:.2%}'.format(0),
+        'under_one': '{:.0%}'.format(0),
+        'one_two': '{:.0%}'.format(0),
+        'two_three': '{:.0%}'.format(0),
+        'less-than-week': '{:.0%}'.format(0),
+        'more-than-week': '{:.0%}'.format(0),
         'highlight': 'under_one'
     }
 
