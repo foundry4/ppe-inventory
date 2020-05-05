@@ -29,8 +29,8 @@ def step_impl(context):
 @step("I see the provider's stock form")
 def step_impl(context):
     print(f'context.browser.title = {context.browser.title}')
-    print(f'context.valid_provider_name + " | Site Form for TEST" = {context.valid_provider_name + " | Site Form for TEST"}')
-    assert context.browser.title == context.valid_provider_name + " | Site Form for TEST"
+    print(f'context.valid_provider_name + " | Site Form" = {context.valid_provider_name + " | Site Form"}')
+    assert context.browser.title == context.valid_provider_name + " | Site FormT"
 
 
 @step("I see that I am denied access")
