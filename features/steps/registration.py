@@ -23,12 +23,15 @@ def step_impl(context):
 
 @then("I can see the form page")
 def step_impl(context):
-    assert context.browser.current_url == context.portal_base_url + "/sites/" + context.site_code
+    logging.info(f'context.portal_base_url = {context.portal_base_url}')
+    logging.info(f'context.portal_base_url = {context.portal_base_url}')
+    logging.info(f'context.site_code = {context.site_code}')
+    assert context.browser.current_url == f'{context.portal_base_url}/sites/{context.site_code}'
 
 
 @step("I see the provider's stock form")
 def step_impl(context):
-    assert context.browser.title == context.valid_provider_name + " | Site Form"
+    assert context.browser.title == "PPE Inventory | Site Form"
 
 
 @step("I see that I am denied access")
