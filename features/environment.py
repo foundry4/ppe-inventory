@@ -11,10 +11,10 @@ def before_all(context):
     context.valid_provider_name = os.getenv('VALID_PROVIDER_NAME')
     context.valid_provider_code = os.getenv('VALID_PROVIDER_CODE')
     context.invalid_provider_code = '99999'
-    context.valid_link = context.base_url + "/register?site=" + str(context.valid_provider_name) + "&code=" + str(
-        context.valid_provider_code)
+    context.valid_link = context.base_url + "/register?site=" + str(
+        context.valid_provider_name) + "&code=" + str(context.valid_provider_code)
     context.invalid_link = context.base_url + "/register?site=" + str(
-        context.valid_provider_name) + f'&code=99999{context.invalid_provider_code}'
+        context.valid_provider_name) + f'&code={context.invalid_provider_code}'
     context.browser = webdriver.Chrome()
 
 
