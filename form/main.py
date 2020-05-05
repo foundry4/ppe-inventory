@@ -1,10 +1,11 @@
+from dataclasses import dataclass
+
 from flask import request, make_response, redirect, render_template, abort, flash, url_for
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 import datetime
 import json
 import os
-from models import stock_item
 
 currentTime = datetime.datetime.now()
 
@@ -78,14 +79,14 @@ def update_site(site, client, request, code):
     site.update(request.form)
 
     site["last_update"] = datetime.datetime.now()
-    item = stock_item.InventoryItem()
+    item = InventoryItem()
     item.item_name = 'First item'
     item.daily_usage = 100
     item.stock_levels_note = "This an example note"
     item.mutual_aid_received = 0
     item.rag = "one_two"
     item.national_and_other_external_receipts = 0
-    item2 = stock_item.InventoryItem()
+    item2 = InventoryItem()
     item2.item_name = 'Second item'
     item.daily_usage = 670
     item.stock_levels_note = "This an another example note"
@@ -206,3 +207,15 @@ def get_sheet_data(site):
             print(f'problem with field = {field}')
     print(f'safe_site_data is {safe_site_data}')
     return safe_site_data
+
+
+@dataclass
+class InventoryItem:
+    """Class for keeping track of an item in inventory."""
+    item_name: str
+    stock_level: int
+    daily_usage: int
+    stock_levels_note: str
+    rag: str
+    mutual_aid_received: int
+    national_and_other_external_receipts: int
