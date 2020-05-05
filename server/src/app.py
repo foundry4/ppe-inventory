@@ -90,6 +90,7 @@ def site(site_param):
 @app.route('/sites/<site_param>', methods=["POST"])
 # @oidc.require_login
 def site_update(site_param):
+    update_site(client=datastore_client, site=site, request=request)
     flash(f'Stock form successfully processed for site: {site_param}')
     return redirect(url_for('.index'))
 
@@ -201,9 +202,9 @@ def get_site(name, code, client):
     return None
 
 
-def update_site(site, client, request, code):
+def update_site(site, client, request):
     acute = site.get('acute')
-    print(f"Updating site: {site}/{code}")
+    print(f"Updating site: {site}")
     # Update the site
     site.update(request.form)
 
@@ -212,7 +213,7 @@ def update_site(site, client, request, code):
     # Values not to change
     site['site'] = site.key.name
     site['acute'] = acute
-    site['code'] = code
+    site['code'] = site['code']
 
     print(f"Updating site {site}")
     client.put(site)

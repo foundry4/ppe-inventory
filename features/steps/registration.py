@@ -33,7 +33,7 @@ def step_impl(context):
 def step_impl(context):
     logging.info(f'context.browser.current_url = {context.browser.current_url}')
     logging.info(f'context.portal_base_url = {context.portal_base_url}')
-    assert context.browser.current_url == {context.portal_base_url}
+    assert context.browser.current_url == f'{context.portal_base_url}/'
 
 
 @step("I see the provider's stock form")
