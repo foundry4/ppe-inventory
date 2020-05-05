@@ -15,6 +15,7 @@ def register(request):
 
     portal = os.getenv('PORTAL')
     response = make_response(redirect(f'https://{portal}/sites/{code}'))
+    print(response)
 
     if site and code:
         print(f"Setting cookie site={site}, code={code}")
