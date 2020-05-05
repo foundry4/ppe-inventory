@@ -6,7 +6,6 @@ import json
 import os
 from models import stock_item
 
-
 currentTime = datetime.datetime.now()
 
 
@@ -73,7 +72,6 @@ def get_site(name, code, client):
 
 
 def update_site(site, client, request, code):
-
     acute = site.get('acute')
     print(f"Updating site: {site}/{code}")
     # Update the site
@@ -82,9 +80,19 @@ def update_site(site, client, request, code):
     site["last_update"] = datetime.datetime.now()
     item = stock_item.InventoryItem()
     item.item_name = 'First item'
+    item.daily_usage = 100
+    item.stock_levels_note = "This an example note"
+    item.mutual_aid_received = 0
+    item.rag = "one_two"
+    item.national_and_other_external_receipts = 0
     item2 = stock_item.InventoryItem()
     item2.item_name = 'Second item'
-    site['inventory_items'] = '[item, item2]'
+    item.daily_usage = 670
+    item.stock_levels_note = "This an another example note"
+    item.mutual_aid_received = 21
+    item.rag = "under_one"
+    item.national_and_other_external_receipts = 6
+    site['inventory_items'] = [item, item2]
 
     # Values not to change
     site['site'] = site.key.name
