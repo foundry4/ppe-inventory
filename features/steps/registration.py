@@ -5,11 +5,13 @@ import logging
 @given(u'I have a valid registration link')
 def step_impl(context):
     context.link = context.valid_link
+    context.site_code = context.valid_provider_code
 
 
 @given(u'I have an invalid registration link')
 def step_impl(context):
     context.link = context.invalid_link
+    context.site_code = context.invalid_provider_code
 
 
 @when("I visit the link")
@@ -21,18 +23,14 @@ def step_impl(context):
 
 @then("I can see the form page")
 def step_impl(context):
-    print(f'context.browser.current_url = {context.browser.current_url}')
-    print(f'context.portal_base_url + "/sites/12345" = {context.portal_base_url + "/sites/12345"}')
-    assert context.browser.current_url == context.portal_base_url + "/sites/12345"
+    assert context.browser.current_url == context.portal_base_url + "/sites/" + context.valid_provider_code
 
 
 @step("I see the provider's stock form")
 def step_impl(context):
-    print(f'context.browser.title = {context.browser.title}')
-    print(f'context.valid_provider_name + " | Site Form" = {context.valid_provider_name + " | Site Form"}')
-    assert context.browser.title == context.valid_provider_name + " | Site FormT"
+    assert context.browser.title == context.valid_provider_name + " | Site Form"
 
 
 @step("I see that I am denied access")
 def step_impl(context):
-    assert 'You may need permission to access this service' in context.browser.page_source
+    assert f'The site with code: {context.invalid_provider_code} cannot be found' in context.browser.page_source
