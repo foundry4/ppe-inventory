@@ -26,5 +26,5 @@ def register(request):
         print("Not setting registration cookie")
 
     print(f"Redirecting to {response.location}")
-    flash(f'You have been redirected from an old link. Please use https://{portal}/sites/{code}')
+    # flash(f'You have been redirected from an old link. Please use https://{portal}/sites/{code}')
     return response
