@@ -4,6 +4,8 @@ from google.cloud import pubsub_v1
 import datetime
 import json
 import os
+from models import stock_item
+
 
 currentTime = datetime.datetime.now()
 
@@ -11,16 +13,18 @@ currentTime = datetime.datetime.now()
 def form(request):
     name = request.cookies.get('site')
     code = request.cookies.get('code')
-
+    print(f'name= {name}')
+    print(f'code= {code}')
+    print(f'request.method= {request.method}')
     client = datastore.Client()
 
     site = None
     post = False
     if name and code:
         site = get_site(name, code, client)
-
+        print(site)
     if site and request.method == 'POST':
-        update_site(site, client, request, code)
+        print(f'Result of update = {update_site(site, client, request, code)}')
         publish_update(get_sheet_data(site))
         post = True
 
@@ -29,7 +33,6 @@ def form(request):
     domain = os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
     dashboard_link = f'https://{domain}/dashboard'
-
     if post:
         template = 'success.html'
     elif site and 'acute' in site.keys() and site['acute'] == 'yes':
@@ -77,6 +80,11 @@ def update_site(site, client, request, code):
     site.update(request.form)
 
     site["last_update"] = datetime.datetime.now()
+    item = stock_item.InventoryItem()
+    item.item_name = 'First item'
+    item2 = stock_item.InventoryItem()
+    item2.item_name = 'Second item'
+    site['inventory_items'] = '[item, item2]'
 
     # Values not to change
     site['site'] = site.key.name
