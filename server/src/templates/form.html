@@ -3,9 +3,7 @@
 {% block title %}Site Form{% endblock %}
 
 {% block body %}
-    <h1>This is the form page</h1>
-    <p>{{ site }}</p>
-
+    <h1>This is the form page for {{ site['provider'] }}</h1>
 
     </div>
     <form id="" action="{{ form_action }}" method="post" class="form">
