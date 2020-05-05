@@ -29,6 +29,13 @@ def step_impl(context):
     assert context.browser.current_url == f'{context.portal_base_url}/sites/{context.site_code}'
 
 
+@then("I can see the home page")
+def step_impl(context):
+    logging.info(f'context.browser.current_url = {context.browser.current_url}')
+    logging.info(f'context.portal_base_url = {context.portal_base_url}')
+    assert context.browser.current_url == {context.portal_base_url}
+
+
 @step("I see the provider's stock form")
 def step_impl(context):
     assert context.browser.title == "PPE Inventory | Site Form"
