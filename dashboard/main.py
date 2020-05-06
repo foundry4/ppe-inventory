@@ -1,6 +1,6 @@
 import datetime
 from flask import make_response, render_template
-from db import get_sites, get_site
+from dashboard.db import get_sites, get_site, get_ppe_items_from_db
 import sys
 import pandas as pd
 import numpy as np
@@ -16,7 +16,7 @@ def render_dashboard():
 
     updated_sites = [site.get('last_update') for site in sites if
                      site.get('last_update') and site.get('last_update').date() >= (
-                                 datetime.date.today() - datetime.timedelta(days=7))]
+                             datetime.date.today() - datetime.timedelta(days=7))]
 
     print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
 
@@ -33,15 +33,15 @@ def render_dashboard():
                   'apron': 'Apron'}
 
     print(f"Rendering {template}")
-    df = get_dataframe(sites, item_names)
-    items = get_ppe_items(item_names, df)
-    sorted_items = sort_ppe_items(items)
+    db_items = get_ppe_items_from_db()
+    ppe_items = get_ppe_items(item_names, db_items)
+    sorted_items = sort_ppe_items(ppe_items)
     print(sorted_items, file=sys.stderr)
     response = make_response(render_template(template,
                                              item_count=len(sorted_items),
                                              items=sorted_items,
-                                             site_count = len(sites),
-                                             updated_site_count = len(updated_sites),
+                                             site_count=len(sites),
+                                             updated_site_count=len(updated_sites),
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
                                              data={}
@@ -49,64 +49,37 @@ def render_dashboard():
     return response
 
 
-def get_dataframe(sites, item_names):
-    df = pd.DataFrame(columns=['name', 'item', 'stock-level', 'quantity_used'])
-    i = 0
-    for site in sites:
-        for item in item_names:
-            df.loc[i] = site.get('site'), item, site.get(item + '-stock-levels'), site.get(item + '-quantity_used')
-            i += 1
-    df[['stock-level', 'quantity_used']] = df[['stock-level', 'quantity_used']].apply(pd.to_numeric)
-    # df.fillna(0, inplace=True)
-    df['weekly'] = df.apply(
-        lambda x: 0 if x['stock-level'] == 0 else np.nan if x['quantity_used'] == 0 else x['stock-level'] / x[
-            'quantity_used'], axis=1)
-    df.dropna(inplace=True)
-    df['rag'] = \
-        df['weekly'].apply(
-            lambda x: 'under_one' if x < 1
-                else 'one_two' if x < 2
-                else 'two_three' if x < 3
-                else 'less-than-week' if x < 7
-                else 'more-than-week')
-    return df
+def get_ppe_items(item_names, items):
+    return [get_ppe_item(item_names, name, items) for name in item_names]
 
 
-def get_ppe_items(item_names, df):
-    for name in item_names:
-        item = get_ppe_item(item_names, name, df)
-        yield item
-
-
-def get_ppe_item(item_names, name, df):
-    if len(df[(df['item'] == name)]) > 0:
+def get_ppe_item(item_names, item_name, items):
+    item_count = sum(item.get('item_name') == item_name for item in items)
+    if item_count > 0:
+        named_items = [item for item in items if item.get('item_name')]
         ppe_item = {
-            'name': name,
-            'display_name' : item_names[name],
-            'under_one': '{:.0%}'.format(
-                len(df[(df['item'] == name) & (df['rag'] == 'under_one')]) / len(df[(df['item'] == name)])),
-            'one_two': '{:.0%}'.format(
-                len(df[(df['item'] == name) & (df['rag'] == 'one_two')]) / len(df[(df['item'] == name)])),
-            'two_three': '{:.0%}'.format(
-                len(df[(df['item'] == name) & (df['rag'] == 'two_three')]) / len(df[(df['item'] == name)])),
+            'name': item_name,
+            'display_name': item_names[item_name],
+            'under_one': '{:.0%}'.format(sum(item.get('rag') == 'under_one' for item in named_items) / item_count),
+            'one_two': '{:.0%}'.format(sum(item.get('rag') == 'one_two' for item in named_items) / item_count),
+            'two_three': '{:.0%}'.format(sum(item.get('rag') == 'two_three' for item in named_items) / item_count),
             'less-than-week': '{:.0%}'.format(
-                len(df[(df['item'] == name) & (df['rag'] == 'less-than-week')]) / len(df[(df['item'] == name)])),
+                sum(item.get('rag') == 'less-than-week' for item in named_items) / item_count),
             'more-than-week': '{:.0%}'.format(
-                len(df[(df['item'] == name) & (df['rag'] == 'more-than-week')]) / len(df[(df['item'] == name)])),
+                sum(item.get('rag') == 'more-than-week' for item in named_items) / item_count),
         }
 
         rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
         max_item = 'under_one'
-        for prop in rags:
-            if ppe_item[prop] > ppe_item[max_item]:
-                max_item = prop
+        for rag in rags:
+            if ppe_item[rag] > ppe_item[max_item]:
+                max_item = rag
         ppe_item['highlight'] = max_item
         return ppe_item
 
     # return empty item if no values avialable
     return {
-        'name': name,
-        'display_name': item_names[name],
+        'name': item_name,
         'under_one': '{:.0%}'.format(0),
         'one_two': '{:.0%}'.format(0),
         'two_three': '{:.0%}'.format(0),
