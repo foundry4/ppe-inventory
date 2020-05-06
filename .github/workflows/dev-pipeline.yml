@@ -15,6 +15,8 @@ env:
   BUCKET_NAME: ${{ secrets.DEV_BUCKET_NAME }}
   DOMAIN: "europe-west2-${{ secrets.DEV_PROJECT_ID }}.cloudfunctions.net"
   PORTAL: ${{ secrets.DEV_PORTAL }}
+  PORTAL_URL: ${{ secrets.DEV_PORTAL_URL }}
+  APP_SECRET_KEY: ${{ secrets.DEV_APP_SECRET_KEY }}
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: ${{ secrets.DEV_SHEET_ID }}
   COMMUNITY_SHEET_ID: ${{ secrets.DEV_COMMUNITY_SHEET_ID }}

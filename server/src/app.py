@@ -1,9 +1,9 @@
 import json
 import datetime
-import time
-from pprint import pprint
+from datetime import timezone
 
-from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash
+import pytz
+from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash, Markup
 import os
 
 from flask_oidc import OpenIDConnect
@@ -12,7 +12,7 @@ from google.cloud import pubsub_v1
 from okta import UsersClient
 
 app = Flask(__name__)
-app.secret_key = 'secret key required for cookies and flash messages'
+app.secret_key = os.getenv('APP_SECRET_KEY')
 
 client_secrets = {'web': {
     'client_id': os.getenv('OKTA_CLIENT_ID'),
@@ -36,29 +36,56 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 oidc = OpenIDConnect(app)
 
 okta_client = UsersClient(os.getenv('OKTA_ORG_URL'), os.getenv('OKTA_AUTH_TOKEN'))
-
-currentTime = datetime.datetime.now()
-
 datastore_client = datastore.Client()
+
+LINKS_SEARCH = 'links'
+CHILDREN_SEARCH = 'children'
+
+
+def utc_to_local(utc_dt):
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=pytz.timezone('Europe/London'))
 
 
 @app.route('/')
 def index():
-    return render_template('index.html',
-                           sites=[],
-                           search_type='search_type',
-                           args='args',
-                           result_label='Welcome to the PPE Inventory Management App')
+    return render_template('index.html')
 
 
 @app.route('/sites')
-@oidc.require_login
-def sites():
-    return render_template('sites.html',
-                           sites=get_sites_for_user(g.user.profile.email),
-                           search_type='search_type',
-                           args='args',
-                           result_label='Sites page')
+def sites(client=datastore_client, request_param=request):
+    request_args = request_param.args
+
+    query = client.query(kind='Site')
+    args = []
+    results = []
+    if request_args:
+        if request_args['search_type'] == LINKS_SEARCH:
+            borough = request_args['borough']
+            pcn = request_args['pcn']
+            service_type = request_args['service_type']
+            args.append(f'Borough = {borough}')
+            args.append(f'PCN = {pcn}')
+            args.append(f'Service Type = {service_type}')
+            query.add_filter('borough', '=', borough)
+            query.add_filter('pcn_network', '=', pcn)
+            query.add_filter('service_type', '=', service_type)
+            results = list(query.fetch())
+        if request_args['search_type'] == CHILDREN_SEARCH:
+            parent = request_args['parent']
+            args.append(f'Parent = {parent}')
+            query.add_filter('parent', '=', parent)
+            results = list(query.fetch())
+    sites_to_display = []
+
+    for result in results:
+        if result.get('last_update') is None:
+            dt = ' - not recorded'
+        else:
+            utc_dt = result['last_update']
+            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
+        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt})
+
+    return render_template('sites.html', sites=sites_to_display)
 
 
 @app.route('/sites/<site_param>')
@@ -69,56 +96,41 @@ def site(site_param):
     if result:
         return render_template('form.html', site=result[0])
     else:
-        flash(f'The site with code: {site_param} cannot be found')
-        return redirect(url_for('.index'))
-
-
-# @app.route('/sites/<site_param>')
-# @oidc.require_login
-# def site(site_param):
-#     site_entity = None
-#     for s in get_sites_for_user(g.user.profile.email):
-#         if s['code'] == site_param:
-#             site_entity = s
-#     if site_entity:
-#         return render_template('form.html', site=site_entity)
-#     else:
-#         flash(f'You do not have permission to access site: {site_param}')
-#         return redirect(url_for('.index'))
+        flash(f'The site with code: {site_param} cannot be found', 'error')
+        return redirect(url_for('index'))
 
 
 @app.route('/sites/<site_param>', methods=["POST"])
-# @oidc.require_login
-def site_update(site_param, client):
+def site_update(site_param, client=datastore_client, request_param=request):
     site_to_update = get_site(site_param, client)
     if site_to_update:
-        update_site(client=datastore_client, site=site_to_update, request=request)
-        flash(f'Stock form successfully processed for site: {site_param}')
+        update_site(client=datastore_client, site_to_update=site_to_update, request_param=request_param)
+        publish_update(get_sheet_data(site_to_update))
+        site_name = site_to_update['site']
+        message = Markup(f'<a href="{os.getenv("PORTAL_URL")}/sites/{site_param}">{site_name}</a>')
+        flash("Site " + message + " was updated.", 'success')
     else:
-        flash(f'There was a problem updating site: {site_param}')
-    return redirect(url_for('.index'))
+        flash(f'There was a problem updating site with code: {site_param}.', 'error')
+    return redirect(url_for('index'))
 
 
 @app.route('/dashboard')
 @oidc.require_login
 def dashboard():
-    return render_template('dashboard.html',
-                           sites=[],
-                           search_type='search_type',
-                           args='args',
-                           result_label='Dashboard page')
+    # This is where we get the dashboard data
+    return render_template('dashboard.html')
 
 
 @app.route('/login')
 @oidc.require_login
 def login():
-    return redirect(url_for('.index'))
+    return redirect(url_for('index'))
 
 
 @app.route('/logout')
 def logout():
     oidc.logout()
-    return redirect(url_for('.index'))
+    return redirect(url_for('index'))
 
 
 @app.before_request
@@ -133,70 +145,6 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
 
 
-def get_sites_for_user(user_email):
-    key = datastore_client.key('User', user_email)
-    user = datastore_client.get(key)
-    sites_for_user = []
-    for s in user['sites']:
-        query = datastore_client.query(kind='Site')
-        query.add_filter('code', '=', s)
-        result = list(query.fetch())
-        print(result)
-        sites_for_user.append(result[0])
-    print(sites_for_user)
-    return sites_for_user
-
-
-def form(request):
-    name = request.cookies.get('site')
-    code = request.cookies.get('code')
-
-    client = datastore.Client()
-
-    site = None
-    post = False
-    if name and code:
-        site = get_site(name, code, client)
-
-    if site and request.method == 'POST':
-        update_site(site, client, request, code)
-        publish_update(get_sheet_data(site))
-        post = True
-
-    # Construct a full URL to redirect to
-    # otherwise we seem to end up on http
-    domain = os.getenv('DOMAIN')
-    form_action = f'https://{domain}/form'
-
-    if post:
-        template = 'success.html'
-    elif site and 'acute' in site.keys() and site['acute'] == 'yes':
-        template = 'form.html'
-    elif site:
-        template = 'community_form.html'
-    else:
-        template = 'error.html'
-
-    # template = 'success.html' if post else 'form.html' if site else 'error.html'
-    print(f"Rendering {template}")
-
-    response = make_response(render_template(template,
-                                             site=site,
-                                             form_action=form_action,
-                                             currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
-                                             assets='https://storage.googleapis.com/ppe-inventory',
-                                             data={}
-                                             ))
-
-    if site:
-        # Refresh the cookie
-        expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
-        response.set_cookie('site', site.key.name, expires=expire_date, secure=True)
-        response.set_cookie('code', site['code'], expires=expire_date, secure=True)
-
-    return response
-
-
 def get_site(code, client):
     query = client.query(kind='Site')
     query.add_filter('code', '=', code)
@@ -206,44 +154,35 @@ def get_site(code, client):
     return None
 
 
-def update_site(site, client, request):
-    acute = site.get('acute')
-    print(f"Updating site: {site}")
-    # Update the site
-    site.update(request.form)
-
-    site["last_update"] = datetime.datetime.now()
-
-    # Values not to change
-    site['site'] = site.key.name
-    site['acute'] = acute
-    site['code'] = site['code']
-
-    print(f"Updating site {site}")
-    client.put(site)
+def update_site(site_to_update, client, request_param):
+    # Values NOT to change
+    site_name = site_to_update.key.name
+    site_code = site_to_update['code']
+    acute_status = site_to_update['acute']
+    # Update the site inc timestamp while preserving selected values
+    site_to_update.update(request_param.form)
+    site_to_update["last_update"] = datetime.datetime.now()
+    site_to_update['site'] = site_name
+    site_to_update['acute'] = acute_status
+    site_to_update['code'] = site_code
+    client.put(site_to_update)
 
 
-def publish_update(site):
+def publish_update(site_to_update):
     # Publish a message to update the Google Sheet:
-
     message = {}
-    message.update(site)
+    message.update(site_to_update)
     message['last_update'] = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%H:%M %d %B %y')
-
     publisher = pubsub_v1.PublisherClient()
-
     project_id = os.getenv("PROJECT_ID")
     topic_path = publisher.topic_path(project_id, 'form-submissions')
-
     data = json.dumps(message).encode("utf-8")
-
     future = publisher.publish(topic_path, data=data)
+    print(f"Published update to site {site_to_update.key.name}: {future.result()}")
 
-    print(f"Published update to site {site.key.name}: {future.result()}")
 
-
-def get_sheet_data(site):
-    safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site['site']))
+def get_sheet_data(site_to_update):
+    safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site_to_update['site']))
     fields = [
         'site',
         'face-visors-stock-levels',
@@ -318,10 +257,7 @@ def get_sheet_data(site):
 
     for field in fields:
         try:
-            safe_site_data[field] = site[field]
-            print(f'field = {field} has value {safe_site_data[field]}')
+            safe_site_data[field] = site_to_update[field]
         except Exception as e:
-            print(e)
-            print(f'problem with field = {field}')
-    print(f'safe_site_data is {safe_site_data}')
+            print(f'Exception {e} triggered when preparing safe data to pass to spreadsheet')
     return safe_site_data

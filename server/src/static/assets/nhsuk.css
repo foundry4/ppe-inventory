@@ -8872,6 +8872,40 @@ b {
     }
 }
 
+/*
+ * Flask flash message styling
+ */
+
+.alert-error {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  border: 2px solid darkred;
+  background-color: red;
+  color: white;
+}
+
+.alert-info {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  border: 2px solid orange;
+  background-color: yellow;
+  color: black;
+}
+
+.alert-success {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  border: 2px solid green;
+  background-color: lightgreen;
+  color: black;
+}
+
 
 
 

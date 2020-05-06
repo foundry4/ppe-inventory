@@ -3,17 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <h1>This is the home page</h1>
-    <p>
-        It could be updated with important information that all users should be able to see.
-    </p>
-    <div>
-        {% if not g.user %}
-            <p> This is information for all non-authenticated users. </p>
-        {% else %}
-            <p> This is information for all authenticated users. </p>
-            <p> This could be information specific to the user or their role i.e. {{ g.user.profile.email }}. For example, it could list all of the sites that user could see or update etc.</p>
-        {% endif %}
-    </div>
+
+    <h1>This is the PPE Inventory App homepage</h1>
 
 {% endblock %}
