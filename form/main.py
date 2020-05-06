@@ -126,9 +126,9 @@ def update_ppe_item(site, client):
             daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
             rag = 'under_one' if daily_usage < 1 else \
                 'one_two' if daily_usage < 2 else \
-                    'two_three' if daily_usage < 3 else \
-                        'less-than-week' if daily_usage < 7 else \
-                            'more-than-week'
+                'two_three' if daily_usage < 3 else \
+                'less-than-week' if daily_usage < 7 else \
+                'more-than-week'
             item_entity['last_update'] = site.get('last_update')
             item_entity['stock-levels'] = stock_level
             item_entity['quantity_used'] = quantity_used
