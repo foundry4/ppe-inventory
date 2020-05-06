@@ -1,9 +1,7 @@
 import datetime
 from flask import make_response, render_template
-from dashboard.db import get_sites, get_site, get_ppe_items_from_db
+from db import get_sites, get_site, get_ppe_items_from_db
 import sys
-import pandas as pd
-import numpy as np
 
 
 def dashboard(request):
@@ -56,17 +54,17 @@ def get_ppe_items(item_names, items):
 def get_ppe_item(item_names, item_name, items):
     item_count = sum(item.get('item_name') == item_name for item in items)
     if item_count > 0:
-        named_items = [item for item in items if item.get('item_name')]
+        named_items = [item for item in items if item.get('item_name') == item_name]
         ppe_item = {
             'name': item_name,
             'display_name': item_names[item_name],
-            'under_one': '{:.0%}'.format(sum(item.get('rag') == 'under_one' for item in named_items) / item_count),
-            'one_two': '{:.0%}'.format(sum(item.get('rag') == 'one_two' for item in named_items) / item_count),
-            'two_three': '{:.0%}'.format(sum(item.get('rag') == 'two_three' for item in named_items) / item_count),
+            'under_one': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count),
+            'one_two': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count),
+            'two_three': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count),
             'less-than-week': '{:.0%}'.format(
-                sum(item.get('rag') == 'less-than-week' for item in named_items) / item_count),
+                sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count),
             'more-than-week': '{:.0%}'.format(
-                sum(item.get('rag') == 'more-than-week' for item in named_items) / item_count),
+                sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count),
         }
 
         rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
@@ -80,13 +78,13 @@ def get_ppe_item(item_names, item_name, items):
     # return empty item if no values avialable
     return {
         'name': item_name,
+        'display_name': item_names[item_name],
         'under_one': '{:.0%}'.format(0),
         'one_two': '{:.0%}'.format(0),
         'two_three': '{:.0%}'.format(0),
         'less-than-week': '{:.0%}'.format(0),
         'more-than-week': '{:.0%}'.format(0),
-        'highlight': 'under_one'
-    }
+        'highlight': 'under_one'}
 
 
 def sort_ppe_items(items):
