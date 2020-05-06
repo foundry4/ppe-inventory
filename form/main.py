@@ -4,6 +4,7 @@ from google.cloud import pubsub_v1
 import datetime
 import json
 import os
+import numpy as np
 
 currentTime = datetime.datetime.now()
 
@@ -21,6 +22,7 @@ def form(request):
 
     if site and request.method == 'POST':
         update_site(site, client, request, code)
+        update_ppe_item(site, client)
         publish_update(get_sheet_data(site))
         post = True
 
@@ -88,7 +90,7 @@ def update_site(site, client, request, code):
     client.put(site)
 
 
-def update_ppe_item(site, client, request):
+def update_ppe_item(site, client):
     acute = site.get('acute')
     if acute != 'yes':
         item_names = 'face-visors', \
@@ -137,6 +139,7 @@ def update_ppe_item(site, client, request):
             item_entity['national_and_other_external_receipts'] = site.get(
                 item + 'national_and_other_external_receipts')
             client.put(item_entity)
+
 
 def publish_update(site):
     # Publish a message to update the Google Sheet:
