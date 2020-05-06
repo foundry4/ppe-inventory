@@ -104,7 +104,7 @@ def site(site_param):
 def site_update(site_param, client=datastore_client, request_param=request):
     site_to_update = get_site(site_param, client)
     if site_to_update:
-        update_site(client=datastore_client, site_to_update=site_to_update, request_param=request_param)
+        update_site(client=client, site_to_update=site_to_update, request_param=request_param)
         publish_update(get_sheet_data(site_to_update))
         site_name = site_to_update['site']
         message = Markup(f'<a href="{os.getenv("PORTAL_URL")}/sites/{site_param}">{site_name}</a>')
