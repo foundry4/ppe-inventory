@@ -107,7 +107,7 @@ def site_update(site_param, client=datastore_client, request_param=request):
         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
         publish_update(get_sheet_data(site_to_update))
         site_name = site_to_update['site']
-        message = Markup(f'<a href="{os.getenv("PORTAL_URL")}/sites/{site_param}">{site_name}</a>')
+        message = Markup(f'<a href="/sites/{site_param}">{site_name}</a>')
         flash("Site " + message + " was updated.", 'success')
     else:
         flash(f'There was a problem updating site with code: {site_param}.', 'error')
