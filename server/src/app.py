@@ -1,5 +1,7 @@
 import json
 import datetime
+import urllib
+from ast import literal_eval
 from datetime import timezone
 
 import pytz
@@ -55,26 +57,61 @@ def index():
 def sites(client=datastore_client, request_param=request):
     request_args = request_param.args
 
+    borough_args = request_args.get('borough', None)
+    boroughs = []
+    if borough_args:
+        print(f'borough_args = {borough_args}')
+        boroughs = borough_args.split(',')
+        for b in boroughs:
+            print(b)
+            b = b.strip()
+
+    pcn_args = request_args.get('pcn', None)
+    pcns = []
+    if pcn_args:
+        print(f'pcn_args = {pcn_args}')
+        pcns = pcn_args.split(',')
+        for p in pcns:
+            print(p)
+            p = p.strip()
+
+    service_type_args = request_args.get('service_type', None)
+    service_types = []
+    if service_type_args:
+        print(f'service_type_args = {service_type_args}')
+        service_types = service_type_args.split(',')
+        for s in service_types:
+            print(s)
+            s = s.strip()
+    # Get all sites
     query = client.query(kind='Site')
-    args = []
+    all_sites = list(query.fetch())
     results = []
-    if request_args:
-        if request_args['search_type'] == LINKS_SEARCH:
-            borough = request_args['borough']
-            pcn = request_args['pcn']
-            service_type = request_args['service_type']
-            args.append(f'Borough = {borough}')
-            args.append(f'PCN = {pcn}')
-            args.append(f'Service Type = {service_type}')
-            query.add_filter('borough', '=', borough)
-            query.add_filter('pcn_network', '=', pcn)
-            query.add_filter('service_type', '=', service_type)
-            results = list(query.fetch())
-        if request_args['search_type'] == CHILDREN_SEARCH:
-            parent = request_args['parent']
-            args.append(f'Parent = {parent}')
-            query.add_filter('parent', '=', parent)
-            results = list(query.fetch())
+    # Apply filter for all optional query params
+    for s in all_sites:
+        passed_filter = True
+        if borough_args:
+            if "borough" in s:
+                if s['borough'] not in boroughs:
+                    passed_filter = False
+            else:
+                passed_filter = False
+        if pcn_args:
+            if "pcn_network" in s:
+                if s['pcn_network'] not in pcns:
+                    passed_filter = False
+            else:
+                passed_filter = False
+        if service_type_args:
+            if "service_type" in s:
+                if s['service_type'] not in service_types:
+                    passed_filter = False
+            else:
+                passed_filter = False
+        if passed_filter:
+            print(f'{s.get("borough","****")}   {s.get("pcn_network","****")}   {s.get("service_type","****")}')
+            results.append(s)
+
     sites_to_display = []
 
     for result in results:
@@ -86,6 +123,15 @@ def sites(client=datastore_client, request_param=request):
         sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt})
 
     return render_template('sites.html', sites=sites_to_display)
+
+
+def get_links(service_type, borough, pcn, client=datastore_client):
+    query = client.query(kind='Site')
+    query.add_filter('borough', '=', borough)
+    query.add_filter('pcn_network', '=', pcn)
+    query.add_filter('service_type', '=', service_type)
+    results = list(query.fetch())
+    return results
 
 
 @app.route('/sites/<site_param>')

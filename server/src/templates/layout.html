@@ -90,16 +90,16 @@
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
 
-                            {% for category, message in messages %}
-                                <div class="alert-{{ category }}"> {{ message|capitalize }} </div>
-                            {% endfor %}
+                        {% for category, message in messages %}
+                            <div class="alert-{{ category }}"> {{ message|capitalize }} </div>
+                        {% endfor %}
 
                     {% endif %}
                 {% endwith %}
                 {% block body %}{% endblock %}
+            </nav>
         </div>
-</div>
-</main>
+    </main>
 </div>
 
 <footer role="contentinfo">

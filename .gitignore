@@ -10,3 +10,4 @@ exclude/worksheet-name.txt
 /register/app.py
 /dashboard/app.py
 /exclude/
+/.run/
