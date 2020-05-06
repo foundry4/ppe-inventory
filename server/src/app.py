@@ -55,9 +55,29 @@ def index():
 
 @app.route('/sites')
 def sites(client=datastore_client, request_param=request):
-    request_args = request_param.args
+    # Get all sites
+    query = client.query(kind='Site')
+    all_sites = list(query.fetch())
 
-    borough_args = request_args.get('borough', None)
+    request_args = request_param.args
+    results = get_filtered_sites(all_sites, request_args)
+
+    sites_to_display = []
+
+    for result in results:
+        if result.get('last_update') is None:
+            dt = ' - not recorded'
+        else:
+            utc_dt = result['last_update']
+            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
+        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt})
+
+    return render_template('sites.html', sites=sites_to_display)
+
+
+def get_filtered_sites(all_sites, filter_args):
+    results = []
+    borough_args = filter_args.get('borough', None)
     boroughs = []
     if borough_args:
         print(f'borough_args = {borough_args}')
@@ -66,7 +86,7 @@ def sites(client=datastore_client, request_param=request):
             print(b)
             b = b.strip()
 
-    pcn_args = request_args.get('pcn', None)
+    pcn_args = filter_args.get('pcn', None)
     pcns = []
     if pcn_args:
         print(f'pcn_args = {pcn_args}')
@@ -75,7 +95,7 @@ def sites(client=datastore_client, request_param=request):
             print(p)
             p = p.strip()
 
-    service_type_args = request_args.get('service_type', None)
+    service_type_args = filter_args.get('service_type', None)
     service_types = []
     if service_type_args:
         print(f'service_type_args = {service_type_args}')
@@ -83,10 +103,7 @@ def sites(client=datastore_client, request_param=request):
         for s in service_types:
             print(s)
             s = s.strip()
-    # Get all sites
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
-    results = []
+
     # Apply filter for all optional query params
     for s in all_sites:
         passed_filter = True
@@ -109,20 +126,10 @@ def sites(client=datastore_client, request_param=request):
             else:
                 passed_filter = False
         if passed_filter:
-            print(f'{s.get("borough","****")}   {s.get("pcn_network","****")}   {s.get("service_type","****")}')
+            print(f'{s.get("borough", "****")}   {s.get("pcn_network", "****")}   {s.get("service_type", "****")}')
             results.append(s)
 
-    sites_to_display = []
-
-    for result in results:
-        if result.get('last_update') is None:
-            dt = ' - not recorded'
-        else:
-            utc_dt = result['last_update']
-            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
-        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt})
-
-    return render_template('sites.html', sites=sites_to_display)
+    return results
 
 
 def get_links(service_type, borough, pcn, client=datastore_client):
