@@ -1,7 +1,5 @@
 import json
 import datetime
-import urllib
-from ast import literal_eval
 from datetime import timezone
 
 import pytz
@@ -54,6 +52,7 @@ def index():
 
 
 @app.route('/sites')
+@oidc.require_login
 def sites(client=datastore_client, request_param=request):
     # Get all sites, boroughs, service_types and pcns
     query = client.query(kind='Site')
@@ -90,28 +89,42 @@ def sites(client=datastore_client, request_param=request):
     return response
 
 
-def get_boroughs(all_sites):
-    boroughs = set()
-    for s in all_sites:
-        # print(s)
-        if 'borough' in s:
-            if s.get('borough') != '':
-                # print(['borough'])
-                boroughs.add(s['borough'])
-    # print(boroughs)
-    return sorted(boroughs)
+@app.route('/dashboards')
+@oidc.require_login
+def dashboards(client=datastore_client, request_param=request):
+    # Get all sites, boroughs, service_types and pcns
+    query = client.query(kind='Site')
+    all_sites = list(query.fetch())
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites)
+    # Extract sets of values from borough, service_type and pcn query params
+    request_args = request_param.args
+    selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
+    selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
+    selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
 
+    results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
 
-def get_service_types(all_sites):
-    service_types = set()
-    for s in all_sites:
-        # print(s)
-        if 'service_type' in s:
-            if s.get('service_type') != '':
-                # print(s['service_type'])
-                service_types.add(s['service_type'])
-    # print(service_types)
-    return sorted(service_types)
+    sites_to_display = []
+
+    for result in results:
+        if result.get('last_update') is None:
+            dt = ' - not recorded'
+        else:
+            utc_dt = result['last_update']
+            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
+        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt, 'code': result['code']})
+
+    response = make_response(render_template('dashboards.html',
+                                             sites=sites_to_display,
+                                             boroughs=boroughs,
+                                             selected_boroughs=selected_boroughs,
+                                             service_types=service_types,
+                                             selected_service_types=selected_service_types,
+                                             pcns=pcns,
+                                             selected_pcns=selected_pcns))
+    return response
 
 
 def get_set_from_args_str(args_str):
@@ -124,15 +137,30 @@ def get_set_from_args_str(args_str):
     return result
 
 
+def get_boroughs(all_sites):
+    boroughs = set()
+    for s in all_sites:
+        if 'borough' in s:
+            if s.get('borough') != '':
+                boroughs.add(s['borough'])
+    return sorted(boroughs)
+
+
+def get_service_types(all_sites):
+    service_types = set()
+    for s in all_sites:
+        if 'service_type' in s:
+            if s.get('service_type') != '':
+                service_types.add(s['service_type'])
+    return sorted(service_types)
+
+
 def get_pcns(all_sites):
     pcns = set()
     for s in all_sites:
-        # print(s)
         if 'pcn_network' in s:
             if s.get('pcn_network') != '':
-                # print(s['pcn_network'])
                 pcns.add(s['pcn_network'])
-    # print(pcns)
     return sorted(pcns)
 
 
@@ -161,8 +189,6 @@ def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, sel
                 passed_filter = False
         if passed_filter:
             results.append(s)
-        print(f'{selected_boroughs} {selected_pcns} {selected_service_types}')
-        print(f'{passed_filter}  {s.get("borough")} {s.get("pcn")} {s.get("service_type")} ')
     return results
 
 
@@ -207,13 +233,6 @@ def site_update(site_param, client=datastore_client, request_param=request):
     else:
         flash(f'There was a problem updating site with code: {site_param}.', 'error')
     return redirect(url_for('index'))
-
-
-@app.route('/dashboard')
-@oidc.require_login
-def dashboard():
-    # This is where we get the dashboard data
-    return render_template('dashboard.html')
 
 
 @app.route('/login')

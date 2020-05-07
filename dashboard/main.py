@@ -21,7 +21,7 @@ def render_dashboard():
 
     print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
 
-    template = 'dashboard.html'
+    template = 'dashboards.html'
 
     item_names = {'face-visors': 'Face Visors',
                   'goggles': 'Goggles',

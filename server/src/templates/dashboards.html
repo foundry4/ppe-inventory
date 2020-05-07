@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
-{% block title %}Sites{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block body %}
-    <h1>Displaying links for {{ sites|length}} sites</h1>
+    <h1>Displaying data for {{ sites|length}} sites</h1>
     <div class="row">
         <div class="nhsuk-grid-column-one-third">
             {% if boroughs %}
@@ -13,7 +13,7 @@
                     {% for borough in boroughs %}
                         <div>
                             <label>
-                                <input onclick="update_filter('sites')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
+                                <input onclick="update_filter('dashboards')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
                             </label>{{ borough }}
                         </div>
                     {% endfor %}
@@ -30,7 +30,7 @@
                     {% for service_type in service_types %}
                         <div>
                             <label>
-                                <input onclick="update_filter('sites')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
+                                <input onclick="update_filter('dashboards')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
                             </label>{{ service_type }}
                         </div>
                     {% endfor %}
@@ -46,7 +46,7 @@
                     {% for pcn in pcns %}
                         <div>
                             <label>
-                                <input onclick="update_filter('sites')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
+                                <input onclick="update_filter('dashboards')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
                             </label>{{ pcn }}
                         </div>
                     {% endfor %}
