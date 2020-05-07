@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
 
-    <title>{{ site.key.name }} - PPE Stock</title>
+    <title>PPE Stock</title>
 
     <link href="https://www.nhs.uk/" rel="preconnect">
     <link href="https://assets.nhs.uk/" rel="preconnect" crossorigin>
@@ -14,32 +14,32 @@
     <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2" rel="preload" as="font" crossorigin>
     <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" rel="preload" as="font" crossorigin>
 
-    <link href="{{assets}}/assets/nhsuk.css" rel="stylesheet">
+    <link href="{{ assets }}/assets/nhsuk.css" rel="stylesheet">
 
-    <script src="{{assets}}/assets/nhsuk.js" defer></script>
+    <script src="{{ assets }}/assets/nhsuk.js" defer></script>
 
-    <link rel="shortcut icon" href="{{assets}}/assets/favicons/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{assets}}/assets/favicons/apple-touch-icon-180x180.png">
-    <link rel="mask-icon" href="{{assets}}/assets/favicon.svg" color="#005eb8">
-    <link rel="icon" sizes="192x192" href="{{assets}}/assets/favicon-192x192.png">
-    <meta name="msapplication-TileImage" content="{{assets}}/assets/mediumtile-144x144.png">
+    <link rel="shortcut icon" href="{{ assets }}/assets/favicons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ assets }}/assets/favicons/apple-touch-icon-180x180.png">
+    <link rel="mask-icon" href="{{ assets }}/assets/favicon.svg" color="#005eb8">
+    <link rel="icon" sizes="192x192" href="{{ assets }}/assets/favicon-192x192.png">
+    <meta name="msapplication-TileImage" content="{{ assets }}/assets/mediumtile-144x144.png">
     <meta name="msapplication-TileColor" content="#005eb8">
-    <meta name="msapplication-square70x70logo" content="{{assets}}/assets/smalltile-70x70.png">
-    <meta name="msapplication-square150x150logo" content="{{assets}}/assets/mediumtile-150x150.png">
-    <meta name="msapplication-wide310x150logo" content="{{assets}}/assets/favicons/widetile-310x150.png">
-    <meta name="msapplication-square310x310logo" content="{{assets}}/assets/favicons/largetile-310x310.png">
+    <meta name="msapplication-square70x70logo" content="{{ assets }}/assets/smalltile-70x70.png">
+    <meta name="msapplication-square150x150logo" content="{{ assets }}/assets/mediumtile-150x150.png">
+    <meta name="msapplication-wide310x150logo" content="{{ assets }}/assets/favicons/widetile-310x150.png">
+    <meta name="msapplication-square310x310logo" content="{{ assets }}/assets/favicons/largetile-310x310.png">
 
     <meta property="og:url" content="https://ppe.notb.in/form">
     <meta property="og:title" content="PPE stock">
     <meta property="og:description" content="Personal protective equipment stock level reporting">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="{{assets}}/assets/logos/open-graph.png">
+    <meta property="og:image" content="{{ assets }}/assets/logos/open-graph.png">
     <meta property="og:image:alt" content="NHS">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@nhsuk">
     <meta name="twitter:creator" content="@notbinary_">
-
+    {% block html_head %}{% endblock %}
   </head>
 
   <body class="">
@@ -59,29 +59,23 @@
 
 
 <div class="nhsuk-width-container">
-<main class="nhsuk-main-wrapper" id="maincontent">
+    <main class="nhsuk-main-wrapper" id="maincontent">
+        <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-full">
 
-      <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-two-thirds">
 
-          <h1 class="govuk-heading-xl">
-            {{ site.key.name }}
-          </h1>
 
-<div class="nhsuk-panel-with-label">
-  <h3 class="nhsuk-panel-with-label__label">Thank you</h3>
-<p>Stock level submitted for {{ site.key.name }} at {{ currentTime }} </p>
+
+
+
+                <div id='content'>{% block content %}{% endblock %}</div>
+
+
+            </div>
+        </div>
+    </main>
 </div>
 
-        </div>
-      </div>
-    <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-two-thirds">
-            <a class="nhsuk-button" href="{{landingPage}}" draggable="false">Start Again</a>
-        </div>
-    </div>
-    </main>
-  </div>
 
 
       <footer role="contentinfo">
@@ -101,6 +95,24 @@
         </div>
       </footer>
 
-  </body>
-</html>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script>
 
+    /*window.onfocus = function() {
+          pageSite = document.getElementById("site").value
+          console.log("Page site: " + pageSite)
+          cookieSite = Cookies.get('site')
+          console.log("Cookie site: " + cookieSite)
+          if (pageSite && pageSite != cookieSite) {
+            console.log("Site has changed. Reloading...")
+            // Ensure it's a get rather than resending a post
+            window.location.href = window.location.href
+          } else {
+            console.log("Site matches. Not reloading.")
+          }
+        }*/
+
+  </script>
+
+</body>
+</html>

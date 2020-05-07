@@ -11,14 +11,12 @@ currentTime = datetime.datetime.now()
 def form(request):
     name = request.cookies.get('site')
     code = request.cookies.get('code')
-
     client = datastore.Client()
 
     site = None
     post = False
     if name and code:
         site = get_site(name, code, client)
-
     if site and request.method == 'POST':
         update_site(site, client, request, code)
         publish_update(get_sheet_data(site))
@@ -28,6 +26,7 @@ def form(request):
     # otherwise we seem to end up on http
     domain = os.getenv('DOMAIN')
     form_action = f'https://{domain}/form'
+    dashboard_link = f'https://{domain}/dashboard'
 
     if post:
         template = 'success.html'
@@ -44,6 +43,7 @@ def form(request):
     response = make_response(render_template(template,
                                              site=site,
                                              form_action=form_action,
+                                             dashboard_link=dashboard_link,
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
                                              data={}
@@ -68,15 +68,19 @@ def get_site(name, code, client):
 
 
 def update_site(site, client, request, code):
+
     acute = site.get('acute')
     print(f"Updating site: {site}/{code}")
     # Update the site
     site.update(request.form)
 
+    site["last_update"] = datetime.datetime.now()
+
     # Values not to change
     site['site'] = site.key.name
     site['acute'] = acute
     site['code'] = code
+    site['updated'] = datetime.datetime.now()
 
     print(f"Updating site {site}")
     client.put(site)
@@ -173,6 +177,18 @@ def get_sheet_data(site):
         'gowns-national_and_other_external_receipts',
         'coveralls-mutual_aid_received',
         'coveralls-national_and_other_external_receipts'
+        'non-surgical-gowns-stock-levels',
+        'non-surgical-gowns-quantity_used',
+        'non-surgical-gowns-mutual_aid_received',
+        'non-surgical-gowns-national_and_other_external_receipts',
+        'non-surgical-gowns-stock-levels-note',
+        'non-surgical-gowns-rag',
+        'sterile-surgical-gowns-stock-levels',
+        'sterile-surgical-gowns-quantity_used',
+        'sterile-surgical-gowns-mutual_aid_received',
+        'sterile-surgical-gowns-national_and_other_external_receipts',
+        'sterile-surgical-gowns-stock-levels-note',
+        'sterile-surgical-gowns-rag'
     ]
 
     for field in fields:

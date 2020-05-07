@@ -1,11 +1,12 @@
-account.txt
-project_id.txt
-sheet-id.txt
-worksheet-name.txt
+exclude/account.txt
+exclude/project_id.txt
+exclude/sheet-id.txt
+exclude/worksheet-name.txt
 .gcloudignore
 /.idea/
-/.env
+/exclude/.env
 /behave.ini
 /barts/app.py
 /register/app.py
 /dashboard/app.py
+/exclude/
