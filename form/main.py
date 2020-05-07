@@ -11,14 +11,12 @@ currentTime = datetime.datetime.now()
 def form(request):
     name = request.cookies.get('site')
     code = request.cookies.get('code')
-
     client = datastore.Client()
 
     site = None
     post = False
     if name and code:
         site = get_site(name, code, client)
-
     if site and request.method == 'POST':
         update_site(site, client, request, code)
         publish_update(get_sheet_data(site))
