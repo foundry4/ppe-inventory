@@ -59,7 +59,7 @@ def sites(client=datastore_client, request_param=request):
     all_sites = list(query.fetch())
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
-    pcns = get_pcns(all_sites)
+    pcns = get_pcns(all_sites, boroughs, service_types)
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
@@ -97,7 +97,7 @@ def dashboards(client=datastore_client, request_param=request):
     all_sites = list(query.fetch())
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
-    pcns = get_pcns(all_sites)
+    pcns = get_pcns(all_sites, boroughs, service_types)
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
@@ -155,12 +155,14 @@ def get_service_types(all_sites):
     return sorted(service_types)
 
 
-def get_pcns(all_sites):
+def get_pcns(all_sites, boroughs, service_types):
     pcns = set()
     for s in all_sites:
         if 'pcn_network' in s:
             if s.get('pcn_network') != '':
-                pcns.add(s['pcn_network'])
+                if s.get('borough') in boroughs:
+                    if s.get('service_type') in service_types:
+                        pcns.add(s['pcn_network'])
     return sorted(pcns)
 
 
