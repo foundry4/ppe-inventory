@@ -11,14 +11,12 @@ currentTime = datetime.datetime.now()
 def form(request):
     name = request.cookies.get('site')
     code = request.cookies.get('code')
-
     client = datastore.Client()
 
     site = None
     post = False
     if name and code:
         site = get_site(name, code, client)
-
     if site and request.method == 'POST':
         update_site(site, client, request, code)
         publish_update(get_sheet_data(site))
@@ -179,6 +177,18 @@ def get_sheet_data(site):
         'gowns-national_and_other_external_receipts',
         'coveralls-mutual_aid_received',
         'coveralls-national_and_other_external_receipts'
+        'non-surgical-gowns-stock-levels',
+        'non-surgical-gowns-quantity_used',
+        'non-surgical-gowns-mutual_aid_received',
+        'non-surgical-gowns-national_and_other_external_receipts',
+        'non-surgical-gowns-stock-levels-note',
+        'non-surgical-gowns-rag',
+        'sterile-surgical-gowns-stock-levels',
+        'sterile-surgical-gowns-quantity_used',
+        'sterile-surgical-gowns-mutual_aid_received',
+        'sterile-surgical-gowns-national_and_other_external_receipts',
+        'sterile-surgical-gowns-stock-levels-note',
+        'sterile-surgical-gowns-rag'
     ]
 
     for field in fields:
