@@ -55,12 +55,19 @@ def index():
 
 @app.route('/sites')
 def sites(client=datastore_client, request_param=request):
-    # Get all sites
+    # Get all sites, boroughs, service_types and pcns
     query = client.query(kind='Site')
     all_sites = list(query.fetch())
-
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites)
+    # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
-    results = get_filtered_sites(all_sites, request_args)
+    selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
+    selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
+    selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
+
+    results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
 
     sites_to_display = []
 
@@ -70,66 +77,101 @@ def sites(client=datastore_client, request_param=request):
         else:
             utc_dt = result['last_update']
             dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
-        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt})
+        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt, 'code': result['code']})
 
-    return render_template('sites.html', sites=sites_to_display)
+    response = make_response(render_template('sites.html',
+                                             sites=sites_to_display,
+                                             boroughs=boroughs,
+                                             selected_boroughs=selected_boroughs,
+                                             service_types=service_types,
+                                             selected_service_types=selected_service_types,
+                                             pcns=pcns,
+                                             selected_pcns=selected_pcns))
+    return response
 
 
-def get_filtered_sites(all_sites, filter_args):
+def get_boroughs(all_sites):
+    boroughs = set()
+    for s in all_sites:
+        # print(s)
+        if 'borough' in s:
+            if s.get('borough') != '':
+                # print(['borough'])
+                boroughs.add(s['borough'])
+    # print(boroughs)
+    return sorted(boroughs)
+
+
+def get_service_types(all_sites):
+    service_types = set()
+    for s in all_sites:
+        # print(s)
+        if 'service_type' in s:
+            if s.get('service_type') != '':
+                # print(s['service_type'])
+                service_types.add(s['service_type'])
+    # print(service_types)
+    return sorted(service_types)
+
+
+def get_set_from_args_str(args_str):
+    result = set()
+    if args_str:
+        items = args_str[1:-1].split(',')
+        for i in items:
+            i = i.strip()
+            result.add(i)
+    return result
+
+
+def get_pcns(all_sites):
+    pcns = set()
+    for s in all_sites:
+        # print(s)
+        if 'pcn_network' in s:
+            if s.get('pcn_network') != '':
+                # print(s['pcn_network'])
+                pcns.add(s['pcn_network'])
+    # print(pcns)
+    return sorted(pcns)
+
+
+def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns):
     results = []
-    borough_args = filter_args.get('borough', None)
-    boroughs = []
-    if borough_args:
-        print(f'borough_args = {borough_args}')
-        boroughs = borough_args.split(',')
-        for b in boroughs:
-            print(b)
-            b = b.strip()
-
-    pcn_args = filter_args.get('pcn', None)
-    pcns = []
-    if pcn_args:
-        print(f'pcn_args = {pcn_args}')
-        pcns = pcn_args.split(',')
-        for p in pcns:
-            print(p)
-            p = p.strip()
-
-    service_type_args = filter_args.get('service_type', None)
-    service_types = []
-    if service_type_args:
-        print(f'service_type_args = {service_type_args}')
-        service_types = service_type_args.split(',')
-        for s in service_types:
-            print(s)
-            s = s.strip()
-
     # Apply filter for all optional query params
     for s in all_sites:
         passed_filter = True
-        if borough_args:
-            if "borough" in s:
-                if s['borough'] not in boroughs:
+        if selected_boroughs:
+            if s.get('borough'):
+                if s.get('borough') not in selected_boroughs:
                     passed_filter = False
             else:
                 passed_filter = False
-        if pcn_args:
-            if "pcn_network" in s:
-                if s['pcn_network'] not in pcns:
+        if selected_service_types:
+            if s.get('service_type'):
+                if s.get('service_type') not in selected_service_types:
                     passed_filter = False
             else:
                 passed_filter = False
-        if service_type_args:
-            if "service_type" in s:
-                if s['service_type'] not in service_types:
+        if selected_pcns:
+            if s.get('pcn_network'):
+                if s.get('pcn_network') not in selected_pcns:
                     passed_filter = False
             else:
                 passed_filter = False
         if passed_filter:
-            print(f'{s.get("borough", "****")}   {s.get("pcn_network", "****")}   {s.get("service_type", "****")}')
             results.append(s)
-
+        print(f'{selected_boroughs} {selected_pcns} {selected_service_types}')
+        print(f'{passed_filter}  {s.get("borough")} {s.get("pcn")} {s.get("service_type")} ')
     return results
+
+
+def get_filter_result(site_to_filter, field, values):
+    if field in site_to_filter:
+        if site_to_filter[field] not in values:
+            return False
+    else:
+        return False
 
 
 def get_links(service_type, borough, pcn, client=datastore_client):
