@@ -54,17 +54,18 @@ def index():
 @app.route('/sites')
 @oidc.require_login
 def sites(client=datastore_client, request_param=request):
-    # Get all sites, boroughs, service_types and pcns
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
-    boroughs = get_boroughs(all_sites)
-    service_types = get_service_types(all_sites)
-    pcns = get_pcns(all_sites, boroughs, service_types)
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
+
+    # Get all sites, boroughs, service_types and pcns
+    query = client.query(kind='Site')
+    all_sites = list(query.fetch())
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
 
     results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
 
@@ -92,17 +93,18 @@ def sites(client=datastore_client, request_param=request):
 @app.route('/dashboards')
 @oidc.require_login
 def dashboards(client=datastore_client, request_param=request):
-    # Get all sites, boroughs, service_types and pcns
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
-    boroughs = get_boroughs(all_sites)
-    service_types = get_service_types(all_sites)
-    pcns = get_pcns(all_sites, boroughs, service_types)
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
+
+    # Get all sites, boroughs, service_types and pcns
+    query = client.query(kind='Site')
+    all_sites = list(query.fetch())
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
 
     results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
 
