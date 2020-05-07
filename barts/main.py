@@ -25,6 +25,7 @@ def barts(request):
 
     if name and code:
         site = get_site(name, code, client)
+        print('got site')
     if site and request.method == 'POST':
         print ("data are being updated.")
         update_site(site, client, request, code)
