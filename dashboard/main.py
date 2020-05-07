@@ -7,6 +7,7 @@ import numpy as np
 
 
 def dashboard(request):
+    return 'This function is currently not available.'
     response = render_dashboard()
     return response
 
