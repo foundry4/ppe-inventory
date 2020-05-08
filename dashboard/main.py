@@ -1,6 +1,6 @@
 import datetime
 from flask import make_response, render_template
-from db import get_sites, get_site, get_ppe_items_from_db
+from dashboard.db import get_sites, get_site, get_ppe_items_from_db
 import sys
 
 
@@ -19,7 +19,7 @@ def render_dashboard():
 
     print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
 
-    template = 'dashboards.html'
+    template = 'dashboard.html'
 
     item_names = {'face-visors': 'Face Visors',
                   'goggles': 'Goggles',
