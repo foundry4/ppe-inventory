@@ -53,7 +53,6 @@ logging_client.setup_logging()
 
 @app.route('/')
 def index():
-    logging.info(os.environ)
     return render_template('index.html')
 
 
