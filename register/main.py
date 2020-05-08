@@ -14,7 +14,7 @@ def register(request):
     # response = make_response(redirect(f'https://{domain}/form'))
 
     portal = os.getenv('PORTAL')
-    response = make_response(redirect(f'https://{portal}/sites/{code}'))
+    response = make_response(redirect(f'https://{portal}/forms/{code}'))
     print(response)
 
     if site and code:
