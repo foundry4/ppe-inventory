@@ -8906,6 +8906,14 @@ b {
   color: black;
 }
 
+.not-late {
+    background-color: green;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
 
-
-
+.late {
+    background-color: red;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}

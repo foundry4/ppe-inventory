@@ -69,7 +69,7 @@
                                            xlink:href=""></image>
                                 </svg>
                                 <h3 style="margin-bottom: 0">{{ site["provider"] }}</h3>
-                                <span>Last updated {{ site["dt"] }}</span>
+                                <span class="{{ site['last_updated_style'] }}">Last updated {{ site["dt"] }}</span>
                             </a>
                         </li>
                     {% endfor %}

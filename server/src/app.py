@@ -1,20 +1,20 @@
-import json
 import datetime
+import json
+import os
 from datetime import timezone
 
 import pytz
 from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash, Markup
-import os
-
 from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
-# import server.src.db as db
 
 app = Flask(__name__)
+# This is required by flask for encrypting cookies and other features
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
+# The OIDC config looks for a json file so one is created from environment variables
 client_secrets = {'web': {
     'client_id': os.getenv('OKTA_CLIENT_ID'),
     'client_secret': os.getenv('OKTA_CLIENT_SECRET'),
@@ -24,125 +24,24 @@ client_secrets = {'web': {
     'userinfo_uri': f'{os.getenv("OKTA_ORG_URL")}/oauth2/default/v1/userinfo',
     'redirect_uris': os.getenv('OIDC_REDIRECT_URIS')
 }}
-
 with open('client_secrets.json', 'w') as fp:
     json.dump(client_secrets, fp)
-
 app.config['OIDC_CLIENT_SECRETS'] = 'client_secrets.json'
 app.config['OIDC_COOKIE_SECURE'] = os.getenv('OIDC_COOKIE_SECURE')
 app.config['OIDC_CALLBACK_ROUTE'] = os.getenv('OIDC_CALLBACK_ROUTE')
 app.config['OIDC_SCOPES'] = ["openid", "email", "profile"]
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
 oidc = OpenIDConnect(app)
-
 okta_client = UsersClient(os.getenv('OKTA_ORG_URL'), os.getenv('OKTA_AUTH_TOKEN'))
+
+# Client for Google's Datastore
 datastore_client = datastore.Client()
-
-LINKS_SEARCH = 'links'
-CHILDREN_SEARCH = 'children'
-
-
-def utc_to_local(utc_dt):
-    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=pytz.timezone('Europe/London'))
 
 
 @app.route('/')
 def index():
+    print(os.environ)
     return render_template('index.html')
-
-
-@app.route('/sites')
-@oidc.require_login
-def sites(client=datastore_client, request_param=request):
-    # Extract sets of values from borough, service_type and pcn query params
-    request_args = request_param.args
-    selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
-    selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
-    selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
-
-    # Get all sites, boroughs, service_types and pcns
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
-    boroughs = get_boroughs(all_sites)
-    service_types = get_service_types(all_sites)
-    pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
-
-    results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
-
-    sites_to_display = []
-
-    for result in results:
-        if result.get('last_update') is None:
-            dt = ' - not recorded'
-        else:
-            utc_dt = result['last_update']
-            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
-        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt, 'code': result['code']})
-
-    response = make_response(render_template('sites.html',
-                                             sites=sites_to_display,
-                                             boroughs=boroughs,
-                                             selected_boroughs=selected_boroughs,
-                                             service_types=service_types,
-                                             selected_service_types=selected_service_types,
-                                             pcns=pcns,
-                                             selected_pcns=selected_pcns))
-    return response
-
-
-def get_ppe_items(item_names, items):
-    return [get_ppe_item(item_names, name, items) for name in item_names]
-
-
-def get_ppe_item(item_names, item_name, items):
-    item_count = sum(item.get('item_name') == item_name for item in items)
-    if item_count > 0:
-        named_items = [item for item in items if item.get('item_name') == item_name]
-        ppe_item = {
-            'name': item_name,
-            'display_name': item_names[item_name],
-            'under_one': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count),
-            'one_two': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count),
-            'two_three': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count),
-            'less-than-week': '{:.0%}'.format(
-                sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count),
-            'more-than-week': '{:.0%}'.format(
-                sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count),
-        }
-
-        rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
-        max_item = 'under_one'
-        for rag in rags:
-            if ppe_item[rag] > ppe_item[max_item]:
-                max_item = rag
-        ppe_item['highlight'] = max_item
-        return ppe_item
-
-    # return empty item if no values avialable
-    return {
-        'name': item_name,
-        'display_name': item_names[item_name],
-        'under_one': '{:.0%}'.format(0),
-        'one_two': '{:.0%}'.format(0),
-        'two_three': '{:.0%}'.format(0),
-        'less-than-week': '{:.0%}'.format(0),
-        'more-than-week': '{:.0%}'.format(0),
-        'highlight': 'under_one'}
-
-
-def sort_ppe_items(items):
-    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
-    sorted_items = sorted(items, key=lambda x: [x[r] for r in rags])
-    # print([i['highlight'] for i in sorted_items], file=sys.stderr)
-    return_items = []
-    for r in rags:
-        # print(r, file=sys.stderr)
-        for item in sorted_items:
-            if item['highlight'] == r:
-                return_items.append(item)
-
-    return return_items
 
 
 @app.route('/dashboards')
@@ -207,99 +106,53 @@ def dashboards(client=datastore_client, request_param=request):
     return response
 
 
-def get_set_from_args_str(args_str):
-    result = set()
-    if args_str:
-        items = args_str[1:-1].split(',')
-        for i in items:
-            i = i.strip()
-            result.add(i)
-    return result
+@app.route('/sites')
+@oidc.require_login
+def sites(client=datastore_client, request_param=request):
+    # Extract sets of values from borough, service_type and pcn query params
+    request_args = request_param.args
+    selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
+    selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
+    selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
 
-
-def get_boroughs(all_sites):
-    boroughs = set()
-    for s in all_sites:
-        if 'borough' in s:
-            if s.get('borough') != '':
-                boroughs.add(s['borough'])
-    return sorted(boroughs)
-
-
-def get_service_types(all_sites):
-    service_types = set()
-    for s in all_sites:
-        if 'service_type' in s:
-            if s.get('service_type') != '':
-                service_types.add(s['service_type'])
-    return sorted(service_types)
-
-
-def get_pcns(all_sites, selected_boroughs, selected_service_types):
-    print(selected_boroughs)
-    print(selected_service_types)
-    pcns = set()
-    for s in all_sites:
-        passed_filter = True
-        if 'pcn_network' in s:
-            if s.get('pcn_network') == '':
-                passed_filter = False
-            if selected_boroughs:
-                if 'borough' in s:
-                    if s.get('borough') not in selected_boroughs:
-                        passed_filter = False
-            if selected_service_types:
-                if 'service_type' in s:
-                    if s.get('service_type') not in selected_service_types:
-                        passed_filter = False
-            if passed_filter:
-                pcns.add(s['pcn_network'])
-    return sorted(pcns)
-
-
-def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns):
-    results = []
-    # Apply filter for all optional query params
-    for s in all_sites:
-        passed_filter = True
-        if selected_boroughs:
-            if s.get('borough'):
-                if s.get('borough') not in selected_boroughs:
-                    passed_filter = False
-            else:
-                passed_filter = False
-        if selected_service_types:
-            if s.get('service_type'):
-                if s.get('service_type') not in selected_service_types:
-                    passed_filter = False
-            else:
-                passed_filter = False
-        if selected_pcns:
-            if s.get('pcn_network'):
-                if s.get('pcn_network') not in selected_pcns:
-                    passed_filter = False
-            else:
-                passed_filter = False
-        if passed_filter:
-            results.append(s)
-    return results
-
-
-def get_filter_result(site_to_filter, field, values):
-    if field in site_to_filter:
-        if site_to_filter[field] not in values:
-            return False
-    else:
-        return False
-
-
-def get_links(service_type, borough, pcn, client=datastore_client):
+    # Get all sites, boroughs, service_types and pcns
     query = client.query(kind='Site')
-    query.add_filter('borough', '=', borough)
-    query.add_filter('pcn_network', '=', pcn)
-    query.add_filter('service_type', '=', service_type)
-    results = list(query.fetch())
-    return results
+    all_sites = list(query.fetch())
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
+
+    # Get filtered sites
+    results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
+
+    # Construct collection of representations of sites to pass to template
+    seven_days_ago = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('Europe/London')) - datetime.timedelta(
+        days=7)
+    sites_to_display = []
+    for result in results:
+        if result.get('last_update') is None:
+            last_updated_style = 'late'
+            dt = ' - not recorded'
+        else:
+            if result['last_update'] < seven_days_ago:
+                last_updated_style = 'late'
+            else:
+                last_updated_style = 'not-late'
+            utc_dt = result['last_update']
+            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
+        sites_to_display.append(
+            {'link': result['link'], 'provider': result['provider'], 'dt': dt, 'code': result['code'],
+             'last_updated_style': last_updated_style})
+
+    response = make_response(render_template('sites.html',
+                                             sites=sites_to_display,
+                                             boroughs=boroughs,
+                                             selected_boroughs=selected_boroughs,
+                                             service_types=service_types,
+                                             selected_service_types=selected_service_types,
+                                             pcns=pcns,
+                                             selected_pcns=selected_pcns))
+    return response
 
 
 @app.route('/sites/<site_param>')
@@ -326,9 +179,11 @@ def form(site_param):
         return redirect(url_for('index'))
 
 
-@app.route('/sites/<site_param>', methods=["POST"])
-def site_update(site_param, client=datastore_client, request_param=request):
+@app.route('/forms/<site_param>', methods=["POST"])
+def form_update(site_param, client=datastore_client, request_param=request):
+    print('Updating form...')
     site_to_update = get_site(site_param, client)
+    print(site_to_update)
     if site_to_update:
         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
         publish_update(get_sheet_data(site_to_update))
@@ -362,15 +217,6 @@ def inject_user_into_each_request():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
-
-
-def get_site(code, client):
-    query = client.query(kind='Site')
-    query.add_filter('code', '=', code)
-    result = list(query.fetch())
-    if result:
-        return result[0]
-    return None
 
 
 def update_site(site_to_update, client, request_param):
@@ -491,21 +337,173 @@ def get_sites():
     return sites
 
 
-def get_site(name, code):
-    client = datastore.Client()
-    print(f"Getting site: {name}/{code}")
-    key = client.key('Site', name)
-    site = client.get(key)
-    if site and site.get('code') == code:
-        return site
-
-    print(f"No site detected in db: {name}/{code}")
+def get_site(code, client):
+    print(code)
+    query = client.query(kind='Site')
+    query.add_filter('code', '=', code)
+    result = list(query.fetch())
+    print(result)
+    if result:
+        return result[0]
     return None
 
 
 def get_ppe_items_from_db():
     client = datastore.Client()
-    query=client.query(kind='Ppe-Item')
+    query = client.query(kind='Ppe-Item')
     query.add_filter('quantity_used', '>', 0)
     items = list(query.fetch())
     return items
+
+
+def utc_to_local(utc_dt):
+    return utc_dt.replace(tzinfo=timezone.utc).astimezone(tz=pytz.timezone('Europe/London'))
+
+
+def get_ppe_items(item_names, items):
+    return [get_ppe_item(item_names, name, items) for name in item_names]
+
+
+def get_ppe_item(item_names, item_name, items):
+    item_count = sum(item.get('item_name') == item_name for item in items)
+    if item_count > 0:
+        named_items = [item for item in items if item.get('item_name') == item_name]
+        ppe_item = {
+            'name': item_name,
+            'display_name': item_names[item_name],
+            'under_one': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count),
+            'one_two': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count),
+            'two_three': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count),
+            'less-than-week': '{:.0%}'.format(
+                sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count),
+            'more-than-week': '{:.0%}'.format(
+                sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count),
+        }
+
+        rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+        max_item = 'under_one'
+        for rag in rags:
+            if ppe_item[rag] > ppe_item[max_item]:
+                max_item = rag
+        ppe_item['highlight'] = max_item
+        return ppe_item
+
+    # return empty item if no values available
+    return {
+        'name': item_name,
+        'display_name': item_names[item_name],
+        'under_one': '{:.0%}'.format(0),
+        'one_two': '{:.0%}'.format(0),
+        'two_three': '{:.0%}'.format(0),
+        'less-than-week': '{:.0%}'.format(0),
+        'more-than-week': '{:.0%}'.format(0),
+        'highlight': 'under_one'}
+
+
+def sort_ppe_items(items):
+    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+    sorted_items = sorted(items, key=lambda x: [x[r] for r in rags])
+    # print([i['highlight'] for i in sorted_items], file=sys.stderr)
+    return_items = []
+    for r in rags:
+        # print(r, file=sys.stderr)
+        for item in sorted_items:
+            if item['highlight'] == r:
+                return_items.append(item)
+
+    return return_items
+
+
+def get_set_from_args_str(args_str):
+    result = set()
+    if args_str:
+        items = args_str[1:-1].split(',')
+        for i in items:
+            i = i.strip()
+            result.add(i)
+    return result
+
+
+def get_boroughs(all_sites):
+    boroughs = set()
+    for s in all_sites:
+        if 'borough' in s:
+            if s.get('borough') != '':
+                boroughs.add(s['borough'])
+    return sorted(boroughs)
+
+
+def get_service_types(all_sites):
+    service_types = set()
+    for s in all_sites:
+        if 'service_type' in s:
+            if s.get('service_type') != '':
+                service_types.add(s['service_type'])
+    return sorted(service_types)
+
+
+def get_pcns(all_sites, selected_boroughs, selected_service_types):
+    print(selected_boroughs)
+    print(selected_service_types)
+    pcns = set()
+    for s in all_sites:
+        passed_filter = True
+        if 'pcn_network' in s:
+            if s.get('pcn_network') == '':
+                passed_filter = False
+            if selected_boroughs:
+                if 'borough' in s:
+                    if s.get('borough') not in selected_boroughs:
+                        passed_filter = False
+            if selected_service_types:
+                if 'service_type' in s:
+                    if s.get('service_type') not in selected_service_types:
+                        passed_filter = False
+            if passed_filter:
+                pcns.add(s['pcn_network'])
+    return sorted(pcns)
+
+
+def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns):
+    results = []
+    # Apply filter for all optional query params
+    for s in all_sites:
+        passed_filter = True
+        if selected_boroughs:
+            if s.get('borough'):
+                if s.get('borough') not in selected_boroughs:
+                    passed_filter = False
+            else:
+                passed_filter = False
+        if selected_service_types:
+            if s.get('service_type'):
+                if s.get('service_type') not in selected_service_types:
+                    passed_filter = False
+            else:
+                passed_filter = False
+        if selected_pcns:
+            if s.get('pcn_network'):
+                if s.get('pcn_network') not in selected_pcns:
+                    passed_filter = False
+            else:
+                passed_filter = False
+        if passed_filter:
+            results.append(s)
+    return results
+
+
+def get_filter_result(site_to_filter, field, values):
+    if field in site_to_filter:
+        if site_to_filter[field] not in values:
+            return False
+    else:
+        return False
+
+
+def get_links(service_type, borough, pcn, client=datastore_client):
+    query = client.query(kind='Site')
+    query.add_filter('borough', '=', borough)
+    query.add_filter('pcn_network', '=', pcn)
+    query.add_filter('service_type', '=', service_type)
+    results = list(query.fetch())
+    return results
