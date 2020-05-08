@@ -159,9 +159,18 @@ def sites(client=datastore_client, request_param=request):
 def site(site_param):
     query = datastore_client.query(kind='Site')
     query.add_filter('code', '=', site_param)
-    result = list(query.fetch())
-    if result:
-        return render_template('site.html', site=result[0])
+    providers = list(query.fetch())
+    provider = providers[0]
+    print(f"provider:{provider.get('site')}")
+
+    query = datastore_client.query(kind='Ppe-Item')
+    query.add_filter('provider','=', provider.get('provider'))
+    stock_items = list(query.fetch())
+    print(f"found { len(stock_items)} stock items")
+    if sites:
+        return render_template('site.html',
+                               site=provider,
+                               stock_items=stock_items)
     else:
         flash(f'The site with code: {site_param} cannot be found', 'error')
         return redirect(url_for('index'))

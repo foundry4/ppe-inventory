@@ -1,6 +1,6 @@
 import datetime
 from flask import make_response, render_template
-from db import get_sites, get_site, get_ppe_items_from_db
+from dashboard.db import get_sites, get_site, get_ppe_items_from_db
 import sys
 
 
