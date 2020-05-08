@@ -242,7 +242,7 @@ def site_update(site_param, client=datastore_client, request_param=request):
     if site_to_update:
         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
         publish_update(get_sheet_data(site_to_update))
-        site_name = site_to_update['site']
+        site_name = site_to_update['provider']
         message = Markup(f'<a href="/sites/{site_param}">{site_name}</a>')
         flash("Site " + message + " was updated.", 'success')
     else:
