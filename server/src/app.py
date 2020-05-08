@@ -73,7 +73,7 @@ def dashboards(client=datastore_client, request_param=request):
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
 
-    sites = get_sites()
+    sites = get_sites(datastore_client)
 
     updated_sites = [site.get('last_update') for site in sites if
                      site.get('last_update') and site.get('last_update').date() >= (
@@ -95,8 +95,8 @@ def dashboards(client=datastore_client, request_param=request):
 
     print(f"Rendering {template}")
 
-    db_items = get_ppe_items_from_db()
-
+    db_items = get_ppe_items_from_db(datastore_client)
+    print(f"db items: {db_items}")
     results = get_filtered_sites(db_items, selected_boroughs, selected_service_types, selected_pcns)
 
     ppe_items = get_ppe_items(item_names, results)
@@ -351,10 +351,10 @@ def get_sheet_data(site_to_update):
     return safe_site_data
 
 
-def get_sites():
-    client = datastore.Client()
+def get_sites(client):
     query = client.query(kind='Site')
     query.add_filter('acute', '=', 'no')
+
     sites = list(query.fetch())
 
     return sites
@@ -371,8 +371,8 @@ def get_site(code, client):
     return None
 
 
-def get_ppe_items_from_db():
-    client = datastore.Client()
+def get_ppe_items_from_db(client):
+
     query = client.query(kind='Ppe-Item')
     query.add_filter('quantity_used', '>', 0)
     items = list(query.fetch())
