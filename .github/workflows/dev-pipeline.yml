@@ -158,8 +158,8 @@ jobs:
       - name: Deploy dashboard function
         run: |
           cd dashboard
-          gcloud functions deploy dashboard --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
-          gcloud functions describe dashboard --region=europe-west2 | grep url
+#          gcloud functions deploy dashboard --runtime=python37 --trigger-http --set-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},DOMAIN=${{ env.DOMAIN }} ${{ env.OPTIONS }}
+#          gcloud functions describe dashboard --region=europe-west2 | grep url
 
   deploy-search-function:
     needs: gcp-setup
