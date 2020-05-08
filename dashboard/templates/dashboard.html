@@ -71,7 +71,7 @@
     <div class="nhsuk-grid-row">
       <div class="nhsuk-grid-column-full">
         {% for item in items %}
-          {% if loop.index % 4 == 1 %}
+          {% if loop.index % 3 == 1 %}
             <div class="nhsuk-grid-row" style="">
           {% endif %}
             <div class="nhsuk-grid-column-one-quarter">
@@ -110,7 +110,7 @@
                 </table>
             </div>
               </div>
-          {% if loop.index % 4 == 0 %}
+          {% if loop.index % 3 == 0 %}
             </div>
           {% endif %}
         {% endfor %}
