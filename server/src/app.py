@@ -143,6 +143,7 @@ def sites(client=datastore_client, request_param=request):
         days=7)
     sites_to_display = []
     for result in results:
+        safe_provider = result.get('provider', 'Provider is missing')
         if result.get('last_update') is None:
             last_updated_style = 'late'
             dt = ' - not recorded'
@@ -154,7 +155,7 @@ def sites(client=datastore_client, request_param=request):
             utc_dt = result['last_update']
             dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
         sites_to_display.append(
-            {'link': result['link'], 'provider': result['provider'], 'dt': dt, 'code': result['code'],
+            {'link': result['link'], 'provider': safe_provider, 'dt': dt, 'code': result['code'],
              'last_updated_style': last_updated_style})
 
     response = make_response(render_template('sites.html',
