@@ -314,6 +314,18 @@ def site(site_param):
         return redirect(url_for('index'))
 
 
+@app.route('/forms/<site_param>')
+def form(site_param):
+    query = datastore_client.query(kind='Site')
+    query.add_filter('code', '=', site_param)
+    result = list(query.fetch())
+    if result:
+        return render_template('form.html', site=result[0])
+    else:
+        flash(f'The site with code: {site_param} cannot be found', 'error')
+        return redirect(url_for('index'))
+
+
 @app.route('/sites/<site_param>', methods=["POST"])
 def site_update(site_param, client=datastore_client, request_param=request):
     site_to_update = get_site(site_param, client)
