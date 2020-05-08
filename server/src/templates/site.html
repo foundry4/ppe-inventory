@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}Site Page{% endblock %}
+
+{% block body %}
+
+    <h1>{{ site['provider'] }}</h1>
+
+    <a href="forms/{{ site["code"] }}"><h3>{{ site["provider"] }}</h3></a>
+
+{% endblock %}

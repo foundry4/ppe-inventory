@@ -197,9 +197,6 @@ def dashboards(client=datastore_client, request_param=request):
                                              items=sorted_items,
                                              site_count=len(sites),
                                              updated_site_count=len(updated_sites),
-                                             currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
-                                             assets='https://storage.googleapis.com/ppe-inventory',
-                                             data={},
                                              boroughs=boroughs,
                                              selected_boroughs=selected_boroughs,
                                              service_types=service_types,
@@ -311,7 +308,7 @@ def site(site_param):
     query.add_filter('code', '=', site_param)
     result = list(query.fetch())
     if result:
-        return render_template('form.html', site=result[0])
+        return render_template('site.html', site=result[0])
     else:
         flash(f'The site with code: {site_param} cannot be found', 'error')
         return redirect(url_for('index'))
