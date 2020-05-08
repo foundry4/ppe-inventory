@@ -20,3 +20,11 @@ def get_site(name, code):
 
     print(f"No site detected in db: {name}/{code}")
     return None
+
+
+def get_ppe_items_from_db():
+    client = datastore.Client()
+    query=client.query(kind='Ppe-Item')
+    query.add_filter('quantity_used', '>', 0)
+    items = list(query.fetch())
+    return items

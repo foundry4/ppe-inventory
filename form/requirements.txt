@@ -2,4 +2,5 @@ Flask
 markdown
 google-cloud-datastore
 google-cloud-pubsub
+numpy
 
