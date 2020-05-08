@@ -1,8 +1,11 @@
 import datetime
 import json
+import logging
 import os
 from datetime import timezone
 
+# Imports the Cloud Logging client library
+import google.cloud.logging
 import pytz
 from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash, Markup
 from flask_oidc import OpenIDConnect
@@ -37,10 +40,20 @@ okta_client = UsersClient(os.getenv('OKTA_ORG_URL'), os.getenv('OKTA_AUTH_TOKEN'
 # Client for Google's Datastore
 datastore_client = datastore.Client()
 
+# Instantiates a Google logging client
+logging_client = google.cloud.logging.Client()
+
+# Retrieves a Cloud Logging handler based on the environment
+# you're running in and integrates the handler with the
+# Python logging module. By default this captures all logs
+# at INFO level and higher
+logging_client.get_default_handler()
+logging_client.setup_logging()
+
 
 @app.route('/')
 def index():
-    print(os.environ)
+    logging.info(os.environ)
     return render_template('index.html')
 
 
@@ -164,9 +177,9 @@ def site(site_param):
     print(f"provider:{provider.get('site')}")
 
     query = datastore_client.query(kind='Ppe-Item')
-    query.add_filter('provider','=', provider.get('provider'))
+    query.add_filter('provider', '=', provider.get('provider'))
     stock_items = list(query.fetch())
-    print(f"found { len(stock_items)} stock items")
+    print(f"found {len(stock_items)} stock items")
     if sites:
         return render_template('site.html',
                                site=provider,
