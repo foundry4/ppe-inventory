@@ -91,12 +91,6 @@ def sites(client=datastore_client, request_param=request):
     return response
 
 
-
-
-
-
-
-
 def get_ppe_items(item_names, items):
     return [get_ppe_item(item_names, name, items) for name in item_names]
 
@@ -151,24 +145,6 @@ def sort_ppe_items(items):
     return return_items
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app.route('/dashboards')
 @oidc.require_login
 def dashboards(client=datastore_client, request_param=request):
@@ -190,7 +166,6 @@ def dashboards(client=datastore_client, request_param=request):
     updated_sites = [site.get('last_update') for site in sites if
                      site.get('last_update') and site.get('last_update').date() >= (
                              datetime.date.today() - datetime.timedelta(days=7))]
-
 
     print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
 
@@ -232,28 +207,6 @@ def dashboards(client=datastore_client, request_param=request):
                                              pcns=pcns,
                                              selected_pcns=selected_pcns
                                              ))
-    return response
-
-
-
-    sites_to_display = []
-
-    for result in results:
-        if result.get('last_update') is None:
-            dt = ' - not recorded'
-        else:
-            utc_dt = result['last_update']
-            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
-        sites_to_display.append({'link': result['link'], 'provider': result['site'], 'dt': dt, 'code': result['code']})
-
-    response = make_response(render_template('dashboards.html',
-                                             sites=sites_to_display,
-                                             boroughs=boroughs,
-                                             selected_boroughs=selected_boroughs,
-                                             service_types=service_types,
-                                             selected_service_types=selected_service_types,
-                                             pcns=pcns,
-                                             selected_pcns=selected_pcns))
     return response
 
 
