@@ -11,5 +11,5 @@ Feature: Redirect from registration page
   Scenario: Unsuccessful Registration
     Given I have an invalid registration link
     When I visit the link
-    Then I can see the form page
+    Then I can see the home page
     And I see that I am denied access

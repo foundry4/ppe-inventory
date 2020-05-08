@@ -4,6 +4,7 @@ from google.cloud import pubsub_v1
 import datetime
 import json
 import os
+import numpy as np
 
 currentTime = datetime.datetime.now()
 
@@ -19,6 +20,7 @@ def form(request):
         site = get_site(name, code, client)
     if site and request.method == 'POST':
         update_site(site, client, request, code)
+        update_ppe_item(site, client)
         publish_update(get_sheet_data(site))
         post = True
 
@@ -86,9 +88,59 @@ def update_site(site, client, request, code):
     client.put(site)
 
 
+def update_ppe_item(site, client):
+    acute = site.get('acute')
+    if acute != 'yes':
+        item_names = 'face-visors', \
+                     'goggles', \
+                     'masks-iir', \
+                     'masks-ffp2', \
+                     'masks-ffp3', \
+                     'gloves', \
+                     'gowns', \
+                     'hand-hygiene', \
+                     'apron'
+
+        # Instantiates a client
+        for item in item_names:
+            if quantity_used > 0:
+                client = datastore.Client()
+            query = client.query(kind='Ppe-Item')
+            query.add_filter('provider', '=', site.get('site'))
+            query.add_filter('item_name', '=', item)
+            items = list(query.fetch())
+            print(f"found {len(items)} for site {site.get('site')} and item {item}")
+            if len(items) == 0:
+                item_entity = datastore.Entity(client.key('Ppe-Item'))
+                item_entity['provider'] = site.get('site')
+                item_entity['item_name'] = item
+                item_entity['region'] = 'NEL'
+                item_entity['borough'] = site.get('borough')
+                item_entity['pcn_network'] = site.get('pcn_network')
+            else:
+                item_entity = items[0]
+            stock_level = int(site.get(item + '-stock-levels')) if site.get(item + '-stock-levels') else 0
+            quantity_used = int(site.get(item + '-quantity_used')) if site.get(item + '-quantity_used') else 0
+            daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
+            rag = 'under_one' if daily_usage < 1 else \
+                'one_two' if daily_usage < 2 else \
+                'two_three' if daily_usage < 3 else \
+                'less-than-week' if daily_usage < 7 else \
+                'more-than-week'
+            item_entity['last_update'] = site.get('last_update')
+            item_entity['stock-levels'] = stock_level
+            item_entity['quantity_used'] = quantity_used
+            item_entity['stock-levels-note'] = site.get(item + '-stock-levels-note')
+            item_entity['daily_usage'] = daily_usage
+            item_entity['rag'] = rag
+            item_entity['mutual_aid_received'] = site.get(item + 'mutual_aid_received')
+            item_entity['national_and_other_external_receipts'] = site.get(
+                item + 'national_and_other_external_receipts')
+            client.put(item_entity)
+
+
 def publish_update(site):
     # Publish a message to update the Google Sheet:
-
     message = {}
     message.update(site)
     message['last_update'] = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%H:%M %d %B %y')
