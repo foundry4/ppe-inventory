@@ -157,14 +157,25 @@ def get_service_types(all_sites):
     return sorted(service_types)
 
 
-def get_pcns(all_sites, boroughs, service_types):
+def get_pcns(all_sites, selected_boroughs, selected_service_types):
+    print(selected_boroughs)
+    print(selected_service_types)
     pcns = set()
     for s in all_sites:
+        passed_filter = True
         if 'pcn_network' in s:
-            if s.get('pcn_network') != '':
-                if s.get('borough') in boroughs:
-                    if s.get('service_type') in service_types:
-                        pcns.add(s['pcn_network'])
+            if s.get('pcn_network') == '':
+                passed_filter = False
+            if selected_boroughs:
+                if 'borough' in s:
+                    if s.get('borough') not in selected_boroughs:
+                        passed_filter = False
+            if selected_service_types:
+                if 'service_type' in s:
+                    if s.get('service_type') not in selected_service_types:
+                        passed_filter = False
+            if passed_filter:
+                pcns.add(s['pcn_network'])
     return sorted(pcns)
 
 
