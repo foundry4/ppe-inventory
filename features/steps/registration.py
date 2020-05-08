@@ -26,7 +26,7 @@ def step_impl(context):
     logging.info(f'context.browser.current_url = {context.browser.current_url}')
     logging.info(f'context.portal_base_url = {context.portal_base_url}')
     logging.info(f'context.site_code = {context.site_code}')
-    assert context.browser.current_url == f'{context.portal_base_url}/sites/{context.site_code}'
+    assert context.browser.current_url == f'{context.portal_base_url}/forms/{context.site_code}'
 
 
 @then("I can see the home page")
