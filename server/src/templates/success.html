@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}Site Form{% endblock %}
+
+{% block body %}
+  <h1 class="govuk-heading-xl">
+    {{ site.key.name }}
+  </h1>
+
+
+  <div class="nhsuk-width-container">
+
+    <main class="nhsuk-main-wrapper" id="maincontent">
+      <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-two-thirds">
+          <div class="nhsuk-panel-with-label">
+            <h3 class="nhsuk-panel-with-label__label">Thank you</h3>
+            <p>Stock level submitted for {{ site.key.name }} at {{ currentTime }} </p>
+          </div>
+
+        </div>
+      </div>
+      <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-two-thirds">
+          <a class="nhsuk-button" href="{{landingPage}}" draggable="false">Start Again</a>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

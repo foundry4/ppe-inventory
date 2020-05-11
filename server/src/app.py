@@ -215,12 +215,22 @@ def form_update(site_param, client=datastore_client, request_param=request):
         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
         update_ppe_item(site_to_update, client)
         publish_update(get_sheet_data(site_to_update))
-        site_name = site_to_update['provider']
-        message = Markup(f'<a href="/sites/{site_param}">{site_name}</a>')
-        flash("Site " + message + " was updated.", 'success')
+        domain = os.getenv('DOMAIN')
+        form_action = f'https://{domain}/form'
+        dashboard_link = f'https://{domain}/dashboard'
+
+        response = make_response(render_template('success.html',
+                                                 site=site_to_update,
+                                                 form_action=form_action,
+                                                 dashboard_link=dashboard_link,
+                                                 currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
+                                                 ))
+        return response
     else:
         flash(f'There was a problem updating site with code: {site_param}.', 'error')
     return redirect(url_for('index'))
+
+
 
 
 @app.route('/login')
