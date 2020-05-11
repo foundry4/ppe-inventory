@@ -12,8 +12,19 @@ from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
+
+users = {
+    os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
+}
+
+auth = HTTPBasicAuth()
+
+
 
 app = Flask(__name__)
+
 # This is required by flask for encrypting cookies and other features
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
@@ -50,14 +61,19 @@ logging_client = google.cloud.logging.Client()
 logging_client.get_default_handler()
 logging_client.setup_logging()
 
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
+# @oidc.require_login
 @app.route('/dashboards')
-@oidc.require_login
+@auth.login_required
 def dashboards(client=datastore_client, request_param=request):
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
@@ -232,9 +248,9 @@ def form_update(site_param, client=datastore_client, request_param=request):
 
 
 
-
+#@oidc.require_login
 @app.route('/login')
-@oidc.require_login
+@auth.login_required
 def login():
     return redirect(url_for('index'))
 
