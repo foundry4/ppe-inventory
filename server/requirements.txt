@@ -4,4 +4,4 @@ okta==0.0.4
 google-cloud-datastore
 google-cloud-pubsub
 google.cloud.logging
-flask_httpauth
+Flask-HTTPAuth
