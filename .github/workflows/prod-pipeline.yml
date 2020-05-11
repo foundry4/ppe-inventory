@@ -14,6 +14,9 @@ env:
   PROJECT_ID: ${{ secrets.PROD_PROJECT_ID }}
   BUCKET_NAME: ${{ secrets.PROD_BUCKET_NAME }}
   DOMAIN: "europe-west2-${{ secrets.PROD_PROJECT_ID }}.cloudfunctions.net"
+  PORTAL: ${{ secrets.PROD_PORTAL }}
+  PORTAL_URL: ${{ secrets.PROD_PORTAL_URL }}
+  APP_SECRET_KEY: ${{ secrets.PROD_APP_SECRET_KEY }}
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: ${{ secrets.PROD_SHEET_ID }}
   COMMUNITY_SHEET_ID: ${{ secrets.PROD_COMMUNITY_SHEET_ID }}
@@ -21,6 +24,8 @@ env:
   OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
   VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
   VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
+  USER_NAME: ${{ secrets.USER_NAME }}
+  PASSWORD:: ${{ secrets.PASSWORD }}
 
 jobs:
 
@@ -95,7 +100,7 @@ jobs:
       - name: Deploy register function
         run: |
           cd register
-          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
+          gcloud functions deploy register --runtime=python37 --trigger-http --set-env-vars=PORTAL=${{ env.PORTAL }},DOMAIN=${{ env.DOMAIN }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe register --region=europe-west2 | grep url
 
   deploy-sheets-function:
