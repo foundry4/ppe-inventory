@@ -4,4 +4,5 @@ okta==0.0.4
 google-cloud-datastore
 google-cloud-pubsub
 google.cloud.logging
-Flask-HTTPAuth==3.3.0
+# https://pypi.org/project/Flask-HTTPAuth/
+Flask-HTTPAuth>=3.3.0
