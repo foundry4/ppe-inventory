@@ -630,93 +630,83 @@
         </fieldset>
         <!-- Gloves -->
 
-        <!-- Gowns -->
-        <fieldset class="nhsuk-fieldset">
+<!-- Barrier Non-Surgical Gowns -->
+<fieldset class="nhsuk-fieldset">
 
-            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
-                Gowns
-            </legend>
+  <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
+    Barrier Non-Surgical Gowns
+  </legend>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="gowns-stock-levels">
-                    Number of gowns
-                </label>
-                <input class="nhsuk-input" id="gowns-stock-levels" name="gowns-stock-levels" type="number"
-                       value="{{ site['gowns-stock-levels'] }}">
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="gowns-stock-levels">
+    Number of non-surgical gowns
+  </label>
+  <input class="nhsuk-input" id="non-surgical-gowns-stock-levels" name="non-surgical-gowns-stock-levels" type="number" value="{{ site['non-surgical-gowns-stock-levels'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="gowns-quantity_used">
-                    Quantity used in the last 24 hours
-                </label>
-                <input class="nhsuk-input" id="gowns-quantity_used" name="gowns-quantity_used" type="number"
-                       value="{{ site['gowns-quantity_used'] }}">
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="non-surgical-gowns-quantity_used">
+    Quantity used in the last 24 hours
+  </label>
+  <input class="nhsuk-input" id="non-surgical-gowns-quantity_used" name="non-surgical-gowns-quantity_used" type="number" value="{{ site['non-surgical-gowns-quantity_used'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="gowns-mutual_aid_received">
-                    Mutual Aid received / (given)
-                </label>
-                <input class="nhsuk-input" id="gowns-mutual_aid_received" name="gowns-mutual_aid_received" type="number"
-                       value="{{ site['gowns-mutual_aid_received'] }}">
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="non-surgical-gowns-mutual_aid_received">
+    Mutual Aid received / (given)
+  </label>
+  <input class="nhsuk-input" id="non-surgical-gowns-mutual_aid_received" name="non-surgical--mutual_aid_received" type="number" value="{{ site['non-surgical-gowns-mutual_aid_received'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="gowns-national_and_other_external_receipts">
-                    National & other external receipts
-                </label>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="non-surgical-gowns-national_and_other_external_receipts">
+    National & other external receipts
+  </label>
 
-                <input class="nhsuk-input" id="gowns-national_and_other_external_receipts"
-                       name="gowns-national_and_other_external_receipts" type="number"
-                       value="{{ site['gowns-national_and_other_external_receipts'] }}">
-            </div>
+  <input class="nhsuk-input" id="non-surgical-gowns-national_and_other_external_receipts" name="non-surgical-gowns-national_and_other_external_receipts" type="number" value="{{ site['non-surgical-gowns-national_and_other_external_receipts'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="fit-test-solution-55ml-stock-levels-note">
-                    Note
-                </label>
-                <span class="nhsuk-hint" id="gowns-stock-levels-note-hint">
+    <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="fit-test-solution-55ml-stock-levels-note">
+    Note
+  </label>
+  <span class="nhsuk-hint" id="non-surgical-gowns-stock-levels-note-hint">
     Any additional comments
   </span>
-                <input class="nhsuk-input" id="gowns-stock-levels-note" name="gowns-stock-levels-note" type="text"
-                       value="{{ site['gowns-stock-levels-note'] }}">
-            </div>
+  <input class="nhsuk-input" id="non-surgical-stock-levels-note" name="non-surgical-gowns-stock-levels-note" type="text" value="{{ site['non-surgical-gowns-stock-levels-note'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="gowns-rag">
-                    Stock level assessment (RAG)
-                </label>
-                <div class="nhsuk-radios nhsuk-radios--inline">
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="gowns-1" type="radio" name="gowns-rag"
-                               value="one-or-less" {% if site['gowns-rag'] == "one-or-less" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="gowns-1">
-                            &lt;1
-                        </label>
-                    </div>
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="gowns-2" type="radio" name="gowns-rag" value="two"
-                               {% if site['gowns-rag'] == "two" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="gowns-2">
-                            2 days
-                        </label>
-                    </div>
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="gowns-23" type="radio" name="gowns-rag" value="two-three"
-                               {% if site['gowns-rag'] == "two-three" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="gowns-23">
-                            2-3 days
-                        </label>
-                    </div>
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="gowns-3" type="radio" name="gowns-rag" value="three-plus"
-                               {% if site['gowns-rag'] == "three-plus" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="gowns-3">
-                            &gt;3 days
-                        </label>
-                    </div>
-                </div>
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="non-surgical-gowns-rag">
+    Stock level assessment (RAG)
+  </label>
+  <div class="nhsuk-radios nhsuk-radios--inline" id="non-surgical-gowns-rag">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="non-surgical-gowns-1" type="radio" name="non-surgical-gowns-rag" value="one-or-less" {% if site['non-surgical-gowns-rag'] == "one-or-less" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="non-surgical-gowns-1">
+        &lt;1
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="non-surgical-gowns-2" type="radio" name="non-surgical-gowns-rag" value="two" {% if site['non-surgical-gowns-rag'] == "two" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="non-surgical-gowns-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="non-surgical-gowns-23" type="radio" name="non-surgical-gowns-rag" value="two-three" {% if site['non-surgical-gowns-rag'] == "two-three" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="non-surgical-gowns-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="non-surgical-gowns-3" type="radio" name="non-surgical-gowns-rag" value="three-plus" {% if site['non-surgical-gowns-rag'] == "three-plus" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="non-surgical-gowns-3">
+        &gt;3 days
+      </label>
+    </div>
+  </div>
+  </div>
 
 </fieldset>
 <!-- Barrier Non-Surgical Gowns -->
@@ -732,25 +722,21 @@
   <label class="nhsuk-label" for="sterile-surgical-gowns-stock-levels">
     Number of sterile surgical Gowns
   </label>
-  <input class="nhsuk-input" id="sterile-surgical-gowns-stock-levels" name="sterile-surgical-gowns-stock-levels"
-         type="number" value="{{ site['sterile-surgical-gowns-stock-levels'] }}">
+  <input class="nhsuk-input" id="sterile-surgical-gowns-stock-levels" name="sterile-surgical-gowns-stock-levels" type="number" value="{{ site['sterile-surgical-gowns-stock-levels'] }}">
   </div>
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="sterile-surgical-gowns-quantity_used">
     Quantity used in the last 24 hours
   </label>
-  <input class="nhsuk-input" id="sterile-surgical-gowns-quantity_used" name="sterile-surgical-gowns-quantity_used"
-         type="number" value="{{ site['sterile-surgical-gowns-quantity_used'] }}">
+  <input class="nhsuk-input" id="sterile-surgical-gowns-quantity_used" name="sterile-surgical-gowns-quantity_used" type="number" value="{{ site['sterile-surgical-gowns-quantity_used'] }}">
   </div>
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="sterile-surgical-gowns-mutual_aid_received">
     Mutual Aid received / (given)
   </label>
-  <input class="nhsuk-input" id="sterile-surgical-gowns-mutual_aid_received"
-         name="sterile-surgical-gowns-mutual_aid_received" type="number"
-         value="{{ site['sterile-surgical-gowns-mutual_aid_received'] }}">
+  <input class="nhsuk-input" id="sterile-surgical-gowns-mutual_aid_received" name="sterile-surgical-gowns-mutual_aid_received" type="number" value="{{ site['sterile-surgical-gowns-mutual_aid_received'] }}">
   </div>
 
   <div class="nhsuk-form-group">
@@ -758,9 +744,7 @@
     National & other external receipts
   </label>
 
-  <input class="nhsuk-input" id="sterile-surgical-gowns-national_and_other_external_receipts"
-         name="sterile-surgical-gowns-national_and_other_external_receipts" type="number"
-         value="{{ site['sterile-surgical-gowns-national_and_other_external_receipts'] }}">
+  <input class="nhsuk-input" id="sterile-surgical-gowns-national_and_other_external_receipts" name="sterile-surgical-gowns-national_and_other_external_receipts" type="number" value="{{ site['sterile-surgical-gowns-national_and_other_external_receipts'] }}">
   </div>
 
     <div class="nhsuk-form-group">
@@ -770,44 +754,34 @@
   <span class="nhsuk-hint" id="sterile-surgical-gowns-stock-levels-note-hint">
     Any additional comments
   </span>
-  <input class="nhsuk-input" id="sterile-surgical-gowns-stock-levels-note"
-         name="sterile-surgical-gowns-stock-levels-note" type="text"
-         value="{{ site['sterile-surgical-gowns-stock-levels-note'] }}">
+  <input class="nhsuk-input" id="sterile-surgical-gowns-stock-levels-note" name="sterile-surgical-gowns-stock-levels-note" type="text" value="{{ site['sterile-surgical-gowns-stock-levels-note'] }}">
   </div>
 
   <div class="nhsuk-form-group">
   <label class="nhsuk-label" for="sterile-surgical-gowns-rag">
     Stock level assessment (RAG)
   </label>
-  <div class="nhsuk-radios nhsuk-radios--inline">
+  <div class="nhsuk-radios nhsuk-radios--inline" id="sterile-surgical-gowns-rag">
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-1" type="radio"
-             name="sterile-surgical-gowns-rag"
-             value="one-or-less" {% if site['sterile-surgical-gowns-rag'] == "one-or-less" %}checked{% endif %}>
+      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-1" type="radio" name="sterile-surgical-gowns-rag" value="one-or-less" {% if site['sterile-surgical-gowns-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="sterile-surgical-gowns-1">
         &lt;1
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-2"
-             type="radio" name="sterile-surgical-gowns-rag"
-             value="two" {% if site['sterile-surgical-gowns-rag'] == "two" %}checked{% endif %}>
+      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-2" type="radio" name="sterile-surgical-gowns-rag" value="two" {% if site['sterile-surgical-gowns-rag'] == "two" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="sterile-surgical-gowns-2">
         2 days
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-23" type="radio"
-             name="sterile-surgical-gowns-rag"
-             value="two-three" {% if site['sterile-surgical-gowns-rag'] == "two-three" %}checked{% endif %}>
+      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-23" type="radio" name="sterile-surgical-gowns-rag" value="two-three" {% if site['sterile-surgical-gowns-rag'] == "two-three" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="sterile-surgical-gowns-23">
         2-3 days
       </label>
     </div>
     <div class="nhsuk-radios__item">
-      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-3" type="radio"
-             name="sterile-surgical-gowns-rag"
-             value="three-plus" {% if site['sterile-surgical-gowns-rag'] == "three-plus" %}checked{% endif %}>
+      <input class="nhsuk-radios__input" id="sterile-surgical-gowns-3" type="radio" name="sterile-surgical-gowns-rag" value="three-plus" {% if site['sterile-surgical-gowns-rag'] == "three-plus" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="sterile-surgical-gowns-3">
         &gt;3 days
       </label>
@@ -825,68 +799,61 @@
                 Hand hygiene
             </legend>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="hand-hygiene-stock-levels">
-                    Number of containers (pump or wall dispenser cartridges)
-                </label>
-                <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="number"
-                       value="{{ site['hand-hygiene-stock-levels'] }}">
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="hand-hygiene-stock-levels">
+    Number of containers (pump or wall dispenser cartridges)
+  </label>
+  <input class="nhsuk-input" id="hand-hygiene-stock-levels" name="hand-hygiene-stock-levels" type="number" value="{{ site['hand-hygiene-stock-levels'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="hand-hygiene-quantity_used">
-                    Quantity used in the last 24 hours
-                </label>
-                <input class="nhsuk-input" id="hand-hygiene-quantity_used" name="hand-hygiene-quantity_used"
-                       type="number" value="{{ site['hand-hygiene-quantity_used'] }}">
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="hand-hygiene-quantity_used">
+    Quantity used in the last 24 hours
+  </label>
+  <input class="nhsuk-input" id="hand-hygiene-quantity_used" name="hand-hygiene-quantity_used" type="number" value="{{ site['hand-hygiene-quantity_used'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="hand-hygiene-stock-levels-note">
-                    Note
-                </label>
-                <span class="nhsuk-hint" id="hand-hygiene-stock-levels-note-hint">
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="hand-hygiene-stock-levels-note">
+    Note
+  </label>
+  <span class="nhsuk-hint" id="hand-hygiene-stock-levels-note-hint">
     Any additional comments
   </span>
-                <input class="nhsuk-input" id="hand-hygiene-stock-levels-note" name="hand-hygiene-stock-levels-note"
-                       type="text" value="{{ site['hand-hygiene-stock-levels-note'] }}">
-            </div>
+  <input class="nhsuk-input" id="hand-hygiene-stock-levels-note" name="hand-hygiene-stock-levels-note" type="text" value="{{ site['hand-hygiene-stock-levels-note'] }}">
+  </div>
 
-            <div class="nhsuk-form-group">
-                <label class="nhsuk-label" for="hand-hygiene-rag">
-                    Stock level assessment (RAG)
-                </label>
-                <div class="nhsuk-radios nhsuk-radios--inline">
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="hand-hygiene-1" type="radio" name="hand-hygiene-rag"
-                               value="one-or-less" {% if site['hand-hygiene-rag'] == "one-or-less" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-1">
-                            &lt; 1
-                        </label>
-                    </div>
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="hand-hygiene-2" type="radio" name="hand-hygiene-rag"
-                               value="two" {% if site['hand-hygiene-rag'] == "two" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-2">
-                            2 days
-                        </label>
-                    </div>
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="hand-hygiene-23" type="radio" name="hand-hygiene-rag"
-                               value="two-three" {% if site['hand-hygiene-rag'] == "two-three" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-23">
-                            2-3 days
-                        </label>
-                    </div>
-                    <div class="nhsuk-radios__item">
-                        <input class="nhsuk-radios__input" id="hand-hygiene-3" type="radio" name="hand-hygiene-rag"
-                               value="three-plus" {% if site['hand-hygiene-rag'] == "three-plus" %}checked{% endif %}>
-                        <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-3">
-                            &gt;3 days
-                        </label>
-                    </div>
-                </div>
-            </div>
+  <div class="nhsuk-form-group">
+  <label class="nhsuk-label" for="hand-hygiene-rag">
+    Stock level assessment (RAG)
+  </label>
+  <div class="nhsuk-radios nhsuk-radios--inline">
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-1" type="radio" name="hand-hygiene-rag" value="one-or-less" {% if site['hand-hygiene-rag'] == "one-or-less" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-1">
+        &lt; 1
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-2" type="radio" name="hand-hygiene-rag" value="two" {% if site['hand-hygiene-rag'] == "two" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-2">
+        2 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-23" type="radio" name="hand-hygiene-rag" value="two-three" {% if site['hand-hygiene-rag'] == "two-three" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-23">
+        2-3 days
+      </label>
+    </div>
+    <div class="nhsuk-radios__item">
+      <input class="nhsuk-radios__input" id="hand-hygiene-3" type="radio" name="hand-hygiene-rag" value="three-plus" {% if site['hand-hygiene-rag'] == "three-plus" %}checked{% endif %}>
+      <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-3">
+        &gt;3 days
+      </label>
+    </div>
+  </div>
+  </div>
 
         </fieldset>
         <!-- Hand hygiene -->
