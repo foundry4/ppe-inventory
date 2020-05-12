@@ -12,8 +12,19 @@ from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
+# from flask_httpauth import HTTPBasicAuth
+# from werkzeug.security import generate_password_hash, check_password_hash
+
+# users = {
+#     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
+# }
+
+# auth = HTTPBasicAuth()
+
+
 
 app = Flask(__name__)
+
 # This is required by flask for encrypting cookies and other features
 app.secret_key = os.getenv('APP_SECRET_KEY')
 
@@ -50,11 +61,15 @@ logging_client = google.cloud.logging.Client()
 logging_client.get_default_handler()
 logging_client.setup_logging()
 
+# @auth.verify_password
+# def verify_password(username, password):
+#     if username in users and \
+#             check_password_hash(users.get(username), password):
+#         return username
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/dashboards')
 @oidc.require_login
@@ -194,8 +209,13 @@ def form(site_param):
     query = datastore_client.query(kind='Site')
     query.add_filter('code', '=', site_param)
     result = list(query.fetch())
+    site = result[0]
+    if site.get('acute') == 'yes':
+        template = 'form.html'
+    else:
+        template = 'community_form.html'
     if result:
-        return render_template('form.html', site=result[0])
+        return render_template(template, site=site)
     else:
         flash(f'The site with code: {site_param} cannot be found', 'error')
         return redirect(url_for('index'))
@@ -208,13 +228,24 @@ def form_update(site_param, client=datastore_client, request_param=request):
     print(site_to_update)
     if site_to_update:
         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
+        update_ppe_item(site_to_update, client)
         publish_update(get_sheet_data(site_to_update))
-        site_name = site_to_update['provider']
-        message = Markup(f'<a href="/sites/{site_param}">{site_name}</a>')
-        flash("Site " + message + " was updated.", 'success')
+        domain = os.getenv('DOMAIN')
+        form_action = f'https://{domain}/form'
+        dashboard_link = f'https://{domain}/dashboard'
+
+        response = make_response(render_template('success.html',
+                                                 site=site_to_update,
+                                                 form_action=form_action,
+                                                 dashboard_link=dashboard_link,
+                                                 currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
+                                                 ))
+        return response
     else:
         flash(f'There was a problem updating site with code: {site_param}.', 'error')
     return redirect(url_for('index'))
+
+
 
 
 @app.route('/login')
@@ -529,3 +560,54 @@ def get_links(service_type, borough, pcn, client=datastore_client):
     query.add_filter('service_type', '=', service_type)
     results = list(query.fetch())
     return results
+
+
+def update_ppe_item(site, client):
+    acute = site.get('acute')
+    if acute != 'yes':
+        item_names = 'face-visors', \
+                     'goggles', \
+                     'masks-iir', \
+                     'masks-ffp2', \
+                     'masks-ffp3', \
+                     'gloves', \
+                     'gowns', \
+                     'hand-hygiene', \
+                     'apron'
+
+        # Instantiates a client
+        query = client.query(kind='Ppe-Item')
+        query.add_filter('provider', '=', site.get('site'))
+        items = list(query.fetch())
+        print(f"found {len(items)} for site {site.get('site')}")
+
+        for item_name in item_names:
+            stock_items = [item for item in items if item.get('item_name') == item_name]
+            print(f"found {len(items)} for site {site.get('site')} and item {item_name}")
+            if len(stock_items) == 0:
+                item_entity = datastore.Entity(client.key('Ppe-Item'))
+                item_entity['provider'] = site.get('site')
+                item_entity['item_name'] = item_name
+                item_entity['region'] = 'NEL'
+                item_entity['borough'] = site.get('borough')
+                item_entity['pcn_network'] = site.get('pcn_network')
+            else:
+                item_entity = stock_items[0]
+            stock_level = int(site.get(item_name + '-stock-levels')) if site.get(item_name + '-stock-levels') else 0
+            quantity_used = int(site.get(item_name + '-quantity_used')) if site.get(item_name + '-quantity_used') else 0
+            daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
+            rag = 'under_one' if daily_usage < 1 else \
+                'one_two' if daily_usage < 2 else \
+                'two_three' if daily_usage < 3 else \
+                'less-than-week' if daily_usage < 7 else \
+                'more-than-week'
+            item_entity['last_update'] = site.get('last_update')
+            item_entity['stock-levels'] = stock_level
+            item_entity['quantity_used'] = quantity_used
+            item_entity['stock-levels-note'] = site.get(item_name + '-stock-levels-note')
+            item_entity['daily_usage'] = daily_usage
+            item_entity['rag'] = rag
+            item_entity['mutual_aid_received'] = site.get(item_name + 'mutual_aid_received')
+            item_entity['national_and_other_external_receipts'] = site.get(
+                item_name + 'national_and_other_external_receipts')
+            client.put(item_entity)
