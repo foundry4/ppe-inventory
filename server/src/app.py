@@ -370,7 +370,19 @@ def get_sheet_data(site_to_update):
         'gowns-mutual_aid_received',
         'gowns-national_and_other_external_receipts',
         'coveralls-mutual_aid_received',
-        'coveralls-national_and_other_external_receipts'
+        'coveralls-national_and_other_external_receipts',
+        'non-surgical-gowns-stock-levels',
+        'non-surgical-gowns-quantity_used',
+        'non-surgical-gowns-mutual_aid_received',
+        'non-surgical-gowns-national_and_other_external_receipts',
+        'non-surgical-gowns-stock-levels-note',
+        'non-surgical-gowns-rag',
+        'sterile-surgical-gowns-stock-levels',
+        'sterile-surgical-gowns-quantity_used',
+        'sterile-surgical-gowns-mutual_aid_received',
+        'sterile-surgical-gowns-national_and_other_external_receipts',
+        'sterile-surgical-gowns-stock-levels-note',
+        'sterile-surgical-gowns-rag'
     ]
 
     for field in fields:
