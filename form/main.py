@@ -228,7 +228,7 @@ def get_sheet_data(site):
         'gowns-mutual_aid_received',
         'gowns-national_and_other_external_receipts',
         'coveralls-mutual_aid_received',
-        'coveralls-national_and_other_external_receipts'
+        'coveralls-national_and_other_external_receipts',
         'non-surgical-gowns-stock-levels',
         'non-surgical-gowns-quantity_used',
         'non-surgical-gowns-mutual_aid_received',
