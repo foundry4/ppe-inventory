@@ -12,6 +12,7 @@ from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
+from flask_basicauth import BasicAuth
 # from flask_httpauth import HTTPBasicAuth
 # from werkzeug.security import generate_password_hash, check_password_hash
 
