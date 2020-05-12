@@ -78,7 +78,8 @@ def get_provider(practice_name, postcode_input):
 
 
 def get_site(practice_name, postcode_input):
-    return get_provider(practice_name, postcode_input).replace("&", "and").strip()
+    return get_provider(practice_name, postcode_input).replace("&", "and").strip().replace('(', ' ') \
+        .replace(')', ' ').replace('\'', ' ').replace('\t', ' ').replace('\n', ' ').replace(',', ' ')
 
 
 def get_location(line1, line2, line3):

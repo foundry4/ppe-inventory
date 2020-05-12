@@ -1,4 +1,4 @@
-from flask import request, make_response, redirect
+from flask import request, make_response, redirect, flash
 import datetime
 import os
 
@@ -13,6 +13,10 @@ def register(request):
     domain=os.getenv('DOMAIN')
     response = make_response(redirect(f'https://{domain}/form'))
 
+    # portal = os.getenv('PORTAL')
+    # response = make_response(redirect(f'https://{portal}/forms/{code}'))
+    print(response)
+
     if site and code:
         print(f"Setting cookie site={site}, code={code}")
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
@@ -22,4 +26,5 @@ def register(request):
         print("Not setting registration cookie")
 
     print(f"Redirecting to {response.location}")
+    # flash(f'You have been redirected from an old link. Please use https://{portal}/sites/{code}')
     return response

@@ -1,4 +1,7 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
 {% block html_head %}
   <style type="text/css">
       .dot {
@@ -40,13 +43,11 @@
 
   </style>
 {% endblock %}
-{% block content %}
-<h1>PPE Dashboard</h1>
-<h2>Today's community site stock assessment ratings across North East London</h2>
 
-<div class="nhsuk-width-container">
-
-    <div style="text-align:center">
+{% block body %}
+    <h1>PPE Dashboard</h1>
+    <h2>Today's community site stock assessment ratings across North East London</h2>
+        <div style="text-align:center">
       <table>
         <tr>
           <td>
@@ -67,14 +68,66 @@
       </table>
     </div>
     <p>{{ updated_site_count }} of {{ site_count }} sites have been updated in the last 7 days.</p>
-    <main class="nhsuk-main-wrapper" id="maincontent">
-    <div class="nhsuk-grid-row">
+    <div class="row">
+        <div class="nhsuk-grid-column-one-quarter">
+            {% if boroughs %}
+                <legend>Boroughs</legend>
+                <fieldset>
+
+                    {% for borough in boroughs %}
+                        <div>
+                            <label>
+                                <input onclick="update_filter('dashboards')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
+                            </label>{{ borough }}
+                        </div>
+                    {% endfor %}
+
+                </fieldset>
+
+            {% endif %}
+
+
+            {% if service_types %}
+                <legend>Service Types</legend>
+                <fieldset>
+
+                    {% for service_type in service_types %}
+                        <div>
+                            <label>
+                                <input onclick="update_filter('dashboards')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
+                            </label>{{ service_type }}
+                        </div>
+                    {% endfor %}
+
+                </fieldset>
+
+            {% endif %}
+
+            {% if pcns %}
+                <legend>Primary Care Networks</legend>
+                <fieldset>
+
+                    {% for pcn in pcns %}
+                        <div>
+                            <label>
+                                <input onclick="update_filter('dashboards')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
+                            </label>{{ pcn }}
+                        </div>
+                    {% endfor %}
+
+                </fieldset>
+
+            {% endif %}
+
+        </div>
+        <div class="nhsuk-grid-column-three-quarters">
+              <div class="nhsuk-grid-row">
       <div class="nhsuk-grid-column-full">
         {% for item in items %}
           {% if loop.index % 3 == 1 %}
             <div class="nhsuk-grid-row" style="">
           {% endif %}
-            <div class="nhsuk-grid-column-one-quarter">
+            <div class="nhsuk-grid-column-one-third">
               <div style="background-color:white; padding:0x 10px">
                <table>
                   <tr>
@@ -104,7 +157,7 @@
                   </tr>
                   <tr>
                     <td colspan="2">
-                      <a href="/dashboard?item={{item['name']}}">View report</a>
+                      <a href="/dashboards?item={{item['name']}}">View report</a>
                     </td>
                   </tr>
                 </table>
@@ -116,6 +169,8 @@
         {% endfor %}
       </div>
     </div>
-  </main>
-</div>
+        </div>
+    </div>
+
+
 {% endblock %}
