@@ -1,0 +1,35 @@
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+.highlight-maroon{
+  background-color:#951d14;
+  color: white;
+  border-color: #951D14;
+  border-style: solid;
+}
+.highlight-red{
+  background-color:#d5281b;
+  border-color: #D5481B;
+  border-style: solid;
+}
+.highlight-amber{
+  background-color:#ffa620;
+  border-color: #FFA620;
+  border-style: solid;
+}
+.highlight-lightgreen{
+  background-color:#65eba3;
+  border-color: #65eba3;
+  border-style: solid;
+}
+.highlight-green{
+  background-color:#2AB369;
+  border-color: #2AB369;
+  border-style: solid;
+}
+.highlight-none{
+}

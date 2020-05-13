@@ -13,18 +13,20 @@ from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
 from flask_basicauth import BasicAuth
-# from flask_httpauth import HTTPBasicAuth
-# from werkzeug.security import generate_password_hash, check_password_hash
 
-# users = {
-#     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
-# }
 
-# auth = HTTPBasicAuth()
+from werkzeug.security import generate_password_hash, check_password_hash
+
+users = {
+     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
+}
+
+
 
 
 
 app = Flask(__name__)
+
 
 # This is required by flask for encrypting cookies and other features
 app.secret_key = os.getenv('APP_SECRET_KEY')
@@ -71,6 +73,42 @@ logging_client.setup_logging()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/dashboards/items/<item_param>')
+@oidc.require_login
+def dashboard_items(item_param):
+    query = datastore_client.query(kind='Ppe-Item')
+    query.add_filter('item_name', '=', item_param)
+    stock_items = list(query.fetch())
+    print(f"found {len(stock_items)} stock items")
+
+    rag_color_codes = {
+        'under_one': 'maroon',
+        'one_two': 'red',
+        'two_three': 'amber',
+        'less-than-week': 'lightgreen',
+        'more-than-week': 'green',
+    }
+
+    rag_labels = {
+        'under_one': 'Up to 1 day',
+        'one_two': '1-2 days',
+        'two_three': '2-3 days',
+        'less-than-week': '3-7 days',
+        'more-than-week': 'Over 1 week',
+
+    }
+
+    if stock_items:
+        return render_template('item.html',
+                               item=item_param,
+                               stock_items=[item for item in stock_items if item['quantity_used'] > 0],
+                               color_codes=rag_color_codes,
+                               rag_labels=rag_labels)
+    else:
+        flash(f'No stock_items of {item_param} can be found', 'error')
+        return redirect(url_for('index'))
+
 
 @app.route('/dashboards')
 @oidc.require_login
@@ -196,10 +234,30 @@ def site(site_param):
     query.add_filter('provider', '=', provider.get('provider'))
     stock_items = list(query.fetch())
     print(f"found {len(stock_items)} stock items")
+
+    rag_color_codes = {
+        'under_one': 'maroon',
+        'one_two': 'red',
+        'two_three': 'amber',
+        'less-than-week': 'lightgreen',
+        'more-than-week': 'green',
+    }
+
+    rag_labels = {
+        'under_one': 'Up to 1 day',
+        'one_two': '1-2 days',
+        'two_three': '2-3 days',
+        'less-than-week': '3-7 days',
+        'more-than-week': 'Over 1 week',
+
+    }
+
     if sites:
         return render_template('site.html',
                                site=provider,
-                               stock_items=stock_items)
+                               stock_items=stock_items,
+                               color_codes=rag_color_codes,
+                               rag_labels=rag_labels)
     else:
         flash(f'The site with code: {site_param} cannot be found', 'error')
         return redirect(url_for('index'))

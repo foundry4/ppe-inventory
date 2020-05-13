@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ item }}{% endblock %}
+
+{% block body %}
+
+
+                <h1>{{ item }}</h1>
+
+
+
+    <table>
+    <!-- Header row -->
+    <tr>
+        <td><b>Provider</b></td>
+        <td><b>Current Stock level</td>
+        <td><b>Used last week</b><br>Estimated figures</td>
+        <td><b>RAG</b><br>Stock assessment rating</td>
+    </tr>
+    {% for item in stock_items %}
+        <tr>
+            <td>{{item['provider']}}</td>
+            <td>{{item['stock-levels']}}</td>
+            <td>{{item['quantity_used']}}</td>
+            <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
