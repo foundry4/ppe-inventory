@@ -112,7 +112,7 @@ def dashboard_items(item_param, request_param=request):
     if stock_items:
         return render_template('item.html',
                                item=item_param,
-                               stock_items=[item for item in stock_items if item['quantity_used'] > 0],
+                               stock_items=[item for item in filtered_stock_items if item['quantity_used'] > 0],
                                rag_item_sums=rag_item_sums,
                                item_names=item_names,
                                color_codes=rag_color_codes,
@@ -216,7 +216,7 @@ def sites(client=datastore_client, request_param=request):
              'last_updated_style': last_updated_style})
 
     response = make_response(render_template('sites.html',
-                                             sites=sites_to_display,
+                                             sites=results,
                                              boroughs=boroughs,
                                              selected_boroughs=selected_boroughs,
                                              service_types=service_types,
