@@ -1,13 +1,12 @@
 import datetime
 import json
-import logging
 import os
 from datetime import timezone
-
+import numpy as np
 # Imports the Cloud Logging client library
 import google.cloud.logging
 import pytz
-from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash, Markup
+from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash
 from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
@@ -15,7 +14,7 @@ from okta import UsersClient
 from flask_basicauth import BasicAuth
 
 
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 users = {
      os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
@@ -70,39 +69,47 @@ logging_client.setup_logging()
 #             check_password_hash(users.get(username), password):
 #         return username
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/dashboards/items/<item_param>')
 @oidc.require_login
-def dashboard_items(item_param):
+def dashboard_items(item_param, request_param=request):
+    request_args = request_param.args
+    selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
+    selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
+    selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
+
     query = datastore_client.query(kind='Ppe-Item')
     query.add_filter('item_name', '=', item_param)
     stock_items = list(query.fetch())
+
+    filtered_stock_items = get_filtered_sites(stock_items, selected_boroughs, selected_service_types, selected_pcns)
+
     print(f"found {len(stock_items)} stock items")
 
-    rag_color_codes = {
-        'under_one': 'maroon',
-        'one_two': 'red',
-        'two_three': 'amber',
-        'less-than-week': 'lightgreen',
-        'more-than-week': 'green',
+    rag_color_codes = get_rag_color_codes()
+    item_names = get_item_names()
+
+    rag_item_sums = {
+        'under_one': sum([1 for item in filtered_stock_items if item.get('rag')=='under_one' and item.get('quantity_used') > 0]),
+        'one_two': sum([1 for item in filtered_stock_items if item.get('rag') == 'one_two' and item.get('quantity_used') > 0]),
+        'two_three': sum([1 for item in filtered_stock_items if item.get('rag') == 'two_three' and item.get('quantity_used') != 0]),
+        'less-than-week': sum([1 for item in filtered_stock_items if item.get('rag') == 'less-than-week' and item.get('quantity_used') > 0]),
+        'more-than-week': sum([1 for item in filtered_stock_items if item.get('rag') == 'more-than-week' and item.get('quantity_used') > 0]),
     }
 
-    rag_labels = {
-        'under_one': 'Up to 1 day',
-        'one_two': '1-2 days',
-        'two_three': '2-3 days',
-        'less-than-week': '3-7 days',
-        'more-than-week': 'Over 1 week',
-
-    }
-
+    rag_labels = get_rag_labels()
+    stock_items.sort(key=lambda x: list(rag_labels).index(x.get('rag')))
     if stock_items:
         return render_template('item.html',
                                item=item_param,
                                stock_items=[item for item in stock_items if item['quantity_used'] > 0],
+                               rag_item_sums=rag_item_sums,
+                               item_names=item_names,
                                color_codes=rag_color_codes,
                                rag_labels=rag_labels)
     else:
@@ -135,16 +142,7 @@ def dashboards(client=datastore_client, request_param=request):
     print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
 
     template = 'dashboards.html'
-
-    item_names = {'face-visors': 'Face Visors',
-                  'goggles': 'Goggles',
-                  'masks-iir': 'Masks (IIR)',
-                  'masks-ffp2': 'Masks (FFP2)',
-                  'masks-ffp3': 'Masks (FFP3)',
-                  'gloves': 'Gloves',
-                  'gowns': 'Gowns',
-                  'hand-hygiene': 'Hand Hygiene',
-                  'apron': 'Apron'}
+    item_names = get_item_names()
 
     print(f"Rendering {template}")
 
@@ -224,25 +222,41 @@ def sites(client=datastore_client, request_param=request):
 
 @app.route('/sites/<site_param>')
 def site(site_param):
+    provider = get_provider_by_code_from_db(site_param)
+    stock_items = get_stock_items_by_provider_from_db(provider)
+    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+    stock_items.sort(key=lambda x: rags.index(x.get('rag')))
+
+    if provider and stock_items:
+        return render_template('site.html',
+                               site=provider,
+                               stock_items=stock_items,
+                               item_names=get_item_names(),
+                               color_codes=get_rag_color_codes(),
+                               rag_labels=get_rag_labels())
+    else:
+        flash(f'The site with code: {site_param} cannot be found', 'error')
+        return redirect(url_for('index'))
+
+
+def get_stock_items_by_provider_from_db(provider):
+    query = datastore_client.query(kind='Ppe-Item')
+    query.add_filter('provider', '=', provider.get('provider'))
+    stock_items = list(query.fetch())
+    print(f"found {len(stock_items)} stock items")
+    return stock_items
+
+
+def get_provider_by_code_from_db(site_param):
     query = datastore_client.query(kind='Site')
     query.add_filter('code', '=', site_param)
     providers = list(query.fetch())
     provider = providers[0]
     print(f"provider:{provider.get('site')}")
+    return provider
 
-    query = datastore_client.query(kind='Ppe-Item')
-    query.add_filter('provider', '=', provider.get('provider'))
-    stock_items = list(query.fetch())
-    print(f"found {len(stock_items)} stock items")
 
-    rag_color_codes = {
-        'under_one': 'maroon',
-        'one_two': 'red',
-        'two_three': 'amber',
-        'less-than-week': 'lightgreen',
-        'more-than-week': 'green',
-    }
-
+def get_rag_labels():
     rag_labels = {
         'under_one': 'Up to 1 day',
         'one_two': '1-2 days',
@@ -251,16 +265,18 @@ def site(site_param):
         'more-than-week': 'Over 1 week',
 
     }
+    return rag_labels
 
-    if sites:
-        return render_template('site.html',
-                               site=provider,
-                               stock_items=stock_items,
-                               color_codes=rag_color_codes,
-                               rag_labels=rag_labels)
-    else:
-        flash(f'The site with code: {site_param} cannot be found', 'error')
-        return redirect(url_for('index'))
+
+def get_rag_color_codes():
+    rag_color_codes = {
+        'under_one': 'maroon',
+        'one_two': 'red',
+        'two_three': 'amber',
+        'less-than-week': 'lightgreen',
+        'more-than-week': 'green',
+    }
+    return rag_color_codes
 
 
 @app.route('/forms/<site_param>')
@@ -303,8 +319,6 @@ def form_update(site_param, client=datastore_client, request_param=request):
     else:
         flash(f'There was a problem updating site with code: {site_param}.', 'error')
     return redirect(url_for('index'))
-
-
 
 
 @app.route('/login')
@@ -490,6 +504,7 @@ def get_ppe_items(item_names, items):
 
 def get_ppe_item(item_names, item_name, items):
     item_count = sum(item.get('item_name') == item_name for item in items)
+    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
     if item_count > 0:
         named_items = [item for item in items if item.get('item_name') == item_name]
         ppe_item = {
@@ -504,7 +519,6 @@ def get_ppe_item(item_names, item_name, items):
                 sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count),
         }
 
-        rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
         max_item = 'under_one'
         for rag in rags:
             if ppe_item[rag] > ppe_item[max_item]:
@@ -636,15 +650,7 @@ def get_links(service_type, borough, pcn, client=datastore_client):
 def update_ppe_item(site, client):
     acute = site.get('acute')
     if acute != 'yes':
-        item_names = 'face-visors', \
-                     'goggles', \
-                     'masks-iir', \
-                     'masks-ffp2', \
-                     'masks-ffp3', \
-                     'gloves', \
-                     'gowns', \
-                     'hand-hygiene', \
-                     'apron'
+        item_names = get_item_names()
 
         # Instantiates a client
         query = client.query(kind='Ppe-Item')
@@ -682,3 +688,16 @@ def update_ppe_item(site, client):
             item_entity['national_and_other_external_receipts'] = site.get(
                 item_name + 'national_and_other_external_receipts')
             client.put(item_entity)
+
+
+def get_item_names():
+    item_names = {'face-visors': 'Face Visors',
+                  'goggles': 'Goggles',
+                  'masks-iir': 'Masks (IIR)',
+                  'masks-ffp2': 'Masks (FFP2)',
+                  'masks-ffp3': 'Masks (FFP3)',
+                  'gloves': 'Gloves',
+                  'gowns': 'Gowns',
+                  'hand-hygiene': 'Hand Hygiene',
+                  'apron': 'Apron'}
+    return item_names

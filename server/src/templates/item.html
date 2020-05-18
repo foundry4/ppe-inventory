@@ -4,16 +4,50 @@
 
 {% block body %}
 
+    <h1>{{ item_names[item] }}</h1>
+    <div id="piechart"></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-                <h1>{{ item }}</h1>
+    <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
+        // Draw the chart and set the chart values
+        function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+              ['Task', 'Hours per Day'],
+              ['Under 1 day', {{ rag_item_sums['under_one'] }}],
+              ['1-2 days', {{ rag_item_sums['one_two'] }}],
+              ['2-3 days', {{ rag_item_sums['two_three'] }}],
+              ['3-7 days', {{ rag_item_sums['less-than-week'] }}],
+              ['Over 1 week', {{ rag_item_sums['more-than-week'] }}]
+            ]);
 
+              // Optional; add a title and set the width and height of the chart
+              var options = {'width':300,
+                            'height':300,
+                            colors: ['#951d14', '#d5281b', '#ffa620', '#65eba3', '#2AB369'],
+                            'chartArea': {'width': '100%', 'height': '80%'},
+                            backgroundColor: { fill:'transparent' },
+                            pieSliceTextStyle: {fontSize:14},
+                            titleTextStyle: {fontSize:16},
+                            legend: {fontSize:14},
+                            tooltip: { textStyle: { fontSize: 14 } },
+                            'title':'Current Stock Assessment Ratings'
+                            };
+
+              // Display the chart inside the <div> element with id="piechart"
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+        }
+    </script>
 
     <table>
     <!-- Header row -->
     <tr>
         <td><b>Provider</b></td>
-        <td><b>Current Stock level</td>
+        <td><b>Current Stock level</b></td>
         <td><b>Used last week</b><br>Estimated figures</td>
         <td><b>RAG</b><br>Stock assessment rating</td>
     </tr>

@@ -3,11 +3,10 @@
 {% block title %}Site Page{% endblock %}
 
 {% block body %}
-
     <table>
         <tr>
             <td>
-                <h1>{{ site['provider'] }}</h1><br>{{ site['location'] }},{{ site['postcode'] }}
+                <h1 style="margin-top: 40px;margin-bottom: 10px">{{ site['provider'] }}</h1><p>{{ site['location'] }}, {{ site['postcode'] }}</p>
             </td>
             <td rowspan="2">
                 <div class="nhsuk-panel-with-label">
@@ -17,8 +16,6 @@
             </td>
         </tr>
     </table>
-
-
 
     <table>
     <!-- Header row -->
@@ -30,7 +27,7 @@
     </tr>
     {% for item in stock_items %}
         <tr>
-            <td>{{item['item_name']}}</td>
+            <td>{{item_names[item['item_name']]}}</td>
             <td>{{item['stock-levels']}}</td>
             <td>{{item['quantity_used']}}</td>
             <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
