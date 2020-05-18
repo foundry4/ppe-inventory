@@ -5,7 +5,7 @@
 {% block content %}
     <div class="nhsuk-grid-row">
         <div class="nhsuk-grid-column-one-third">
-            <a href="/dashboards">Overview</a>
+            <a href="/dashboards?{{ request.query_string.decode() }}">Overview</a>
             View by provider
         </div>
         <br>
