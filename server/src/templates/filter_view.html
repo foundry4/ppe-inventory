@@ -11,7 +11,7 @@
 <p>Displaying data submitted within the last  7 days from <u>{{ updated_site_count }} out of {{ site_count }}</u> Primary & Community sites.</p>
     <div class="row" style="margin-top: 30px">
         <div class="nhsuk-grid-column-one-quarter">
-            <a href="/dashboards">clear filters</a>
+            <a href="{{request.path}}">clear filters</a>
             <br>
             <br>
             {% if boroughs %}
