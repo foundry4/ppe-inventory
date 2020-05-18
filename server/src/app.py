@@ -95,11 +95,16 @@ def dashboard_items(item_param, request_param=request):
     item_names = get_item_names()
 
     rag_item_sums = {
-        'under_one': sum([1 for item in filtered_stock_items if item.get('rag')=='under_one' and item.get('quantity_used') > 0]),
-        'one_two': sum([1 for item in filtered_stock_items if item.get('rag') == 'one_two' and item.get('quantity_used') > 0]),
-        'two_three': sum([1 for item in filtered_stock_items if item.get('rag') == 'two_three' and item.get('quantity_used') != 0]),
-        'less-than-week': sum([1 for item in filtered_stock_items if item.get('rag') == 'less-than-week' and item.get('quantity_used') > 0]),
-        'more-than-week': sum([1 for item in filtered_stock_items if item.get('rag') == 'more-than-week' and item.get('quantity_used') > 0]),
+        'under_one':
+            sum([1 for item in filtered_stock_items if item.get('rag')=='under_one' and item.get('quantity_used') > 0]),
+        'one_two':
+            sum([1 for item in filtered_stock_items if item.get('rag') == 'one_two' and item.get('quantity_used') > 0]),
+        'two_three':
+            sum([1 for item in filtered_stock_items if item.get('rag') == 'two_three' and item.get('quantity_used') != 0]),
+        'less-than-week':
+            sum([1 for item in filtered_stock_items if item.get('rag') == 'less-than-week' and item.get('quantity_used') > 0]),
+        'more-than-week':
+            sum([1 for item in filtered_stock_items if item.get('rag') == 'more-than-week' and item.get('quantity_used') > 0]),
     }
 
     rag_labels = get_rag_labels()
@@ -134,12 +139,13 @@ def dashboards(client=datastore_client, request_param=request):
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
 
     sites = get_sites(datastore_client)
+    filtered_sites = get_filtered_sites(sites, selected_boroughs, selected_service_types, selected_pcns)
 
-    updated_sites = [site.get('last_update') for site in sites if
+    updated_sites = [site.get('last_update') for site in filtered_sites if
                      site.get('last_update') and site.get('last_update').date() >= (
                              datetime.date.today() - datetime.timedelta(days=7))]
 
-    print(f"{len(updated_sites)} of {len(sites)} sites have been updated.")
+    print(f"{len(updated_sites)} of {len(filtered_sites)} sites have been updated.")
 
     template = 'dashboards.html'
     item_names = get_item_names()
@@ -158,7 +164,7 @@ def dashboards(client=datastore_client, request_param=request):
     response = make_response(render_template(template,
                                              item_count=len(sorted_items),
                                              items=sorted_items,
-                                             site_count=len(sites),
+                                             site_count=len(filtered_sites),
                                              updated_site_count=len(updated_sites),
                                              boroughs=boroughs,
                                              selected_boroughs=selected_boroughs,
