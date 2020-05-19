@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 from datetime import timezone
-import numpy as np
+# import numpy as np
 # Imports the Cloud Logging client library
 import google.cloud.logging
 import pytz
@@ -285,46 +285,46 @@ def get_rag_color_codes():
     return rag_color_codes
 
 
-@app.route('/forms/<site_param>')
-def form(site_param):
-    query = datastore_client.query(kind='Site')
-    query.add_filter('code', '=', site_param)
-    result = list(query.fetch())
-    site = result[0]
-    if site.get('acute') == 'yes':
-        template = 'form.html'
-    else:
-        template = 'community_form.html'
-    if result:
-        return render_template(template, site=site)
-    else:
-        flash(f'The site with code: {site_param} cannot be found', 'error')
-        return redirect(url_for('index'))
+# @app.route('/forms/<site_param>')
+# def form(site_param):
+#     query = datastore_client.query(kind='Site')
+#     query.add_filter('code', '=', site_param)
+#     result = list(query.fetch())
+#     site = result[0]
+#     if site.get('acute') == 'yes':
+#         template = 'form.html'
+#     else:
+#         template = 'community_form.html'
+#     if result:
+#         return render_template(template, site=site)
+#     else:
+#         flash(f'The site with code: {site_param} cannot be found', 'error')
+#         return redirect(url_for('index'))
 
 
-@app.route('/forms/<site_param>', methods=["POST"])
-def form_update(site_param, client=datastore_client, request_param=request):
-    print('Updating form...')
-    site_to_update = get_site(site_param, client)
-    print(site_to_update)
-    if site_to_update:
-        update_site(client=client, site_to_update=site_to_update, request_param=request_param)
-        update_ppe_item(site_to_update, client)
-        publish_update(get_sheet_data(site_to_update))
-        domain = os.getenv('DOMAIN')
-        form_action = f'https://{domain}/form'
-        dashboard_link = f'https://{domain}/dashboard'
-
-        response = make_response(render_template('success.html',
-                                                 site=site_to_update,
-                                                 form_action=form_action,
-                                                 dashboard_link=dashboard_link,
-                                                 currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
-                                                 ))
-        return response
-    else:
-        flash(f'There was a problem updating site with code: {site_param}.', 'error')
-    return redirect(url_for('index'))
+# @app.route('/forms/<site_param>', methods=["POST"])
+# def form_update(site_param, client=datastore_client, request_param=request):
+#     print('Updating form...')
+#     site_to_update = get_site(site_param, client)
+#     print(site_to_update)
+#     if site_to_update:
+#         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
+#         update_ppe_item(site_to_update, client)
+#         publish_update(get_sheet_data(site_to_update))
+#         domain = os.getenv('DOMAIN')
+#         form_action = f'https://{domain}/form'
+#         dashboard_link = f'https://{domain}/dashboard'
+#
+#         response = make_response(render_template('success.html',
+#                                                  site=site_to_update,
+#                                                  form_action=form_action,
+#                                                  dashboard_link=dashboard_link,
+#                                                  currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
+#                                                  ))
+#         return response
+#     else:
+#         flash(f'There was a problem updating site with code: {site_param}.', 'error')
+#     return redirect(url_for('index'))
 
 
 @app.route('/login')
