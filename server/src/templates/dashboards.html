@@ -1,176 +1,71 @@
-{% extends "layout.html" %}
+{% extends "filter_view.html" %}
 
 {% block title %}Dashboard{% endblock %}
 
-{% block html_head %}
-  <style type="text/css">
-      .dot {
-          height: 25px;
-          width: 25px;
-          background-color: #bbb;
-          border-radius: 50%;
-          display: inline-block;
-      }
-      .highlight-maroon{
-          background-color:#951d14;
-          color: white;
-          border-color: #951D14;
-          border-style: solid;
-      }
-      .highlight-red{
-          background-color:#d5281b;
-          border-color: #D5481B;
-          border-style: solid;
-      }
-      .highlight-amber{
-          background-color:#ffa620;
-          border-color: #FFA620;
-          border-style: solid;
-      }
-      .highlight-lightgreen{
-          background-color:#65eba3;
-          border-color: #65eba3;
-          border-style: solid;
-      }
-      .highlight-green{
-          background-color:#2AB369;
-          border-color: #2AB369;
-          border-style: solid;
-      }
-      .highlight-none{
-      }
+{% block content %}
 
-
-  </style>
-{% endblock %}
-
-{% block body %}
-    <h1>PPE Dashboard</h1>
-    <h2>Today's community site stock assessment ratings across North East London</h2>
-        <div style="text-align:center">
-      <table>
-        <tr>
-          <td>
-            <span class="dot" style="background-color:#951D14"></span> Up to one day
-          </td>
-          <td>
-            <span class="dot" style="background-color:#D5481B"></span> 1-2 days
-          </td>
-          <td>
-            <span class="dot" style="background-color:#FFA620"></span> 2-3 days
-          </td>
-          <td>
-            <span class="dot" style="background-color:#65eba3"></span> 3-7 days
-          </td>
-          <td>
-            <span class="dot" style="background-color:#2AB369"></span> > 1 week
-          </td>
-      </table>
-    </div>
-    <p>{{ updated_site_count }} of {{ site_count }} sites have been updated in the last 7 days.</p>
-    <div class="row">
-        <div class="nhsuk-grid-column-one-quarter">
-            {% if boroughs %}
-                <legend>Boroughs</legend>
-                <fieldset>
-
-                    {% for borough in boroughs %}
-                        <div>
-                            <label>
-                                <input onclick="update_filter('dashboards')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
-                            </label>{{ borough }}
-                        </div>
-                    {% endfor %}
-
-                </fieldset>
-
-            {% endif %}
-
-
-            {% if service_types %}
-                <legend>Service Types</legend>
-                <fieldset>
-
-                    {% for service_type in service_types %}
-                        <div>
-                            <label>
-                                <input onclick="update_filter('dashboards')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
-                            </label>{{ service_type }}
-                        </div>
-                    {% endfor %}
-
-                </fieldset>
-
-            {% endif %}
-
-            {% if pcns %}
-                <legend>Primary Care Networks</legend>
-                <fieldset>
-
-                    {% for pcn in pcns %}
-                        <div>
-                            <label>
-                                <input onclick="update_filter('dashboards')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
-                            </label>{{ pcn }}
-                        </div>
-                    {% endfor %}
-
-                </fieldset>
-
-            {% endif %}
-
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-third">
+            Overview
+            <a href="/sites?{{ request.query_string.decode() }}">View by provider</a>
         </div>
-        <div class="nhsuk-grid-column-three-quarters">
-              <div class="nhsuk-grid-row">
-      <div class="nhsuk-grid-column-full">
-        {% for item in items %}
-          {% if loop.index % 3 == 1 %}
-            <div class="nhsuk-grid-row" style="">
-          {% endif %}
-            <div class="nhsuk-grid-column-one-third">
-              <div style="background-color:white; padding:0x 10px">
-               <table>
-                  <tr>
-                    <td colspan="2">
-                      <b>{{item['display_name']}}</b>
-                    </td>
-                  </tr>
-                  {% if item['highlight']=='under_one' %}<tr class="highlight-maroon" >{% else %}<tr>{% endif %}
-                      <td>Under 1 day</td>
-                      <td>{{item['under_one']}}</td>
-                  </tr>
-                  {% if item['highlight']=='one_two' %}<tr class="highlight-red" >{% else %}<tr>{% endif %}
-                      <td>1-2 days</td>
-                      <td>{{item['one_two']}}</td>
-                  </tr>
-                  {% if item['highlight']=='two_three' %}<tr class="highlight-amber" >{% else %}<tr>{% endif %}
-                    <td>2-3 days</td>
-                    <td>{{item['two_three']}}</td>
-                  </tr>
-                  {% if item['highlight']=='less-than-week' %}<tr class="highlight-lightgreen" >{% else %}<tr>{% endif %}
-                    <td>3-7 days</td>
-                    <td>{{item['less-than-week']}}</td>
-                  </tr>
-                   {% if item['highlight']=='more-than-week' %}<tr class="highlight-green" >{% else %}<tr>{% endif %}
-                    <td>Over 1 week </td>
-                    <td>{{item['more-than-week']}}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                      <a href="/dashboards?item={{item['name']}}">View report</a>
-                    </td>
-                  </tr>
-                </table>
-            </div>
-              </div>
-          {% if loop.index % 3 == 0 %}
-            </div>
-          {% endif %}
+        <br>
+        <br>
+        <div class="nhsuk-grid-column-full">
+            {% for item in items %}
+                {% if loop.index % 3 == 1 %}
+                    <div class="nhsuk-grid-row" style="">
+                {% endif %}
+                <div class="nhsuk-grid-column-one-third">
+                    <div style="background-color:white; padding:0x 10px">
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <b>{{item['display_name']}}</b>
+                                </td>
+                            </tr>
+                            {% if item['highlight']=='under_one' %}
+                                <tr class="highlight-maroon" >{% else %}<tr>
+                            {% endif %}
+                                <td>Under 1 day</td>
+                                <td>{{item['under_one']}}</td>
+                            </tr>
+                            {% if item['highlight']=='one_two' %}
+                                <tr class="highlight-red" >{% else %}<tr>
+                            {% endif %}
+                                <td>1-2 days</td>
+                                <td>{{item['one_two']}}</td>
+                            </tr>
+                            {% if item['highlight']=='two_three' %}
+                                <tr class="highlight-amber" >{% else %}<tr>
+                            {% endif %}
+                                <td>2-3 days</td>
+                                <td>{{item['two_three']}}</td>
+                            </tr>
+                            {% if item['highlight']=='less-than-week' %}
+                                <tr class="highlight-lightgreen" >{% else %}<tr>
+                            {% endif %}
+                                <td>3-7 days</td>
+                                <td>{{item['less-than-week']}}</td>
+                            </tr>
+                            {% if item['highlight']=='more-than-week' %}
+                                <tr class="highlight-green" >{% else %}<tr>
+                            {% endif %}
+                                <td>Over 1 week </td>
+                                <td>{{item['more-than-week']}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a href="/dashboards/items/{{item['name']}}?{{ request.query_string.decode() }}">View report</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                {% if loop.index % 3 == 0 %}
+                </div>
+            {% endif %}
         {% endfor %}
-      </div>
-    </div>
         </div>
     </div>
-
-
 {% endblock %}

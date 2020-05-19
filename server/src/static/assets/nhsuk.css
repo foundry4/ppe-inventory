@@ -4077,12 +4077,12 @@ b {
     background-color: #ffffff;
     border-top: 4px solid transparent;
     display: block;
-    padding: 20px 24px 24px;
+    padding: 10px 14px 14px;
 }
 
 @media (max-width: 40.0525em) {
     .nhsuk-expander .nhsuk-details__summary {
-        padding: 12px 16px 16px;
+        padding: 0;
     }
 }
 

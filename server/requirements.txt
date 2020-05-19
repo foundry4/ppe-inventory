@@ -6,3 +6,5 @@ google-cloud-pubsub
 google.cloud.logging
 # https://pypi.org/project/Flask-HTTPAuth/
 Flask-HTTPAuth>=3.3.0
+flask_basicauth
+numpy

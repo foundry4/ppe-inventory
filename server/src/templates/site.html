@@ -3,28 +3,35 @@
 {% block title %}Site Page{% endblock %}
 
 {% block body %}
-
-    <h1>{{ site['provider'] }}</h1>
-
-    <a href="../forms/{{ site["code"] }}"><h3>{{ site["provider"] }}</h3></a>
+    <table>
+        <tr>
+            <td>
+                <h1 style="margin-top: 40px;margin-bottom: 10px">{{ site['provider'] }}</h1><p>{{ site['location'] }}, {{ site['postcode'] }}</p>
+            </td>
+            <td rowspan="2">
+                <div class="nhsuk-panel-with-label">
+                    <h3 class="nhsuk-panel-with-label__label">Contact</h3>
+                    <p>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </p>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <table>
     <!-- Header row -->
     <tr>
-        <td><h3>PPE type</h3></td>
-        <td><h3>Current Stock level</h3>Last updated: {{site['last_updated']}}</td>
-        <td><h3>Used last week</h3>Estimated figures</td>
-        <td><h3>Used last week</h3>Estimated figures</td>
-        <td><h3>RAG</h3></td>
+        <td><b>PPE type</b></td>
+        <td><b>Current Stock level</b><br>Last updated: {{site['last_updated']}}</td>
+        <td><b>Used last week</b><br>Estimated figures</td>
+        <td><b>RAG</b><br>Stock assessment rating</td>
     </tr>
     {% for item in stock_items %}
-    <tr>
-        <td>{{item['item_name']}}</td>
-        <td>{{item['stock-levels']}}</td>
-        <td>{{item['quantity_used']}}</td>
-        <td>{{item['daily_usage']}}</td>
-        <td>{{item['rag']}}</td>
-    </tr>
+        <tr>
+            <td>{{item_names[item['item_name']]}}</td>
+            <td>{{item['stock-levels']}}</td>
+            <td>{{item['quantity_used']}}</td>
+            <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
+        </tr>
     {% endfor %}
     </table>
 {% endblock %}

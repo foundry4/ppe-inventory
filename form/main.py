@@ -109,7 +109,7 @@ def update_ppe_item(site, client):
 
         for item_name in item_names:
             stock_items = [item for item in items if item.get('item_name') == item_name]
-            print(f"found {len(items)} for site {site.get('site')} and item {item_name}")
+            print(f"found {len(stock_items)} for site {site.get('site')} and item {item_name}")
             if len(stock_items) == 0:
                 item_entity = datastore.Entity(client.key('Ppe-Item'))
                 item_entity['provider'] = site.get('site')

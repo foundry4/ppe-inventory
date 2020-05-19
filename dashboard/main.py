@@ -21,15 +21,7 @@ def render_dashboard():
 
     template = 'dashboard.html'
 
-    item_names = {'face-visors': 'Face Visors',
-                  'goggles': 'Goggles',
-                  'masks-iir': 'Masks (IIR)',
-                  'masks-ffp2': 'Masks (FFP2)',
-                  'masks-ffp3': 'Masks (FFP3)',
-                  'gloves': 'Gloves',
-                  'gowns': 'Gowns',
-                  'hand-hygiene': 'Hand Hygiene',
-                  'apron': 'Apron'}
+    item_names = get_item_names()
 
     print(f"Rendering {template}")
     db_items = get_ppe_items_from_db()
@@ -46,6 +38,19 @@ def render_dashboard():
                                              data={}
                                              ))
     return response
+
+
+def get_item_names():
+    item_names = {'face-visors': 'Face Visors',
+                  'goggles': 'Goggles',
+                  'masks-iir': 'Masks (IIR)',
+                  'masks-ffp2': 'Masks (FFP2)',
+                  'masks-ffp3': 'Masks (FFP3)',
+                  'gloves': 'Gloves',
+                  'gowns': 'Gowns',
+                  'hand-hygiene': 'Hand Hygiene',
+                  'apron': 'Apron'}
+    return item_names
 
 
 def get_ppe_items(item_names, items):
