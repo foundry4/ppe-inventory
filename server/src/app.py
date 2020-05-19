@@ -11,14 +11,14 @@ from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
-from flask_basicauth import BasicAuth
+#from flask_basicauth import BasicAuth
 
 
-from werkzeug.security import generate_password_hash
-
-users = {
-     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
-}
+# from werkzeug.security import generate_password_hash
+#
+# users = {
+#      os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
+# }
 
 
 
@@ -653,47 +653,47 @@ def get_links(service_type, borough, pcn, client=datastore_client):
     return results
 
 
-def update_ppe_item(site, client):
-    acute = site.get('acute')
-    if acute != 'yes':
-        item_names = get_item_names()
-
-        # Instantiates a client
-        query = client.query(kind='Ppe-Item')
-        query.add_filter('provider', '=', site.get('site'))
-        items = list(query.fetch())
-        print(f"found {len(items)} for site {site.get('site')}")
-
-        for item_name in item_names:
-            stock_items = [item for item in items if item.get('item_name') == item_name]
-            print(f"found {len(items)} for site {site.get('site')} and item {item_name}")
-            if len(stock_items) == 0:
-                item_entity = datastore.Entity(client.key('Ppe-Item'))
-                item_entity['provider'] = site.get('site')
-                item_entity['item_name'] = item_name
-                item_entity['region'] = 'NEL'
-                item_entity['borough'] = site.get('borough')
-                item_entity['pcn_network'] = site.get('pcn_network')
-            else:
-                item_entity = stock_items[0]
-            stock_level = int(site.get(item_name + '-stock-levels')) if site.get(item_name + '-stock-levels') else 0
-            quantity_used = int(site.get(item_name + '-quantity_used')) if site.get(item_name + '-quantity_used') else 0
-            daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
-            rag = 'under_one' if daily_usage < 1 else \
-                'one_two' if daily_usage < 2 else \
-                'two_three' if daily_usage < 3 else \
-                'less-than-week' if daily_usage < 7 else \
-                'more-than-week'
-            item_entity['last_update'] = site.get('last_update')
-            item_entity['stock-levels'] = stock_level
-            item_entity['quantity_used'] = quantity_used
-            item_entity['stock-levels-note'] = site.get(item_name + '-stock-levels-note')
-            item_entity['daily_usage'] = daily_usage
-            item_entity['rag'] = rag
-            item_entity['mutual_aid_received'] = site.get(item_name + 'mutual_aid_received')
-            item_entity['national_and_other_external_receipts'] = site.get(
-                item_name + 'national_and_other_external_receipts')
-            client.put(item_entity)
+# def update_ppe_item(site, client):
+#     acute = site.get('acute')
+#     if acute != 'yes':
+#         item_names = get_item_names()
+#
+#         # Instantiates a client
+#         query = client.query(kind='Ppe-Item')
+#         query.add_filter('provider', '=', site.get('site'))
+#         items = list(query.fetch())
+#         print(f"found {len(items)} for site {site.get('site')}")
+#
+#         for item_name in item_names:
+#             stock_items = [item for item in items if item.get('item_name') == item_name]
+#             print(f"found {len(items)} for site {site.get('site')} and item {item_name}")
+#             if len(stock_items) == 0:
+#                 item_entity = datastore.Entity(client.key('Ppe-Item'))
+#                 item_entity['provider'] = site.get('site')
+#                 item_entity['item_name'] = item_name
+#                 item_entity['region'] = 'NEL'
+#                 item_entity['borough'] = site.get('borough')
+#                 item_entity['pcn_network'] = site.get('pcn_network')
+#             else:
+#                 item_entity = stock_items[0]
+#             stock_level = int(site.get(item_name + '-stock-levels')) if site.get(item_name + '-stock-levels') else 0
+#             quantity_used = int(site.get(item_name + '-quantity_used')) if site.get(item_name + '-quantity_used') else 0
+#             daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
+#             rag = 'under_one' if daily_usage < 1 else \
+#                 'one_two' if daily_usage < 2 else \
+#                 'two_three' if daily_usage < 3 else \
+#                 'less-than-week' if daily_usage < 7 else \
+#                 'more-than-week'
+#             item_entity['last_update'] = site.get('last_update')
+#             item_entity['stock-levels'] = stock_level
+#             item_entity['quantity_used'] = quantity_used
+#             item_entity['stock-levels-note'] = site.get(item_name + '-stock-levels-note')
+#             item_entity['daily_usage'] = daily_usage
+#             item_entity['rag'] = rag
+#             item_entity['mutual_aid_received'] = site.get(item_name + 'mutual_aid_received')
+#             item_entity['national_and_other_external_receipts'] = site.get(
+#                 item_name + 'national_and_other_external_receipts')
+#             client.put(item_entity)
 
 
 def get_item_names():
