@@ -198,22 +198,7 @@ def sites(client=datastore_client, request_param=request):
     # Construct collection of representations of sites to pass to template
     seven_days_ago = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('Europe/London')) - datetime.timedelta(
         days=7)
-    sites_to_display = []
-    for result in results:
-        safe_provider = result.get('provider', 'Provider is missing')
-        if result.get('last_update') is None:
-            last_updated_style = 'late'
-            dt = ' - not recorded'
-        else:
-            if result['last_update'] < seven_days_ago:
-                last_updated_style = 'late'
-            else:
-                last_updated_style = 'not-late'
-            utc_dt = result['last_update']
-            dt = utc_to_local(utc_dt).strftime("%H:%M, %a %d %b %Y")
-        sites_to_display.append(
-            {'link': result['link'], 'provider': safe_provider, 'dt': dt, 'code': result['code'],
-             'last_updated_style': last_updated_style})
+
 
     response = make_response(render_template('sites.html',
                                              sites=results,
