@@ -22,7 +22,7 @@
             <tr>
                 <td><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
                 <td>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </td>
-                <td>{{ site["last_update"] }}</td>
+                <td>{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M %d %B %y') }}{% endif %}</td>
             </tr>
             {% endfor %}
         </table>
