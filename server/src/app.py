@@ -218,7 +218,7 @@ def site(site_param):
     rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
     stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
-    if provider and stock_items:
+    if provider:
         return render_template('site.html',
                                site=provider,
                                stock_items=stock_items,
