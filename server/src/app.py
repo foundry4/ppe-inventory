@@ -89,7 +89,7 @@ def dashboard_items(item_param, request_param=request):
 
     filtered_stock_items = get_filtered_sites(stock_items, selected_boroughs, selected_service_types, selected_pcns)
     rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
-    filtered_stock_items.sort(key=lambda x: rags.index(x.get('rag')))
+    # filtered_stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
     print(f"found {len(stock_items)} stock items")
 
@@ -110,7 +110,7 @@ def dashboard_items(item_param, request_param=request):
     }
 
     rag_labels = get_rag_labels()
-    stock_items.sort(key=lambda x: list(rag_labels).index(x.get('rag')))
+    #stock_items.sort(key=lambda x: list(rag_labels).index(x.get('rag')))
     if stock_items:
         return render_template('item.html',
                                item=item_param,
