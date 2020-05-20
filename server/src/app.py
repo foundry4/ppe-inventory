@@ -88,6 +88,8 @@ def dashboard_items(item_param, request_param=request):
     stock_items = list(query.fetch())
 
     filtered_stock_items = get_filtered_sites(stock_items, selected_boroughs, selected_service_types, selected_pcns)
+    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+    filtered_stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
     print(f"found {len(stock_items)} stock items")
 
