@@ -70,8 +70,8 @@
             {% if not g.user %}
                 <a class="nhsuk-action-link" href="/login">Log In</a>
             {% else %}
-                <a class="nhsuk-action-link" href="/sites">Sites</a> |
-                <a class="nhsuk-action-link" href="/dashboards">Dashboards</a> |
+                <a class="nhsuk-action-link" href="/sites?{{ request.query_string.decode() }}">Providers</a> |
+                <a class="nhsuk-action-link" href="/dashboards?{{ request.query_string.decode() }}">Dashboard</a> |
                 <a class="nhsuk-action-link" href="/logout">Logout: {{ g.user.profile.email }}</a>
             {% endif %}
         </div>
