@@ -12,6 +12,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="robots" content="noindex">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Provider site search results">
@@ -35,6 +36,7 @@
     <link type="font/woff2" src="static/assets/fonts/FrutigerLTW01-55Roman.woff2" as="font" crossorigin>
     <link type="font/woff2" src="static/assets/fonts/FrutigerLTW01-65Bold.woff2" as="font" crossorigin>
     <link type="text/css" href="/static/assets/nhsuk.css" rel="stylesheet">
+    <link type="text/css" href="/static/assets/ppe.css" rel="stylesheet">
     <link rel="shortcut icon" src="static/assets/favicons/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" src="static/assets/favicons/apple-touch-icon-180x180.png">
     <link rel="mask-icon" src="static/assets/favicon.svg" color="#005eb8">
@@ -57,18 +59,20 @@
                 </svg>
             </a>
         </div>
+
     </div>
+    <div class="nhsuk-width-container" style="color: white"><h3>North East London PPE Stock Management</h3></div>
 </header>
 
-<div class="nhsuk-width-container">
+<div class="nhsuk-width-container" style="background-color: white">
     <div class="nhsuk-header__menu">
         <div>
             <a class="nhsuk-action-link" href="/">Home</a> |
             {% if not g.user %}
                 <a class="nhsuk-action-link" href="/login">Log In</a>
             {% else %}
-                <a class="nhsuk-action-link" href="/sites">Sites</a> |
-                <a class="nhsuk-action-link" href="/dashboards">Dashboards</a> |
+                <a class="nhsuk-action-link" href="/sites?{{ request.query_string.decode() }}">Providers</a> |
+                <a class="nhsuk-action-link" href="/dashboards?{{ request.query_string.decode() }}">Dashboard</a> |
                 <a class="nhsuk-action-link" href="/logout">Logout: {{ g.user.profile.email }}</a>
             {% endif %}
         </div>

@@ -109,7 +109,7 @@ def update_ppe_item(site, client):
 
         for item_name in item_names:
             stock_items = [item for item in items if item.get('item_name') == item_name]
-            print(f"found {len(items)} for site {site.get('site')} and item {item_name}")
+            print(f"found {len(stock_items)} for site {site.get('site')} and item {item_name}")
             if len(stock_items) == 0:
                 item_entity = datastore.Entity(client.key('Ppe-Item'))
                 item_entity['provider'] = site.get('site')
@@ -117,16 +117,20 @@ def update_ppe_item(site, client):
                 item_entity['region'] = 'NEL'
                 item_entity['borough'] = site.get('borough')
                 item_entity['pcn_network'] = site.get('pcn_network')
+                item_entity['service_type'] = site.get('service_type')
             else:
                 item_entity = stock_items[0]
             stock_level = int(site.get(item_name + '-stock-levels')) if site.get(item_name + '-stock-levels') else 0
             quantity_used = int(site.get(item_name + '-quantity_used')) if site.get(item_name + '-quantity_used') else 0
-            daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
+            daily_usage = float('nan') if quantity_used == 0 and stock_level != 0 \
+                else 0 if stock_level == 0 \
+                else stock_level / quantity_used
             rag = 'under_one' if daily_usage < 1 else \
                 'one_two' if daily_usage < 2 else \
                 'two_three' if daily_usage < 3 else \
                 'less-than-week' if daily_usage < 7 else \
-                'more-than-week'
+                'more-than-week' if daily_usage >= 7 else ''
+
             item_entity['last_update'] = site.get('last_update')
             item_entity['stock-levels'] = stock_level
             item_entity['quantity_used'] = quantity_used

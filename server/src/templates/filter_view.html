@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block html_head %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 style="margin-bottom: 0px">PPE Dashboard</h1>
+<p>{% block subtitle %}{% endblock %}</p>
+    <div class="row" style="margin-top: 30px">
+        <div class="nhsuk-grid-column-one-quarter">
+            <a href="{{request.path}}">clear filters</a>
+            <br>
+            <br>
+            {% if boroughs %}
+                <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details0" {% if selected_boroughs %}open{% endif %}>
+                    <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="false">
+                        <span class="nhsuk-details__summary-text">
+                            Boroughs
+                        </span>
+                    </summary>
+                    <div class="nhsuk-details__text" id="nhsuk-details__text0" aria-hidden="true">
+                        {% for borough in boroughs %}
+                            <div>
+                                <label>
+                                    <input style="font-size: 12px" onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
+                                </label>{{ borough }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </details>
+            {% endif %}
+
+            {% if service_types %}
+                <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details1" {% if selected_service_types %}open{% endif %}>
+                    <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
+                        <span class="nhsuk-details__summary-text">
+                            Service Types
+                        </span>
+                    </summary>
+                    <div class="nhsuk-details__text" id="nhsuk-details__text1" aria-hidden="false">
+                        {% for service_type in service_types %}
+                            <div>
+                                <label>
+                                    <input onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
+                                </label>{{ service_type }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </details>
+            {% endif %}
+
+            {% if selected_boroughs %}
+                <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details2"  {% if selected_pcns %}open{% endif %}>
+                    <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
+                        <span class="nhsuk-details__summary-text">
+                            Primary Care Networks
+                        </span>
+                    </summary>
+                    <div class="nhsuk-details__text" id="nhsuk-details__text2" aria-hidden="true">
+                        {% for pcn in pcns %}
+                            <div>
+                                <label>
+                                    <input onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
+                                </label>{{ pcn }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </details>
+            {% endif %}
+
+        </div>
+        <div class="nhsuk-grid-column-three-quarters">
+              {% block content %}{% endblock %}
+        </div>
+    </div>
+<script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+
+{% endblock %}
