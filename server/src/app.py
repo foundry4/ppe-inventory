@@ -83,13 +83,11 @@ def dashboard_items(item_param, request_param=request):
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
 
-    query = datastore_client.query(kind='Ppe-Item')
-    query.add_filter('item_name', '=', item_param)
-    stock_items = list(query.fetch())
+    stock_items = get_stock_items_by_item_name_from_db(item_param)
 
     filtered_stock_items = get_filtered_sites(stock_items, selected_boroughs, selected_service_types, selected_pcns)
-    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
-    # filtered_stock_items.sort(key=lambda x: rags.index(x.get('rag')))
+    rags = ('', 'under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+    filtered_stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
     print(f"found {len(stock_items)} stock items")
 
@@ -110,7 +108,6 @@ def dashboard_items(item_param, request_param=request):
     }
 
     rag_labels = get_rag_labels()
-    #stock_items.sort(key=lambda x: list(rag_labels).index(x.get('rag')))
     if stock_items:
         return render_template('item.html',
                                item=item_param,
@@ -235,6 +232,14 @@ def site(site_param):
 def get_stock_items_by_provider_from_db(provider):
     query = datastore_client.query(kind='Ppe-Item')
     query.add_filter('provider', '=', provider.get('provider'))
+    stock_items = list(query.fetch())
+    print(f"found {len(stock_items)} stock items")
+    return stock_items
+
+
+def get_stock_items_by_item_name_from_db(item_name):
+    query = datastore_client.query(kind='Ppe-Item')
+    query.add_filter('item_name', '=', item_name)
     stock_items = list(query.fetch())
     print(f"found {len(stock_items)} stock items")
     return stock_items
