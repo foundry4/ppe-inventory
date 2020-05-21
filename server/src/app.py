@@ -473,5 +473,5 @@ def get_item_names():
                   'gloves': 'Gloves',
                   'gowns': 'Gowns',
                   'hand-hygiene': 'Hand Hygiene',
-                  'apron': 'Apron'}
+                  'apron': 'Aprons'}
     return item_names
