@@ -11,21 +11,17 @@ from flask_oidc import OpenIDConnect
 from google.cloud import datastore
 from google.cloud import pubsub_v1
 from okta import UsersClient
-#from flask_basicauth import BasicAuth
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
+import sys
 
-
-# from werkzeug.security import generate_password_hash
-#
-# users = {
-#      os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
-# }
-
-
-
-
+users = {
+    os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
+}
 
 app = Flask(__name__)
 
+auth = HTTPBasicAuth()
 
 # This is required by flask for encrypting cookies and other features
 app.secret_key = os.getenv('APP_SECRET_KEY')
@@ -63,6 +59,7 @@ logging_client = google.cloud.logging.Client()
 logging_client.get_default_handler()
 logging_client.setup_logging()
 
+
 # @auth.verify_password
 # def verify_password(username, password):
 #     if username in users and \
@@ -70,13 +67,15 @@ logging_client.setup_logging()
 #         return username
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
 
 
 @app.route('/dashboards/items/<item_param>')
-@oidc.require_login
+@auth.login_required
 def dashboard_items(item_param, request_param=request):
     request_args = request_param.args
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
@@ -96,15 +95,19 @@ def dashboard_items(item_param, request_param=request):
 
     rag_item_sums = {
         'under_one':
-            sum([1 for item in filtered_stock_items if item.get('rag')=='under_one' and item.get('quantity_used') > 0]),
+            sum([1 for item in filtered_stock_items if
+                 item.get('rag') == 'under_one' and item.get('quantity_used') > 0]),
         'one_two':
             sum([1 for item in filtered_stock_items if item.get('rag') == 'one_two' and item.get('quantity_used') > 0]),
         'two_three':
-            sum([1 for item in filtered_stock_items if item.get('rag') == 'two_three' and item.get('quantity_used') != 0]),
+            sum([1 for item in filtered_stock_items if
+                 item.get('rag') == 'two_three' and item.get('quantity_used') != 0]),
         'less-than-week':
-            sum([1 for item in filtered_stock_items if item.get('rag') == 'less-than-week' and item.get('quantity_used') > 0]),
+            sum([1 for item in filtered_stock_items if
+                 item.get('rag') == 'less-than-week' and item.get('quantity_used') > 0]),
         'more-than-week':
-            sum([1 for item in filtered_stock_items if item.get('rag') == 'more-than-week' and item.get('quantity_used') > 0]),
+            sum([1 for item in filtered_stock_items if
+                 item.get('rag') == 'more-than-week' and item.get('quantity_used') > 0]),
     }
 
     rag_labels = get_rag_labels()
@@ -122,7 +125,7 @@ def dashboard_items(item_param, request_param=request):
 
 
 @app.route('/dashboards')
-@oidc.require_login
+@auth.login_required
 def dashboards(client=datastore_client, request_param=request):
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
@@ -175,8 +178,14 @@ def dashboards(client=datastore_client, request_param=request):
     return response
 
 
+@app.route('/')
+@auth.login_required
+def index():
+    return "Hello, {}!".format(auth.current_user())
+
+
 @app.route('/sites')
-@oidc.require_login
+@auth.login_required
 def sites(client=datastore_client, request_param=request):
     # Extract sets of values from borough, service_type and pcn query params
     request_args = request_param.args
@@ -198,7 +207,6 @@ def sites(client=datastore_client, request_param=request):
     seven_days_ago = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('Europe/London')) - datetime.timedelta(
         days=7)
 
-
     response = make_response(render_template('sites.html',
                                              sites=results,
                                              boroughs=boroughs,
@@ -211,6 +219,7 @@ def sites(client=datastore_client, request_param=request):
 
 
 @app.route('/sites/<site_param>')
+@auth.login_required
 def site(site_param):
     provider = get_provider_by_code_from_db(site_param)
     stock_items = get_stock_items_by_provider_from_db(provider)
@@ -277,48 +286,6 @@ def get_rag_color_codes():
     return rag_color_codes
 
 
-# @app.route('/forms/<site_param>')
-# def form(site_param):
-#     query = datastore_client.query(kind='Site')
-#     query.add_filter('code', '=', site_param)
-#     result = list(query.fetch())
-#     site = result[0]
-#     if site.get('acute') == 'yes':
-#         template = 'form.html'
-#     else:
-#         template = 'community_form.html'
-#     if result:
-#         return render_template(template, site=site)
-#     else:
-#         flash(f'The site with code: {site_param} cannot be found', 'error')
-#         return redirect(url_for('index'))
-
-
-# @app.route('/forms/<site_param>', methods=["POST"])
-# def form_update(site_param, client=datastore_client, request_param=request):
-#     print('Updating form...')
-#     site_to_update = get_site(site_param, client)
-#     print(site_to_update)
-#     if site_to_update:
-#         update_site(client=client, site_to_update=site_to_update, request_param=request_param)
-#         update_ppe_item(site_to_update, client)
-#         publish_update(get_sheet_data(site_to_update))
-#         domain = os.getenv('DOMAIN')
-#         form_action = f'https://{domain}/form'
-#         dashboard_link = f'https://{domain}/dashboard'
-#
-#         response = make_response(render_template('success.html',
-#                                                  site=site_to_update,
-#                                                  form_action=form_action,
-#                                                  dashboard_link=dashboard_link,
-#                                                  currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
-#                                                  ))
-#         return response
-#     else:
-#         flash(f'There was a problem updating site with code: {site_param}.', 'error')
-#     return redirect(url_for('index'))
-
-
 @app.route('/login')
 @oidc.require_login
 def login():
@@ -331,137 +298,16 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.before_request
-def inject_user_into_each_request():
-    if oidc.user_loggedin:
-        g.user = okta_client.get_user(str(oidc.user_getfield('sub')))
-    else:
-        g.user = None
+# @app.before_request
+# def inject_user_into_each_request():
+#     if oidc.user_loggedin:
+#         g.user = okta_client.get_user(str(oidc.user_getfield('sub')))
+#     else:
+#         g.user = None
 
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
-
-
-def update_site(site_to_update, client, request_param):
-    # Values NOT to change
-    site_name = site_to_update.key.name
-    site_code = site_to_update['code']
-    acute_status = site_to_update['acute']
-    # Update the site inc timestamp while preserving selected values
-    site_to_update.update(request_param.form)
-    site_to_update["last_update"] = datetime.datetime.now()
-    site_to_update['site'] = site_name
-    site_to_update['acute'] = acute_status
-    site_to_update['code'] = site_code
-    client.put(site_to_update)
-
-
-def publish_update(site_to_update):
-    # Publish a message to update the Google Sheet:
-    message = {}
-    message.update(site_to_update)
-    message['last_update'] = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%H:%M %d %B %y')
-    publisher = pubsub_v1.PublisherClient()
-    project_id = os.getenv("PROJECT_ID")
-    topic_path = publisher.topic_path(project_id, 'form-submissions')
-    data = json.dumps(message).encode("utf-8")
-    future = publisher.publish(topic_path, data=data)
-    print(f"Published update to site {site_to_update.key.name}: {future.result()}")
-
-
-def get_sheet_data(site_to_update):
-    safe_site_data = datastore.Entity(key=datastore.Client().key('Site', site_to_update['site']))
-    fields = [
-        'site',
-        'face-visors-stock-levels',
-        'face-visors-quantity_used',
-        'face-visors-stock-levels-note',
-        'face-visors-rag',
-        'goggles-stock-levels',
-        'goggles-quantity_used',
-        'goggles-stock-levels-note',
-        'goggles-rag',
-        'masks-iir-stock-levels',
-        'masks-iir-quantity_used',
-        'masks-iir-stock-levels-note',
-        'masks-iir-rag',
-        'masks-ffp2-stock-levels',
-        'masks-ffp2-quantity_used',
-        'masks-ffp2-stock-levels-note',
-        'masks-ffp2-rag',
-        'masks-ffp3-stock-levels',
-        'masks-ffp3-quantity_used',
-        'masks-ffp3-stock-levels-note',
-        'masks-ffp3-rag',
-        'fit-test-solution-stock-levels',
-        'fit-test-solution-quantity_used',
-        'fit-test-solution-stock-levels-note',
-        'fit-test-solution-rag',
-        'fit-test-fullkit-stock-levels',
-        'fit-test-fullkit-quantity_used',
-        'fit-test-fullkit-stock-levels-note',
-        'fit-test-fullkit-rag',
-        'gloves-stock-levels',
-        'gloves-quantity_used',
-        'gloves-stock-levels-note',
-        'gloves-rag',
-        'gowns-stock-levels',
-        'gowns-quantity_used',
-        'gowns-stock-levels-note',
-        'gowns-rag',
-        'hand-hygiene-stock-levels',
-        'hand-hygiene-quantity_used',
-        'hand-hygiene-stock-levels-note',
-        'hand-hygiene-rag',
-        'apron-stock-levels',
-        'apron-quantity_used',
-        'apron-stock-levels-note',
-        'apron-rag',
-        'body-bags-stock-levels',
-        'body-bags-quantity_used',
-        'body-bags-stock-levels-note',
-        'body-bags-rag',
-        'coveralls-stock-levels',
-        'coveralls-quantity_used',
-        'coveralls-stock-levels-note',
-        'coveralls-rag',
-        'swabs-stock-levels',
-        'swabs-quantity_used',
-        'swabs-stock-levels-note',
-        'swabs-rag',
-        'fit-test-solution-55ml-stock-levels',
-        'fit-test-solution-55ml-quantity_used',
-        'fit-test-solution-55ml-stock-levels-note',
-        'fit-test-solution-55ml-rag',
-        'non-covid19-patient-number',
-        'covid19-patient-number',
-        'covid19-patient-number-suspected',
-        'staff-number',
-        'gowns-mutual_aid_received',
-        'gowns-national_and_other_external_receipts',
-        'coveralls-mutual_aid_received',
-        'coveralls-national_and_other_external_receipts',
-        'non-surgical-gowns-stock-levels',
-        'non-surgical-gowns-quantity_used',
-        'non-surgical-gowns-mutual_aid_received',
-        'non-surgical-gowns-national_and_other_external_receipts',
-        'non-surgical-gowns-stock-levels-note',
-        'non-surgical-gowns-rag',
-        'sterile-surgical-gowns-stock-levels',
-        'sterile-surgical-gowns-quantity_used',
-        'sterile-surgical-gowns-mutual_aid_received',
-        'sterile-surgical-gowns-national_and_other_external_receipts',
-        'sterile-surgical-gowns-stock-levels-note',
-        'sterile-surgical-gowns-rag'
-    ]
-
-    for field in fields:
-        try:
-            safe_site_data[field] = site_to_update[field]
-        except Exception as e:
-            print(f'Exception {e} triggered when preparing safe data to pass to spreadsheet')
-    return safe_site_data
 
 
 def get_sites(client):
@@ -485,7 +331,6 @@ def get_site(code, client):
 
 
 def get_ppe_items_from_db(client):
-
     query = client.query(kind='Ppe-Item')
     query.add_filter('quantity_used', '>', 0)
     items = list(query.fetch())
@@ -634,58 +479,6 @@ def get_filter_result(site_to_filter, field, values):
             return False
     else:
         return False
-
-
-def get_links(service_type, borough, pcn, client=datastore_client):
-    query = client.query(kind='Site')
-    query.add_filter('borough', '=', borough)
-    query.add_filter('pcn_network', '=', pcn)
-    query.add_filter('service_type', '=', service_type)
-    results = list(query.fetch())
-    return results
-
-
-# def update_ppe_item(site, client):
-#     acute = site.get('acute')
-#     if acute != 'yes':
-#         item_names = get_item_names()
-#
-#         # Instantiates a client
-#         query = client.query(kind='Ppe-Item')
-#         query.add_filter('provider', '=', site.get('site'))
-#         items = list(query.fetch())
-#         print(f"found {len(items)} for site {site.get('site')}")
-#
-#         for item_name in item_names:
-#             stock_items = [item for item in items if item.get('item_name') == item_name]
-#             print(f"found {len(items)} for site {site.get('site')} and item {item_name}")
-#             if len(stock_items) == 0:
-#                 item_entity = datastore.Entity(client.key('Ppe-Item'))
-#                 item_entity['provider'] = site.get('site')
-#                 item_entity['item_name'] = item_name
-#                 item_entity['region'] = 'NEL'
-#                 item_entity['borough'] = site.get('borough')
-#                 item_entity['pcn_network'] = site.get('pcn_network')
-#             else:
-#                 item_entity = stock_items[0]
-#             stock_level = int(site.get(item_name + '-stock-levels')) if site.get(item_name + '-stock-levels') else 0
-#             quantity_used = int(site.get(item_name + '-quantity_used')) if site.get(item_name + '-quantity_used') else 0
-#             daily_usage = np.nan if quantity_used == 0 else stock_level / quantity_used
-#             rag = 'under_one' if daily_usage < 1 else \
-#                 'one_two' if daily_usage < 2 else \
-#                 'two_three' if daily_usage < 3 else \
-#                 'less-than-week' if daily_usage < 7 else \
-#                 'more-than-week'
-#             item_entity['last_update'] = site.get('last_update')
-#             item_entity['stock-levels'] = stock_level
-#             item_entity['quantity_used'] = quantity_used
-#             item_entity['stock-levels-note'] = site.get(item_name + '-stock-levels-note')
-#             item_entity['daily_usage'] = daily_usage
-#             item_entity['rag'] = rag
-#             item_entity['mutual_aid_received'] = site.get(item_name + 'mutual_aid_received')
-#             item_entity['national_and_other_external_receipts'] = site.get(
-#                 item_name + 'national_and_other_external_receipts')
-#             client.put(item_entity)
 
 
 def get_item_names():
