@@ -25,7 +25,7 @@ env:
   VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
   VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
   USER_NAME: ${{ secrets.USER_NAME }}
-  PASSWORD:: ${{ secrets.PASSWORD }}
+  PASSWORD: ${{ secrets.PASSWORD }}
 
 jobs:
 

@@ -2,18 +2,15 @@ import datetime
 import json
 import os
 from datetime import timezone
-# import numpy as np
 # Imports the Cloud Logging client library
 import google.cloud.logging
 import pytz
-from flask import Flask, render_template, make_response, request, redirect, url_for, g, flash
+from flask import Flask, render_template, make_response, request, redirect, url_for, flash
 from flask_oidc import OpenIDConnect
 from google.cloud import datastore
-from google.cloud import pubsub_v1
 from okta import UsersClient
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
-import sys
 
 users = {
     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
@@ -58,14 +55,6 @@ logging_client = google.cloud.logging.Client()
 # at INFO level and higher
 logging_client.get_default_handler()
 logging_client.setup_logging()
-
-
-# @auth.verify_password
-# def verify_password(username, password):
-#     if username in users and \
-#             check_password_hash(users.get(username), password):
-#         return username
-
 
 @auth.verify_password
 def verify_password(username, password):
