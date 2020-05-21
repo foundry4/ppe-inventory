@@ -169,7 +169,7 @@ def dashboards(client=datastore_client, request_param=request):
 
 @app.route('/')
 def index():
-    return f"User_name: {os.getenv('USER_NAME')}. Pwd : {os.getenv('PASSWORD')}"
+    return f"User_name: {os.getenv('USER_NAME')}. Pwd : {os.getenv('PASSWORD')}. Secret_key: {app.config['SECRET_KEY']} "
     #return "Hello, {}!".format(auth.current_user())
 
 
