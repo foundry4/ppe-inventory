@@ -211,7 +211,7 @@ def sites(client=datastore_client, request_param=request):
 def site(site_param):
     provider = get_provider_by_code_from_db(site_param)
     stock_items = get_stock_items_by_provider_from_db(provider)
-    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+    rags = ('','under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
     stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
     if provider:
@@ -253,6 +253,7 @@ def get_provider_by_code_from_db(site_param):
 
 def get_rag_labels():
     rag_labels = {
+        '': 'N/A',
         'under_one': 'Up to 1 day',
         'one_two': '1-2 days',
         'two_three': '2-3 days',
