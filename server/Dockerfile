@@ -2,7 +2,7 @@
 FROM python:3.7
 
 # 2
-RUN pip install Flask gunicorn flask-oidc okta google-cloud-datastore google-cloud-pubsub google.cloud.logging
+RUN pip install Flask gunicorn flask-oidc okta google-cloud-datastore google-cloud-pubsub google.cloud.logging Flask-HTTPAuth numpy
 
 # 3
 COPY src/ /app
