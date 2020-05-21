@@ -113,6 +113,11 @@ def dashboard_items(item_param, request_param=request):
         return redirect(url_for('index'))
 
 
+@app.route('/')
+def home():
+    return redirect('/dashboards')
+
+
 @app.route('/dashboards')
 @auth.login_required
 def dashboards(client=datastore_client, request_param=request):
@@ -206,7 +211,7 @@ def sites(client=datastore_client, request_param=request):
 def site(site_param):
     provider = get_provider_by_code_from_db(site_param)
     stock_items = get_stock_items_by_provider_from_db(provider)
-    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
+    rags = ('','under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
     stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
     if provider:
@@ -248,6 +253,7 @@ def get_provider_by_code_from_db(site_param):
 
 def get_rag_labels():
     rag_labels = {
+        '': 'N/A',
         'under_one': 'Up to 1 day',
         'one_two': '1-2 days',
         'two_three': '2-3 days',
@@ -279,14 +285,6 @@ def login():
 def logout():
     oidc.logout()
     return redirect(url_for('index'))
-
-
-# @app.before_request
-# def inject_user_into_each_request():
-#     if oidc.user_loggedin:
-#         g.user = okta_client.get_user(str(oidc.user_getfield('sub')))
-#     else:
-#         g.user = None
 
 
 if __name__ == '__main__':
