@@ -12,9 +12,9 @@ from okta import UsersClient
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 
-users = {
-    os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
-}
+# users = {
+#     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
+# }
 
 app = Flask(__name__)
 
@@ -56,11 +56,11 @@ logging_client = google.cloud.logging.Client()
 logging_client.get_default_handler()
 logging_client.setup_logging()
 
-@auth.verify_password
-def verify_password(username, password):
-    if username in users and \
-            check_password_hash(users.get(username), password):
-        return username
+# @auth.verify_password
+# def verify_password(username, password):
+#     if username in users and \
+#             check_password_hash(users.get(username), password):
+#         return username
 
 
 @app.route('/dashboards/items/<item_param>')
