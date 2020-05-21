@@ -113,6 +113,11 @@ def dashboard_items(item_param, request_param=request):
         return redirect(url_for('index'))
 
 
+@app.route('/')
+def home():
+    return redirect('/dashboards')
+
+
 @app.route('/dashboards')
 @auth.login_required
 def dashboards(client=datastore_client, request_param=request):
@@ -279,14 +284,6 @@ def login():
 def logout():
     oidc.logout()
     return redirect(url_for('index'))
-
-
-# @app.before_request
-# def inject_user_into_each_request():
-#     if oidc.user_loggedin:
-#         g.user = okta_client.get_user(str(oidc.user_getfield('sub')))
-#     else:
-#         g.user = None
 
 
 if __name__ == '__main__':
