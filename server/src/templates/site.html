@@ -21,9 +21,9 @@
     <!-- Header row -->
     <tr>
         <td><b>PPE type</b></td>
-        <td><b>Current Stock level</b><br>Last updated: {{site['last_updated']}}</td>
-        <td><b>Used last week</b><br>Estimated figures</td>
-        <td><b>RAG</b><br>Stock assessment rating</td>
+        <td><div><b>Current Stock level</b></div><div class="text-gray nhsuk-u-font-size-16">Last updated: {{site['last_update']}}</div></td>
+        <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>
+        <td><div><b>RAG</b></div><div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div></td>
     </tr>
     {% for item in stock_items %}
         <tr>

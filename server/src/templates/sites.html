@@ -4,25 +4,19 @@
 
 {% block content %}
     <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-one-third">
-            <a href="/dashboards?{{ request.query_string.decode() }}">Overview</a>
-            View by provider
-        </div>
-        <br>
-        <br>
     {% if sites %}
         <table>
             <!-- Header row -->
             <tr>
-                <td>Provider (A-Z)</td>
-                <td>Contact details</td>
-                <td>Last Updated</td>
+                <td class="provider-name">Provider (A-Z)</td>
+                <td class="provider-contact">Contact details</td>
+                <td class="provider-updated">Last Updated</td>
             </tr>
             {% for site in sites %}
             <tr>
-                <td><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
-                <td>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </td>
-                <td>{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M %d %B %y') }}{% endif %}</td>
+                <td class="provider-name"><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
+                <td class="provider-contact nhsuk-u-font-size-16">{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </td>
+                <td class="provider-updated text-gray nhsuk-u-font-size-16">{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M, %a %d %B %Y') }}{% endif %}</td>
             </tr>
             {% endfor %}
         </table>
