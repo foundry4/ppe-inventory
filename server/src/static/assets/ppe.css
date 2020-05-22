@@ -1,3 +1,5 @@
+
+
 .dot {
   height: 25px;
   width: 25px;
@@ -54,4 +56,67 @@
   display: none;
   background-color: white;
   overflow: hidden;
+}
+
+.filter-container {
+  padding-left: 0;
+}
+
+.checkbox-container {
+  display: flex;
+  font-size: 16px;
+}
+.checkbox-container label {
+  width: 30px;
+}
+
+.dashboard-card {
+    background: #fff;
+    padding: 0 10px;
+}
+
+.dashboard-card__title {
+    font-size: 24px;
+}
+.highlight-maroon {
+    padding: 0 10px;
+}
+
+.dashboard-card__time {
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.dashboard-card__percentage {
+    font-size: 16px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.dashboard-card td:last-child {
+    padding-right: 10px!important;
+}
+.dashboard-card__link {
+    border-bottom: 0;
+}
+.dashboard-card__link a {
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.nhsuk-details {
+  margin-bottom: 0;
+}
+
+.text-gray {
+  color: #4C6272
+}
+
+.rag-rating {
+  display: flex;
+  align-items: center;
+}
+
+.rag-rating_label {
+  padding-left: 10px;
 }

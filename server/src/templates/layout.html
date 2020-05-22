@@ -22,15 +22,6 @@
     <meta name="msapplication-square150x150logo" content="static/assets/mediumtile-150x150.png">
     <meta name="msapplication-wide310x150logo" content="static/assets/favicons/widetile-310x150.png">
     <meta name="msapplication-square310x310logo" content="static/assets/favicons/largetile-310x310.png">
-    <meta property="og:url" content="https://ppe.notb.in/form">
-    <meta property="og:title" content="PPE stock">
-    <meta property="og:description" content="Personal protective equipment stock level reporting">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="static/assets/logos/open-graph.png">
-    <meta property="og:image:alt" content="NHS">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@nhsuk">
-    <meta name="twitter:creator" content="@notbinary_">
     <script src="/static/assets/nhsuk.js"></script>
     <script src="/static/assets/ppe.js"></script>
     <link type="font/woff2" src="static/assets/fonts/FrutigerLTW01-55Roman.woff2" as="font" crossorigin>
@@ -58,21 +49,35 @@
                     <image src="https://assets.nhs.uk/images/nhs-logo.png" xlink:href=""></image>
                 </svg>
             </a>
-        </div>
 
+        </div>
+        <div class="nhsuk-header__transactional-service-name nhsuk-header__transactional-service-name--long">
+          <a class="nhsuk-header__transactional-service-name--link" href="/">North East London Primary & Community PPE Stock Management</a>
+        </div>
     </div>
-    <div class="nhsuk-width-container" style="color: white"><h3>North East London PPE Stock Management</h3></div>
+    <nav class="nhsuk-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation" aria-labelledby="label-navigation">
+      <div class="nhsuk-width-container">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/dashboards?{{ request.query_string.decode() }}">
+              Dashboard
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/sites?{{ request.query_string.decode() }}">
+              Providers
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 </header>
-
-<div class="nhsuk-width-container" style="background-color: white">
-    <div class="nhsuk-header__menu">
-        <div>
-            <a class="nhsuk-action-link" href="/dashboards?{{ request.query_string.decode() }}">Dashboard</a> |
-            <a class="nhsuk-action-link" href="/sites?{{ request.query_string.decode() }}">Providers</a>
-        </div>
-    </div>
-</div>
-
 <div class="nhsuk-width-container">
     <main class="nhsuk-main-wrapper" id="maincontent">
         <div class="nhsuk-grid-row">

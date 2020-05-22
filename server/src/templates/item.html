@@ -3,9 +3,12 @@
 {% block title %}{{ item }}{% endblock %}
 
 {% block body %}
-
+    <style>
+        svg > g > g:last-child { pointer-events: none}
+    </style>
     <h1>{{ item_names[item] }}</h1>
     <div id="piechart"></div>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
@@ -25,13 +28,13 @@
             ]);
 
               // Optional; add a title and set the width and height of the chart
-              var options = {'width':300,
+              var options = {'width':350,
                             'height':300,
                             colors: ['#951d14', '#d5281b', '#ffa620', '#65eba3', '#2AB369'],
                             'chartArea': {'width': '100%', 'height': '80%'},
                             backgroundColor: { fill:'transparent' },
                             pieSliceTextStyle: {fontSize:14},
-                            titleTextStyle: {fontSize:16},
+                            titleTextStyle: {fontSize:19},
                             legend: {fontSize:14},
                             tooltip: { textStyle: { fontSize: 14 } },
                             'title':'Current Stock Assessment Ratings'
@@ -46,16 +49,16 @@
     <!-- Header row -->
     <tr>
         <td><b>Provider</b></td>
-        <td><b>Current Stock level</b></td>
-        <td><b>Used last week</b><br>Estimated figures</td>
-        <td><b>RAG</b><br>Stock assessment rating</td>
+        <td><b>Current stock level</b></td>
+        <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>
+        <td><div><b>RAG</b></div><div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div></td>
     </tr>
     {% for item in stock_items %}
         <tr>
             <td>{{item['provider']}}</td>
             <td>{{item['stock-levels']}}</td>
             <td>{{item['quantity_used']}}</td>
-            <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
+            <td><div class="rag-rating"><span class="dot highlight-{{color_codes[item['rag']]}}"></span><span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span></div></td>
         </tr>
     {% endfor %}
     </table>
