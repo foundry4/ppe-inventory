@@ -3,6 +3,23 @@
 {% block title %}Sites{% endblock %}
 
 {% block content %}
+    <div align="right">
+        <div>
+            <p id="date_range_label">Last updated</p>
+        </div>
+        <select name="date_range" id="date_range" onchange="date_range_onchange()">
+            <option
+                    value="anytime"
+                    {% if selected_date_range == 'anytime' %}selected{% endif %}>Anytime</option>
+            <option
+                    value="last_seven_days"
+                    {% if selected_date_range == 'last_seven_days' %}selected{% endif %}>In the last 7 days</option>
+            <option
+                    value="more_than_seven_days"
+                    {% if selected_date_range == 'more_than_seven_days' %}selected{% endif %}>More than 7 days ago</option>
+        </select>
+    </div>
+    <br>
     <div class="nhsuk-grid-row">
     {% if sites %}
         <table>

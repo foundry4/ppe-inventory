@@ -9,6 +9,9 @@ function update_filter(baseUrl) {
         serviceTypes = [],
         pcnCheckboxes = document.getElementsByName('pcn'),
         pcns = [];
+
+    var date_range = document.getElementById('date_range');
+
     // loop through all collected objects and gather the checked boxes
     for (i = 0; i < boroughCheckboxes.length; i++) {
         if (boroughCheckboxes[i].checked) {
@@ -44,11 +47,28 @@ function update_filter(baseUrl) {
         }
         url += 'pcn=[' + pcns + ']'
     }
-    if ((boroughs.length > 0) || (serviceTypes.length > 0) || (pcns.length > 0)) {
+
+    if (url != '')
+    {
+        url += '&';
+    }
+
+    if (typeof (date_range) != 'undefined') {
+        url += 'date_range=' + date_range.value;
+    }
+    if ((boroughs.length > 0)
+        || (serviceTypes.length > 0)
+        || (pcns.length > 0)
+        || (typeof (date_range) != 'undefined')){
         url = baseUrl + '?' + url
     } else {
         url = baseUrl
     }
     location.href = url
 }
+
+function date_range_onchange() {
+    update_filter('/sites')
+}
+
 
