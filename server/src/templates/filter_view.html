@@ -2,12 +2,10 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block html_head %}
-
-{% endblock %}
+{% block html_head %}{% endblock %}
 
 {% block body %}
-    <h1 style="margin-bottom: 0px">PPE Dashboard</h1>
+    <h1 style="margin-bottom: 0px">{% block header %}{% endblock %}</h1>
 <p>{% block subtitle %}{% endblock %}</p>
     <div class="row" style="margin-top: 30px">
         <div class="nhsuk-grid-column-one-quarter filter-container">
