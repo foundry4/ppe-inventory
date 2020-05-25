@@ -57,6 +57,7 @@ logging_client = google.cloud.logging.Client()
 logging_client.get_default_handler()
 logging_client.setup_logging()
 
+
 @auth.verify_password
 def verify_password(username, password):
     if username in users and \

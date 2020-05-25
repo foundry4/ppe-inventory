@@ -19,19 +19,39 @@
 
     <table>
     <!-- Header row -->
-    <tr>
-        <td><b>PPE type</b></td>
-        <td><div><b>Current Stock level</b></div><div class="text-gray nhsuk-u-font-size-16">Last updated: {{site['last_update']}}</div></td>
-        <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>
-        <td><div><b>RAG</b></div><div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div></td>
-    </tr>
-    {% for item in stock_items %}
         <tr>
-            <td>{{item_names[item['item_name']]}}</td>
-            <td>{{item['stock-levels']}}</td>
-            <td>{{item['quantity_used']}}</td>
-            <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
+            <td><b>PPE type</b></td>
+            <td>
+                <div>
+                    <b>Current Stock level</b>
+                </div>
+                {% if site['last_update'] %}
+                    <div class="text-gray nhsuk-u-font-size-16">Last updated: {{site['last_update'].strftime('%H:%M, %a %d %B %Y') }}</div>
+                {% endif %}
+            </td>
+            <td>
+                <div>
+                    <b>Used last 24 hrs</b>
+                </div>
+                <div class="text-gray nhsuk-u-font-size-16">Estimated figures</div>
+            </td>
+            <td>
+                <div>
+                    <b>RAG</b>
+                </div>
+                <div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div>
+            </td>
         </tr>
-    {% endfor %}
+        {% for item in stock_items %}
+            <tr>
+                <td>{{item_names[item['item_name']]}}</td>
+                <td>{{item['stock-levels']}}</td>
+                <td>{{item['quantity_used']}}</td>
+                <td>
+                    <span class="dot highlight-{{color_codes[item['rag']]}}"></span>
+                    <span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span>
+                </td>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}
