@@ -204,8 +204,8 @@ def sites(client=datastore_client, request_param=request):
     selected_date_range = request_args.get('date_range','last_seven_days')
     print(f'selected_date_range:{selected_date_range}', file=sys.stderr)
     # Get all sites, boroughs, service_types and pcns
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
+    # query = client.query(kind='Site')
+    all_sites = get_sites(datastore_client)
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
@@ -325,9 +325,9 @@ def get_sites(client):
     query = client.query(kind='Site')
     query.add_filter('acute', '=', 'no')
 
-    sites = list(query.fetch())
+    db_sites = list(query.fetch())
 
-    return sites
+    return db_sites
 
 
 def get_site(code, client):
