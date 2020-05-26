@@ -246,7 +246,7 @@ def site(site_param):
     if provider:
         return render_template('site.html',
                                site=provider,
-                               stock_items=stock_items,
+                               stock_items= [item for item in stock_items if item['quantity_used'] > 0],
                                stock_items_count=len(stock_items),
                                item_names=get_item_names(),
                                color_codes=get_rag_color_codes(),
