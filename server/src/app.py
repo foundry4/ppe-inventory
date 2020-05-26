@@ -393,7 +393,7 @@ def get_ppe_item(item_names, item_name, items):
 
 
 def sort_ppe_items(items):
-    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week','')
+    rags = ('under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
     sorted_items = sorted(items, key=lambda x: [x[r] for r in rags])
     # print([i['highlight'] for i in sorted_items], file=sys.stderr)
     return_items = []
