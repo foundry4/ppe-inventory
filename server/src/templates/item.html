@@ -1,15 +1,8 @@
 {% extends "layout.html" %}
 
 {% block title %}{{ item }}{% endblock %}
-
-{% block body %}
-    <style>
-        svg > g > g:last-child { pointer-events: none}
-    </style>
-    <h1>{{ item_names[item] }}</h1>
-    <div id="piechart"></div>
-
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+{% block html_head %}
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
         // Load google charts
@@ -19,7 +12,7 @@
         // Draw the chart and set the chart values
         function drawChart() {
               var data = google.visualization.arrayToDataTable([
-              ['Task', 'Hours per Day'],
+              ['Rag', 'Number of Items'],
               ['Under 1 day', {{ rag_item_sums['under_one'] }}],
               ['1-2 days', {{ rag_item_sums['one_two'] }}],
               ['2-3 days', {{ rag_item_sums['two_three'] }}],
@@ -37,29 +30,57 @@
                             titleTextStyle: {fontSize:19},
                             legend: {fontSize:14},
                             tooltip: { textStyle: { fontSize: 14 } },
-                            'title':'Current Stock Assessment Ratings'
+                            title:'Current Stock Assessment Ratings'
                             };
 
               var chart = new google.visualization.PieChart(document.getElementById('piechart'));
               chart.draw(data, options);
         }
     </script>
+{% endblock %}
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Dashboard</a>
+                </li>
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/items/{{ item }}{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">{{ item }}</a>
+                </li>
+            </ol>
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}
+<!--    <style>-->
+<!--        svg > g > g:last-child { pointer-events: none}-->
+<!--    </style>-->
+    <h1>{{ item_names[item] }}</h1>
+<div id="piechart"></div>
+
+
 
     <table>
-    <!-- Header row -->
-    <tr>
-        <td><b>Provider</b></td>
-        <td><b>Current stock level</b></td>
-        <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>
-        <td><div><b>RAG</b></div><div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div></td>
-    </tr>
-    {% for item in stock_items %}
+        <!-- Header row -->
         <tr>
-            <td>{{item['provider']}}</td>
-            <td>{{item['stock-levels']}}</td>
-            <td>{{item['quantity_used']}}</td>
-            <td><div class="rag-rating"><span class="dot highlight-{{color_codes[item['rag']]}}"></span><span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span></div></td>
+            <td><b>Provider</b></td>
+            <td><b>Current stock level</b></td>
+            <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>
+            <td><div><b>RAG</b></div><div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div></td>
         </tr>
-    {% endfor %}
+        {% for item in stock_items %}
+            <tr>
+                <td><a href="../../sites/{{item['code']}}">{{item['provider']}}</a></td>
+                <td>{{item['stock-levels']}}</td>
+                <td>{{item['quantity_used']}}</td>
+                <td>
+                    <div class="rag-rating">
+                        <span class="dot highlight-{{color_codes[item['rag']]}}"></span>
+                        <span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}

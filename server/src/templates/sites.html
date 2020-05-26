@@ -1,8 +1,39 @@
 {% extends "filter_view.html" %}
 
-{% block title %}Sites{% endblock %}
-
+{% block title %}Providers{% endblock %}
+{% block header %}Providers{% endblock %}
+{% block subtitle %}
+    Showing results from {{ filtered_sites_count }} out of {{ all_site_count }} providers.
+{% endblock %}
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/Dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Providers</a>
+                </li>
+            </ol>
+        </div>
+    </nav>
+{% endblock %}
 {% block content %}
+    <div align="right">
+        <div>
+            <p id="date_range_label">Last updated</p>
+        </div>
+        <select name="date_range" id="date_range" onchange="date_range_onchange()">
+            <option
+                    value="anytime"
+                    {% if selected_date_range == 'anytime' %}selected{% endif %}>Anytime</option>
+            <option
+                    value="last_seven_days"
+                    {% if selected_date_range == 'last_seven_days' %}selected{% endif %}>In the last 7 days</option>
+            <option
+                    value="more_than_seven_days"
+                    {% if selected_date_range == 'more_than_seven_days' %}selected{% endif %}>More than 7 days ago</option>
+        </select>
+    </div>
+    <br>
     <div class="nhsuk-grid-row">
     {% if sites %}
         <table>

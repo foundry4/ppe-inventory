@@ -1,8 +1,20 @@
 {% extends "filter_view.html" %}
 
 {% block title %}Dashboard{% endblock %}
-{% block subtitle %}Displaying submissions from the last 7 days
+{% block subtitle %}Displaying submissions from the last 7 days{% endblock %}
+{% block header %}PPE Dashboard{% endblock %}
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Dashboard</a>
+                </li>
+            </ol>
+        </div>
+    </nav>
 {% endblock %}
+
 {% block content %}
 
     <div class="nhsuk-grid-row">

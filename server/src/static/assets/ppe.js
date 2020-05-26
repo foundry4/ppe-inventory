@@ -9,6 +9,7 @@ function update_filter(baseUrl) {
         serviceTypes = [],
         pcnCheckboxes = document.getElementsByName('pcn'),
         pcns = [];
+
     // loop through all collected objects and gather the checked boxes
     for (i = 0; i < boroughCheckboxes.length; i++) {
         if (boroughCheckboxes[i].checked) {
@@ -16,18 +17,21 @@ function update_filter(baseUrl) {
             boroughs.push(encodeURIComponent(boroughCheckboxes[i].value))
         }
     }
+
     for (i = 0; i < serviceTypeCheckboxes.length; i++) {
         if (serviceTypeCheckboxes[i].checked) {
             counter++;
             serviceTypes.push(encodeURIComponent(serviceTypeCheckboxes[i].value))
         }
     }
+
     for (i = 0; i < pcnCheckboxes.length; i++) {
         if (pcnCheckboxes[i].checked) {
             counter++;
             pcns.push(encodeURIComponent(pcnCheckboxes[i].value))
         }
     }
+
     url = ''
     if (boroughs.length > 0) {
         url += 'borough=[' + boroughs + ']'
@@ -38,17 +42,40 @@ function update_filter(baseUrl) {
         }
         url += 'service_type=[' + serviceTypes + ']'
     }
+
     if (pcns.length > 0) {
         if ((pcns.length > 0) || (serviceTypes.length > 0)) {
             url += '&'
         }
         url += 'pcn=[' + pcns + ']'
     }
-    if ((boroughs.length > 0) || (serviceTypes.length > 0) || (pcns.length > 0)) {
+
+    if (baseUrl == 'sites')
+    {
+
+        if (url != '')
+        {
+            url += '&';
+        }
+
+        if (typeof (date_range) != 'undefined') {
+            url += 'date_range=' + date_range.value;
+        }
+    }
+
+    if ((boroughs.length > 0)
+        || (serviceTypes.length > 0)
+        || (pcns.length > 0)
+        || (baseUrl == 'sites' && typeof (date_range) != 'undefined')){
         url = baseUrl + '?' + url
     } else {
         url = baseUrl
     }
     location.href = url
 }
+
+function date_range_onchange() {
+    update_filter('/sites')
+}
+
 

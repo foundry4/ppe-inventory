@@ -2,21 +2,19 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block html_head %}
-
-{% endblock %}
+{% block html_head %}{% endblock %}
 
 {% block body %}
-    <h1 style="margin-bottom: 0px">PPE Dashboard</h1>
+    <h1 style="margin-bottom: 0px">{% block header %}{% endblock %}</h1>
 <p>{% block subtitle %}{% endblock %}</p>
     <div class="row" style="margin-top: 30px">
         <div class="nhsuk-grid-column-one-quarter filter-container">
-            <p>Filter results</p>
+            <div><h4>Filter results</h4></div>
             {% if selected_boroughs or selected_service_types %}
             <a href=" {{request.path}}" class="text-gray nhsuk-u-font-size-14">Clear filters</a>
+            <br>
+            <br>
             {% endif %}
-            <br>
-            <br>
             {% if boroughs %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details0" {% if selected_boroughs %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="false">
@@ -56,7 +54,7 @@
                 </details>
             {% endif %}
 
-            {% if selected_boroughs %}
+            {% if 'Primary Care - GP Federation' in selected_service_types %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details2"  {% if selected_pcns %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
                         <span class="nhsuk-details__summary-text">
