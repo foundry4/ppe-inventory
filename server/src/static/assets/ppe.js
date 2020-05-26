@@ -50,7 +50,7 @@ function update_filter(baseUrl) {
         url += 'pcn=[' + pcns + ']'
     }
 
-    if (baseUrl == 'sites')
+    if (baseUrl.includes("sites"))
     {
 
         if (url != '')
@@ -66,7 +66,7 @@ function update_filter(baseUrl) {
     if ((boroughs.length > 0)
         || (serviceTypes.length > 0)
         || (pcns.length > 0)
-        || (baseUrl == 'sites' && typeof (date_range) != 'undefined')){
+        || (baseUrl.includes("sites") && typeof (date_range) != 'undefined')){
         url = baseUrl + '?' + url
     } else {
         url = baseUrl

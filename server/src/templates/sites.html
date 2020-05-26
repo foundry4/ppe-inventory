@@ -39,26 +39,23 @@
       </div>
 {% endblock %}
 {% block content %}
-    <div align="right">
-
-        <div class="nhsuk-form-group">
-          <label class="nhsuk-label" for="date_range">
-            Last updated
-          </label>
-          <select class="nhsuk-select" id="date_range" name="date_range" onchange="date_range_onchange()">
-                <option
-                        value="anytime"
-                        {% if selected_date_range == 'anytime' %}selected{% endif %}>Anytime</option>
-                <option
-                        value="last_seven_days"
-                        {% if selected_date_range == 'last_seven_days' %}selected{% endif %}>In the last 7 days</option>
-                <option
-                        value="more_than_seven_days"
-                        {% if selected_date_range == 'more_than_seven_days' %}selected{% endif %}>More than 7 days ago</option>
-          </select>
-        </div>
-
+    <div class="nhsuk-form-group nhsuk-grid-column-one-quarter" style="float: right">
+      <label class="nhsuk-label" for="date_range">
+        Last updated
+      </label>
+      <select class="nhsuk-select" id="date_range" name="date_range" onchange="date_range_onchange()">
+            <option
+                    value="anytime"
+                    {% if selected_date_range == 'anytime' %}selected{% endif %}>Anytime</option>
+            <option
+                    value="last_seven_days"
+                    {% if selected_date_range == 'last_seven_days' %}selected{% endif %}>In the last 7 days</option>
+            <option
+                    value="more_than_seven_days"
+                    {% if selected_date_range == 'more_than_seven_days' %}selected{% endif %}>More than 7 days ago</option>
+      </select>
     </div>
+
 
     <br>
     <div class="nhsuk-grid-row">
@@ -66,14 +63,14 @@
         <table>
             <!-- Header row -->
             <tr>
-                <td>Provider (A-Z)</td>
-                <td>Contact details</td>
-                <td>Last Updated</td>
+                <td class="text-gray nhsuk-u-font-size-16">Provider (A-Z)</td>
+                <td class="text-gray nhsuk-u-font-size-16">Contact details</td>
+                <td class="text-gray nhsuk-u-font-size-16">Last updated</td>
             </tr>
             {% for site in sites %}
             <tr>
                 <td class="provider-name"><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
-                <td class="provider-contact nhsuk-u-font-size-16">{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </td>
+                <td class="provider-contact nhsuk-u-font-size-16">{% if site['contact_name_1'] %}{{ site['contact_name_1'] }}<br>{% endif %} {% if site['telephone'] %}{{ site['telephone'] }}<br>{% endif %}{% if site['telephone'] %}<a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }} {% endif %}</a> </td>
                 <td class="provider-updated text-gray nhsuk-u-font-size-14">{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M, %a %d %B %Y') }}{% endif %}</td>
             </tr>
             {% endfor %}

@@ -202,7 +202,7 @@ def sites(client=datastore_client, request_param=request):
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
     selected_date_range = request_args.get('date_range','')
-    print(f'selected_date_range:{selected_date_range}')
+    print(f'selected_date_range:{selected_date_range}', file=sys.stderr)
     # Get all sites, boroughs, service_types and pcns
     query = client.query(kind='Site')
     all_sites = list(query.fetch())
