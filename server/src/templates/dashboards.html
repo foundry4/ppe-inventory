@@ -3,6 +3,29 @@
 {% block title %}Dashboard{% endblock %}
 {% block subtitle %}Displaying submissions from the last 7 days{% endblock %}
 {% block header %}PPE Dashboard{% endblock %}
+{% block navigation %}
+    <div class="nhsuk-width-container">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item app-header__navigation-item__item--current">
+            <a class="nhsuk-header__navigation-link" href="/dashboards?{{ request.query_string.decode() }}">
+              Dashboard
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/sites?{{ request.query_string.decode() }}">
+              Providers
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+{% endblock %}
+
 {% block breadcrumb %}
     <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
         <div class="nhsuk-width-container">
@@ -14,6 +37,8 @@
         </div>
     </nav>
 {% endblock %}
+
+
 
 {% block content %}
 

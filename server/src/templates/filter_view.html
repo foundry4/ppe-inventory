@@ -12,8 +12,7 @@
             <div><h4>Filter results</h4></div>
             {% if selected_boroughs or selected_service_types %}
             <a href=" {{request.path}}" class="text-gray nhsuk-u-font-size-14">Clear filters</a>
-            <br>
-            <br>
+
             {% endif %}
             {% if boroughs %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details0" {% if selected_boroughs %}open{% endif %}>
@@ -39,7 +38,7 @@
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details1" {% if selected_service_types %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
                         <span class="nhsuk-details__summary-text">
-                            Service Types
+                            Service types
                         </span>
                     </summary>
                     <div class="nhsuk-details__text" id="nhsuk-details__text1" aria-hidden="false">
