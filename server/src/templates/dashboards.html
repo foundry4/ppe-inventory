@@ -60,31 +60,31 @@
                                 <tr class="highlight-maroon" >{% else %}<tr>
                             {% endif %}
                                 <td class="dashboard-card__time">Under 1 day</td>
-                                <td class="dashboard-card__percentage">{{item['under_one']}}</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['under_one'])}}</td>
                             </tr>
                             {% if item['highlight']=='one_two' %}
                                 <tr class="highlight-red" >{% else %}<tr>
                             {% endif %}
                                 <td class="dashboard-card__time">1-2 days</td>
-                                <td class="dashboard-card__percentage">{{item['one_two']}}</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['one_two'])}}</td>
                             </tr>
                             {% if item['highlight']=='two_three' %}
                                 <tr class="highlight-amber" >{% else %}<tr>
                             {% endif %}
                                 <td class="dashboard-card__time">2-3 days</td>
-                                <td class="dashboard-card__percentage">{{item['two_three']}}</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['two_three'])}}</td>
                             </tr>
                             {% if item['highlight']=='less-than-week' %}
                                 <tr class="highlight-lightgreen" >{% else %}<tr>
                             {% endif %}
                                 <td class="dashboard-card__time">3-7 days</td>
-                                <td class="dashboard-card__percentage">{{item['less-than-week']}}</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['less-than-week'])}}</td>
                             </tr>
                             {% if item['highlight']=='more-than-week' %}
                                 <tr class="highlight-green" >{% else %}<tr>
                             {% endif %}
                                 <td class="dashboard-card__time">Over 1 week </td>
-                                <td class="dashboard-card__percentage">{{item['more-than-week']}}</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['more-than-week'])}}</td>
                             </tr>
                             <tr>
                                 <td class="dashboard-card__link" colspan="2">
