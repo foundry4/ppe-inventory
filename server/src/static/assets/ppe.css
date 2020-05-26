@@ -120,3 +120,8 @@
 .rag-rating_label {
   padding-left: 10px;
 }
+
+.no-data-message {
+    font-weight: bold;
+    color: red
+}

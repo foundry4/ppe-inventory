@@ -118,6 +118,7 @@ def update_ppe_item(site, client):
                 item_entity['borough'] = site.get('borough')
                 item_entity['pcn_network'] = site.get('pcn_network')
                 item_entity['service_type'] = site.get('service_type')
+                item_entity['code'] = site.get('code')
             else:
                 item_entity = stock_items[0]
             stock_level = int(site.get(item_name + '-stock-levels')) if site.get(item_name + '-stock-levels') else 0

@@ -223,6 +223,8 @@ def sites(client=datastore_client, request_param=request):
 
     response = make_response(render_template('sites.html',
                                              sites=results,
+                                             all_site_count = len(all_sites),
+                                             filtered_sites_count = len(results),
                                              boroughs=boroughs,
                                              selected_boroughs=selected_boroughs,
                                              service_types=service_types,
@@ -245,6 +247,7 @@ def site(site_param):
         return render_template('site.html',
                                site=provider,
                                stock_items=stock_items,
+                               stock_items_count=len(stock_items),
                                item_names=get_item_names(),
                                color_codes=get_rag_color_codes(),
                                rag_labels=rag_labels)
