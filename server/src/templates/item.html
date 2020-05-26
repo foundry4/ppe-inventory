@@ -68,7 +68,7 @@
                     <a href="/dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Dashboard</a>
                 </li>
                 <li class="nhsuk-breadcrumb__item">
-                    <a href="/items/{{ item }}{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">{{ item_names[item] }}</a>
+                    <a href="/dashboards/items/{{ item }}{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">{{ item_names[item] }}</a>
                 </li>
             </ol>
         </div>
