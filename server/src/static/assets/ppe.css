@@ -65,9 +65,11 @@
 .checkbox-container {
   display: flex;
   font-size: 16px;
+    margin-bottom: 5px;
 }
 .checkbox-container label {
   width: 30px;
+    flex-shrink: 0;
 }
 
 .dashboard-card {
@@ -78,6 +80,12 @@
 .dashboard-card__title {
     font-size: 24px;
 }
+
+.dashboard-card__highlight,
+.dashboard-card__percentage {
+    font-weight: bold;
+}
+
 .highlight-maroon {
     padding: 0 10px;
 }
@@ -124,4 +132,33 @@
 .no-data-message {
     font-weight: bold;
     color: red
+}
+
+.app-header__navigation-item__item--current {
+    box-shadow: inset 0 -4px 0 #D8DDE0;
+}
+.app-header__navigation-item__item--current a {
+    font-weight: bold;
+}
+
+.provider-name {
+    word-break: break-word;
+    font-weight: bold;
+    width: 38%;
+}
+.column-title {
+    padding-top: 0;
+}
+.provider-contact {
+    word-break: break-word;
+    width: 38%;
+}
+.provider-updated {
+    width: 24%;
+    font-size: 14px; /*Change existing font class to 14px rather than add it here */
+}
+
+h1 {
+    font-size: 64px;
+    margin: 30px 0 0 0;
 }
