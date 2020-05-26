@@ -71,7 +71,7 @@
             <tr>
                 <td class="provider-name"><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
                 <td class="provider-contact nhsuk-u-font-size-16">{% if site['contact_name_1'] %}{{ site['contact_name_1'] }}<br>{% endif %} {% if site['telephone'] %}{{ site['telephone'] }}<br>{% endif %}{% if site['telephone'] %}<a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }} {% endif %}</a> </td>
-                <td class="provider-updated text-gray nhsuk-u-font-size-14">{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M, %a %d %B %Y') }}{% endif %}</td>
+                <td class="provider-updated text-gray nhsuk-u-font-size-14">{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M, %a %d %B %Y') }}{% else %}No data available{% endif %}</td>
             </tr>
             {% endfor %}
         </table>
