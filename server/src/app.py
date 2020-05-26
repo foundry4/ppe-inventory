@@ -364,13 +364,11 @@ def get_ppe_item(item_names, item_name, items):
         ppe_item = {
             'name': item_name,
             'display_name': item_names[item_name],
-            'under_one': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count),
-            'one_two': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count),
-            'two_three': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count),
-            'less-than-week': '{:.0%}'.format(
-                sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count),
-            'more-than-week': '{:.0%}'.format(
-                sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count),
+            'under_one': sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count,
+            'one_two': sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count,
+            'two_three': sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count,
+            'less-than-week': sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count,
+            'more-than-week': sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count,
         }
 
         max_item = 'under_one'
