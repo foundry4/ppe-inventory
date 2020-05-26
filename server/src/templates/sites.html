@@ -2,7 +2,20 @@
 
 {% block title %}Providers{% endblock %}
 {% block header %}Providers{% endblock %}
-
+{% block subtitle %}
+    Showing results from {{ filtered_sites_count }} out of {{ all_site_count }} providers.
+{% endblock %}
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/Dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Providers</a>
+                </li>
+            </ol>
+        </div>
+    </nav>
+{% endblock %}
 {% block content %}
     <div align="right">
         <div>
