@@ -324,7 +324,6 @@ if __name__ == '__main__':
 def get_sites(client):
     query = client.query(kind='Site')
     query.add_filter('acute', '=', 'no')
-
     db_sites = list(query.fetch())
 
     return db_sites
@@ -382,11 +381,11 @@ def get_ppe_item(item_names, item_name, items):
     return {
         'name': item_name,
         'display_name': item_names[item_name],
-        'under_one': '{:.0%}'.format(0),
-        'one_two': '{:.0%}'.format(0),
-        'two_three': '{:.0%}'.format(0),
-        'less-than-week': '{:.0%}'.format(0),
-        'more-than-week': '{:.0%}'.format(0),
+        'under_one': 0,
+        'one_two': 0,
+        'two_three': 0,
+        'less-than-week': 0,
+        'more-than-week': 0,
         'highlight': 'under_one'}
 
 
