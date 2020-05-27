@@ -84,8 +84,10 @@
                     <td>{{item['stock-levels']}}</td>
                     <td>{{item['quantity_used']}}</td>
                     <td>
-                        <span class="dot highlight-{{color_codes[item['rag']]}}"></span>
-                        <span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span>
+                        <div class="rag-rating">
+                            <span class="dot highlight-{{color_codes[item['rag']]}}"></span>
+                            <span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

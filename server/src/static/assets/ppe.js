@@ -71,6 +71,7 @@ function update_filter(baseUrl) {
     } else {
         url = baseUrl
     }
+
     location.href = url
 }
 
