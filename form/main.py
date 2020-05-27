@@ -10,8 +10,8 @@ currentTime = datetime.datetime.now()
 
 
 def form(request):
-    name = 'TEST'
-    code = 12345
+    name = request.cookies.get('site')
+    code = request.cookies.get('code')
     client = datastore.Client()
 
     site = None
