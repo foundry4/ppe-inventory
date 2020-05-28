@@ -8,11 +8,11 @@
 
     <div class="row" style="margin-top: 30px; width: 100%">
         <div class="nhsuk-grid-column-one-quarter filter-container">
-            <div><h4>Filter results</h4></div>
+            <div class="filter-heading"><h4>Filter results</h4>
             {% if selected_boroughs or selected_service_types %}
             <a href=" {{request.path}}" class="text-gray nhsuk-u-font-size-14">Clear filters</a>
 
-            {% endif %}
+            {% endif %}</div>
             {% if boroughs %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details0" {% if selected_boroughs %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="false">

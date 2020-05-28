@@ -15,7 +15,7 @@
     <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" rel="preload" as="font" crossorigin>
 
     <link href="{{ assets }}/assets/nhsuk.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ppe.css') }}">
     <script src="{{ assets }}/assets/nhsuk.js" defer></script>
 
     <link rel="shortcut icon" href="{{ assets }}/assets/favicons/favicon.ico" type="image/x-icon">
@@ -45,16 +45,18 @@
   <body class="">
     
   <header class="nhsuk-header" role="banner">
-    <div class="nhsuk-width-container nhsuk-header__container">
-      <div class="nhsuk-header__logo"><a class="nhsuk-header__link" href="/" aria-label="NHS homepage">
-          <svg class="nhsuk-logo" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" viewBox="0 0 40 16">
-            <path class="nhsuk-logo__background" d="M0 0h40v16H0z"></path>
-            <path class="nhsuk-logo__text" d="M3.9 1.5h4.4l2.6 9h.1l1.8-9h3.3l-2.8 13H9l-2.7-9h-.1l-1.8 9H1.1M17.3 1.5h3.6l-1 4.9h4L25 1.5h3.5l-2.7 13h-3.5l1.1-5.6h-4.1l-1.2 5.6h-3.4M37.7 4.4c-.7-.3-1.6-.6-2.9-.6-1.4 0-2.5.2-2.5 1.3 0 1.8 5.1 1.2 5.1 5.1 0 3.6-3.3 4.5-6.4 4.5-1.3 0-2.9-.3-4-.7l.8-2.7c.7.4 2.1.7 3.2.7s2.8-.2 2.8-1.5c0-2.1-5.1-1.3-5.1-5 0-3.4 2.9-4.4 5.8-4.4 1.6 0 3.1.2 4 .6"></path>
-            <image src="https://assets.nhs.uk/images/nhs-logo.png" xlink:href=""></image>
-          </svg>
-        </a>
-      </div>
-    </div>
+            <div class="nhsuk-width-container nhsuk-header__container">
+            <div class="nhsuk-header__logo"><a class="nhsuk-header__link nhsuk-header__link--service " href="/" aria-label="NHS digital service manual homepage">
+                <svg class="nhsuk-logo" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" viewBox="0 0 40 16">
+                  <path class="nhsuk-logo__background" d="M0 0h40v16H0z"></path>
+                  <path class="nhsuk-logo__text" d="M3.9 1.5h4.4l2.6 9h.1l1.8-9h3.3l-2.8 13H9l-2.7-9h-.1l-1.8 9H1.1M17.3 1.5h3.6l-1 4.9h4L25 1.5h3.5l-2.7 13h-3.5l1.1-5.6h-4.1l-1.2 5.6h-3.4M37.7 4.4c-.7-.3-1.6-.6-2.9-.6-1.4 0-2.5.2-2.5 1.3 0 1.8 5.1 1.2 5.1 5.1 0 3.6-3.3 4.5-6.4 4.5-1.3 0-2.9-.3-4-.7l.8-2.7c.7.4 2.1.7 3.2.7s2.8-.2 2.8-1.5c0-2.1-5.1-1.3-5.1-5 0-3.4 2.9-4.4 5.8-4.4 1.6 0 3.1.2 4 .6"></path>
+                  <image src="https://assets.nhs.uk/images/nhs-logo.png" xlink:href=""></image>
+                </svg>
+                <span class="nhsuk-header__service-name">
+                    North East London PPE Reporting</span>
+              </a>
+            </div>
+        </div>
   </header>
 
 
@@ -64,7 +66,7 @@
 <div class="nhsuk-grid-column-full">
 
 
-    <h1 class="govuk-heading-xl">
+    <h1 class="nhsuk-u-font-size-64">
       {{ site.key.name }}
     </h1>
 
@@ -74,14 +76,14 @@
     <p>Stock levels automatically update in the <a href="https://docs.google.com/spreadsheets/d/1BhvOQnKWA7lKnH1dMKriiA2lZrk37mtyeALTG3ToEng">live submission dashboard</a>. </p>
 
 </div>
-
+<div class="nhsuk-grid-column-two-thirds" style="padding-left: 0">
     <form id="" action="{{ form_action }}" method="post" class="form">
 
 
 <input type="hidden" id="site" name="site" value="{{ site.key.name }}">
 
 <!-- Face visors -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Face visors
@@ -149,7 +151,7 @@
 
 
 <!-- Masks - IIR -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Masks - IIR
@@ -187,7 +189,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-iir-1" type="radio" name="masks-iir-rag" value="one-or-less" {% if site['masks-iir-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="masks-iir-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -216,7 +218,7 @@
 
 
 <!-- Masks - FFP2 -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Masks - FFP2
@@ -254,7 +256,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-ffp2-1" type="radio" name="masks-ffp2-rag" value="one-or-less" {% if site['masks-ffp2-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp2-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -282,7 +284,7 @@
 <!-- Masks - FFP2 -->
 
 <!-- Masks - FFP3 -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Masks - FFP3
@@ -320,7 +322,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="masks-ffp3-1" type="radio" name="masks-ffp3-rag" value="one-or-less" {% if site['masks-ffp3-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="masks-ffp3-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -349,7 +351,7 @@
 
 
 <!-- Fit test - solution 55ml -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Fit test - solution 55ml bottles
@@ -387,7 +389,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="fit-test-solution-55ml-1" type="radio" name="fit-test-solution-55ml-rag" value="one-or-less" {% if site['fit-test-solution-55ml-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="fit-test-solution-55ml-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -415,7 +417,7 @@
 <!-- Fit test - solution 55ml -->
 
 <!-- Fit test - solution non 55ml  -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Fit test - solution non 55ml
@@ -453,7 +455,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="fit-test-solution-1" type="radio" name="fit-test-solution-rag" value="one-or-less" {% if site['fit-test-solution-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="fit-test-solution-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -481,7 +483,7 @@
 <!-- Fit test - solution 55ml bottles -->
 
 <!-- Fit test - full kit -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Fit test - full kit
@@ -519,7 +521,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="fit-test-fullkit-1" type="radio" name="fit-test-fullkit-rag" value="one-or-less" {% if site['fit-test-fullkit-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="fit-test-fullkit-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -547,7 +549,7 @@
 <!-- Fit test - full kit -->
 
 <!-- Gloves -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Gloves
@@ -585,7 +587,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="gloves-1" type="radio" name="gloves-rag" value="one-or-less" {% if site['gloves-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="gloves-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -613,7 +615,7 @@
 <!-- Gloves -->
 
 <!-- Barrier Non-Surgical Gowns -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Barrier Non-Surgical Gowns
@@ -673,7 +675,7 @@
       <input class="nhsuk-radios__input" id="non-surgical-gowns-1" type="radio" name="non-surgical-gowns-rag"
              value="one-or-less" {% if site['non-surgical-gowns-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="non-surgical-gowns-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -704,7 +706,7 @@
 <!-- Barrier Non-Surgical Gowns -->
 
 <!-- Sterile Surgical Gowns -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Sterile Surgical Gowns
@@ -767,7 +769,7 @@
              name="sterile-surgical-gowns-rag"
              value="one-or-less" {% if site['sterile-surgical-gowns-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="sterile-surgical-gowns-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -801,7 +803,7 @@
 <!-- Sterile Surgical Gowns -->
 
 <!-- Hand hygiene -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Hand hygiene
@@ -839,7 +841,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="hand-hygiene-1" type="radio" name="hand-hygiene-rag" value="one-or-less" {% if site['hand-hygiene-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="hand-hygiene-1">
-        &lt; 1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -867,7 +869,7 @@
 <!-- Hand hygiene -->
 
 <!-- Apron -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Apron
@@ -905,7 +907,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="apron-1" type="radio" name="apron-rag" value="one-or-less" {% if site['apron-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="apron-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -933,7 +935,7 @@
 <!-- Apron -->
 
 <!-- Goggles -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Goggles
@@ -971,7 +973,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="goggles-1" type="radio" name="goggles-rag" value="one-or-less" {% if site['goggles-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="goggles-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -999,7 +1001,7 @@
 <!-- Goggles -->
 
 <!-- Body bags -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Body bags
@@ -1037,7 +1039,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="body-bags-1" type="radio" name="body-bags-rag" value="one-or-less" {% if site['body-bags-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="body-bags-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -1068,7 +1070,7 @@
 
 
 <!-- Coveralls -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
    Coveralls
@@ -1120,7 +1122,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="coveralls-1" type="radio" name="coveralls-rag" value="one-or-less" {% if site['coveralls-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="coveralls-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -1148,7 +1150,7 @@
 <!-- Coveralls -->
 
 <!-- Swabs -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
    Swabs
@@ -1185,7 +1187,7 @@
     <div class="nhsuk-radios__item">
       <input class="nhsuk-radios__input" id="swabs-1" type="radio" name="swabs-rag" value="one-or-less" {% if site['swabs-rag'] == "one-or-less" %}checked{% endif %}>
       <label class="nhsuk-label nhsuk-radios__label" for="swabs-1">
-        &lt;1
+        &lt;1 day
       </label>
     </div>
     <div class="nhsuk-radios__item">
@@ -1213,7 +1215,7 @@
 <!-- Swabs -->
 
       <!-- Covid-19 impact -->
-    <fieldset class="nhsuk-fieldset">
+    <fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
      Covid-19 impact
@@ -1261,7 +1263,7 @@
 
 
     </form>
-
+</div>
 
 
 </div>
@@ -1274,15 +1276,7 @@
       <footer role="contentinfo">
         <div class="nhsuk-footer" id="nhsuk-footer">
           <div class="nhsuk-width-container">
-            <h2 class="nhsuk-u-visually-hidden">Support links</h2>
-            <ul class="nhsuk-footer__list">
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/nhs-sites">NHS sites</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/about-us">About us</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/contact-us/">Contact us</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/about-us/sitemap/">Sitemap</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/our-policies/">Our policies</a></li>
-            </ul>
-            
+
             <p class="nhsuk-footer__copyright">&copy; Crown copyright</p>
           </div>
         </div>

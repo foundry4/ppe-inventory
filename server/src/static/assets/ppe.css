@@ -17,6 +17,7 @@
   background-color:#d5281b;
   border-color: #D5481B;
   border-style: solid;
+    color: white;
 }
 .highlight-amber{
   background-color:#ffa620;
@@ -59,7 +60,8 @@
 }
 
 .filter-container {
-  padding-left: 0;
+    padding-left: 0;
+    margin-top: 30px;
 }
 
 .checkbox-container {
@@ -160,7 +162,7 @@
 
 h1 {
     font-size: 64px;
-    margin: 30px 0 0 0;
+    margin: 10px 0 0 0;
 }
 
 .nhsuk-expander .nhsuk-details__text {
@@ -182,3 +184,23 @@ h1 {
 }
 
 svg > g > g:last-child { pointer-events: none}
+
+fieldset {
+    margin-bottom: 50px;
+}
+
+.nhsuk-fieldset {
+    margin-bottom: 50px!important;
+}
+
+tr:last-of-type td {border-bottom: 0;}
+
+.filter-heading {
+    margin-bottom: 10px;
+}
+.filter-heading h4 {
+    margin-bottom: 0;
+}
+.filter-heading a:visited {
+    color: #4C6272;
+}
