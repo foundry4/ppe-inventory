@@ -4,21 +4,29 @@ from google.cloud import pubsub_v1
 import datetime
 import json
 import os
+import sys
 import numpy as np
 
 currentTime = datetime.datetime.now()
 
 
 def form(request):
-    name = request.cookies.get('site')
-    code = request.cookies.get('code')
+
+    landing = request.args.get('landing')
+    name = request.args.get('site')
+    code = request.args.get('code')
     client = datastore.Client()
 
     site = None
     post = False
+    sites=[]
+    landing_page = ''
+    print(f'request method: {request.method}', file=sys.stderr)
     if name and code:
         site = get_site(name, code, client)
+        print(site.get('code'), file=sys.stderr)
     if site and request.method == 'POST':
+        print("data are being updated.", file=sys.stderr)
         update_site(site, client, request, code)
         update_ppe_item(site, client)
         publish_update(get_sheet_data(site))
@@ -30,13 +38,22 @@ def form(request):
     form_action = f'https://{domain}/form'
     dashboard_link = f'https://{domain}/dashboard'
 
-    if post:
+    if landing and code:
+        template = 'landing.html'
+        sites = get_child_sites(code)
+        landing_page = f'https://{domain}/form?landing=true&code={code}'
+
+    elif post:
+        print(4, file=sys.stderr)
         template = 'success.html'
     elif site and 'acute' in site.keys() and site['acute'] == 'yes':
+        print(5, file=sys.stderr)
         template = 'form.html'
     elif site:
+        print(6, file=sys.stderr)
         template = 'community_form.html'
     else:
+        print(7, file=sys.stderr)
         template = 'error.html'
 
     # template = 'success.html' if post else 'form.html' if site else 'error.html'
@@ -44,7 +61,9 @@ def form(request):
 
     response = make_response(render_template(template,
                                              site=site,
+                                             sites=sites,
                                              form_action=form_action,
+                                             landingPage=landing_page,
                                              dashboard_link=dashboard_link,
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
@@ -52,6 +71,7 @@ def form(request):
                                              ))
 
     if site:
+        print(8, file=sys.stderr)
         # Refresh the cookie
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
         response.set_cookie('site', site.key.name, expires=expire_date, secure=True)
@@ -258,3 +278,14 @@ def get_sheet_data(site):
             print(f'problem with field = {field}')
     print(f'safe_site_data is {safe_site_data}')
     return safe_site_data
+
+
+def get_child_sites(parent_code):
+    client = datastore.Client()
+    query = client.query(kind='Site')
+    query.add_filter('parent', '=', parent_code)
+    items = list(query.fetch())
+    sites = {}
+    for item in items:
+        sites[item.get('site')]=item.get('code')
+    return sites
