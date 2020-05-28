@@ -22,6 +22,7 @@ def form(request):
     sites=[]
     landing_page = ''
     print(f'request method: {request.method}', file=sys.stderr)
+    print(f'name:{name};code:{code}')
     if name and code:
         print(1, file=sys.stderr)
         site = get_site(name, code, client)
