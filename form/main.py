@@ -50,6 +50,7 @@ def form(request):
     elif landing and code:
         print(3, file=sys.stderr)
         template = 'landing.html'
+        form_action = f'https://{domain}/form?landing=true&code={code}'
         sites = get_child_sites(code)
 
     elif site and 'acute' in site.keys() and site['acute'] == 'yes':
