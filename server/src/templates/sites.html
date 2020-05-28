@@ -1,9 +1,10 @@
 {% extends "filter_view.html" %}
 
 {% block title %}Providers{% endblock %}
-{% block header %}Providers{% endblock %}
-{% block subtitle %}
+{% block header %}<h1 style="margin-bottom: 0px">Providers</h1>
+<p>
     Showing results from {{ filtered_sites_count }} out of {{ all_site_count }} providers
+</p>
 {% endblock %}
 {% block breadcrumb %}
     <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
@@ -39,6 +40,7 @@
       </div>
 {% endblock %}
 {% block content %}
+        <div class="nhsuk-grid-column-three-quarters provider-content-container">
     <div class="nhsuk-form-group" style="float: right">
       <label class="nhsuk-label nhsuk-u-font-size-16" for="date_range">
         Last updated
@@ -77,4 +79,5 @@
         </table>
     {% endif %}
     </div>
+        </div>
 {% endblock %}
