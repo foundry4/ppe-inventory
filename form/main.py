@@ -23,9 +23,11 @@ def form(request):
     landing_page = ''
     print(f'request method: {request.method}', file=sys.stderr)
     if name and code:
+        print(2, file=sys.stderr)
         site = get_site(name, code, client)
         print(site.get('code'), file=sys.stderr)
     if site and request.method == 'POST':
+        print(3, file=sys.stderr)
         print("data are being updated.", file=sys.stderr)
         update_site(site, client, request, code)
         update_ppe_item(site, client)
@@ -39,6 +41,7 @@ def form(request):
     dashboard_link = f'https://{domain}/dashboard'
 
     if landing and code:
+        print(3, file=sys.stderr)
         template = 'landing.html'
         sites = get_child_sites(code)
         landing_page = f'https://{domain}/form?landing=true&code={code}'
