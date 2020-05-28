@@ -170,3 +170,15 @@ h1 {
     margin-top: 80px;
     float: left;
 }
+
+.nhsuk-breadcrumb__list {
+    display: block;
+}
+
+.table-header td{
+    position: sticky;
+    top: 0;
+    background-color: #f0f4f5;
+}
+
+svg > g > g:last-child { pointer-events: none}

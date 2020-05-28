@@ -74,6 +74,11 @@ def dashboard_items(item_param, request_param=request):
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
     selected_date_range = 'anytime'
 
+    query = datastore_client.query(kind='Site')
+    all_sites = list(query.fetch())
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
     stock_items = get_stock_items_by_item_name_from_db(item_param)
 
     filtered_stock_items = \
@@ -117,7 +122,15 @@ def dashboard_items(item_param, request_param=request):
                                rag_item_sums=rag_item_sums,
                                item_names=item_names,
                                color_codes=rag_color_codes,
-                               rag_labels=rag_labels)
+                               rag_labels=rag_labels,
+                               boroughs=boroughs,
+                               selected_boroughs=selected_boroughs,
+                               service_types=service_types,
+                               selected_service_types=selected_service_types,
+                               pcns=pcns,
+                               selected_pcns=selected_pcns,
+                               baseUrl=item_param
+                               )
     else:
         flash(f'No stock_items of {item_param} can be found', 'error')
         return redirect(url_for('index'))
@@ -188,7 +201,8 @@ def dashboards(client=datastore_client, request_param=request):
                                              service_types=service_types,
                                              selected_service_types=selected_service_types,
                                              pcns=pcns,
-                                             selected_pcns=selected_pcns
+                                             selected_pcns=selected_pcns,
+                                             baseUrl='dashboards'
                                              ))
     return response
 
@@ -231,7 +245,8 @@ def sites(client=datastore_client, request_param=request):
                                              selected_service_types=selected_service_types,
                                              pcns=pcns,
                                              selected_pcns=selected_pcns,
-                                             selected_date_range=selected_date_range))
+                                             selected_date_range=selected_date_range,
+                                             baseUrl=sites))
     return response
 
 

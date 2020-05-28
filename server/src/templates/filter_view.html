@@ -5,8 +5,7 @@
 {% block html_head %}{% endblock %}
 
 {% block body %}
-    <h1 style="margin-bottom: 0px">{% block header %}{% endblock %}</h1>
-<p>{% block subtitle %}{% endblock %}</p>
+
     <div class="row" style="margin-top: 30px; width: 100%">
         <div class="nhsuk-grid-column-one-quarter filter-container">
             <div><h4>Filter results</h4></div>
@@ -25,7 +24,7 @@
                         {% for borough in boroughs %}
                             <div class="checkbox-container">
                                 <label>
-                                    <input style="font-size: 12px" onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
+                                    <input style="font-size: 12px" onclick="update_filter('{{ baseUrl }}')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
                                 </label>
                                 <span>{{ borough }}</span>
                             </div>
@@ -45,7 +44,7 @@
                         {% for service_type in service_types %}
                             <div class="checkbox-container">
                                 <label>
-                                    <input onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
+                                    <input onclick="update_filter('{{ baseUrl }}')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
                                 </label><span>{{ service_type }}</span>
                             </div>
                         {% endfor %}
@@ -64,7 +63,7 @@
                         {% for pcn in pcns %}
                             <div class="checkbox-container">
                                 <label>
-                                    <input onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
+                                    <input onclick="update_filter('{{ baseUrl }}')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
                                 </label><span>{{ pcn }}</span>
                             </div>
                         {% endfor %}

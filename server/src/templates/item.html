@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 
 {% block title %}{{ item }}{% endblock %}
+{% block header %}{{ item_names[item] }}{% endblock %}
+
+{% block subtitle %}Displaying results from the last 7 days {% if selected_boroughs or selected_service_types or selected_pcns %}for{% endif %}{% for borough in selected_boroughs %} {{ borough }}{{';' if not loop.last }}{% endfor %}{% if selected_boroughs and (selected_service_types or selected_pcns) %}; {% endif %}{% for service_type in selected_service_types %} {{ service_type }}{{";" if not loop.last }}{% endfor %}{% if selected_service_types and selected_pcns %}; {% endif %}{% for pcn in selected_pcns %}{{ pcn }}{{"; " if not loop.last }}{% endfor %}{% endblock %}
 {% block html_head %}
    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -30,7 +33,7 @@
                             titleTextStyle: {fontSize:19},
                             legend: {fontSize:14},
                             tooltip: { textStyle: { fontSize: 14 } },
-                            title:'Current Stock Assessment Ratings'
+                            // title:'Current Stock Assessment Ratings'
                             };
 
               var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -78,14 +81,14 @@
 <!--    <style>-->
 <!--        svg > g > g:last-child { pointer-events: none}-->
 <!--    </style>-->
-    <h1 style="margin-bottom: 50px">{{ item_names[item] }}</h1>
+
     <div id="piechart"></div>
 
 
 
     <table>
         <!-- Header row -->
-        <tr>
+        <tr class="table-header">
             <td><b>Provider</b></td>
             <td><b>Current stock level</b></td>
             <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>

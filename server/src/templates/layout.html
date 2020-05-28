@@ -68,6 +68,8 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
+                    <h1 style="margin-bottom: 0px">{% block header %}{% endblock %}</h1>
+                <p>{% block subtitle %}{% endblock %}</p>
                     {% block body %}{% endblock %}
                 </nav>
             </div>
