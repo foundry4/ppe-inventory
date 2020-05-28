@@ -11,7 +11,6 @@ currentTime = datetime.datetime.now()
 
 
 def form(request):
-
     landing = request.args.get('landing')
     name = request.args.get('site')
     code = request.args.get('code')
@@ -38,7 +37,7 @@ def form(request):
     # Construct a full URL to redirect to
     # otherwise we seem to end up on http
     domain = os.getenv('DOMAIN')
-    form_action = f'https://{domain}/form'
+    form_action = f'https://{domain}/form?site={name}&code={code}'
     dashboard_link = f'https://{domain}/dashboard'
 
     if landing and code:

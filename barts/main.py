@@ -8,7 +8,6 @@ import os
 currentTime = datetime.datetime.now()
 
 def barts(request):
-    guid = '798cb26f-5af7-4672-beb1-19b269795df3'
 
     sites = {'Royal London Hospital': 'pr234ted',
              'Whipps Cross Hospital': 'el324os',
