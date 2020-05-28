@@ -40,23 +40,26 @@ def form(request):
     form_action = f'https://{domain}/form?site={name}&code={code}'
     dashboard_link = f'https://{domain}/dashboard'
 
-    if landing and code:
+    if post and landing:
+        print(1, file=sys.stderr)
+        template = 'success.html'
+        landing_page = f'https://{domain}/form?landing=true&code={code}'
+    elif post:
+        print(2, file=sys.stderr)
+        template = 'success.html'
+    elif landing and code:
         print(3, file=sys.stderr)
         template = 'landing.html'
         sites = get_child_sites(code)
-        landing_page = f'https://{domain}/form?landing=true&code={code}'
 
-    elif post:
-        print(4, file=sys.stderr)
-        template = 'success.html'
     elif site and 'acute' in site.keys() and site['acute'] == 'yes':
-        print(5, file=sys.stderr)
+        print(4, file=sys.stderr)
         template = 'form.html'
     elif site:
-        print(6, file=sys.stderr)
+        print(5, file=sys.stderr)
         template = 'community_form.html'
     else:
-        print(7, file=sys.stderr)
+        print(6, file=sys.stderr)
         template = 'error.html'
 
     # template = 'success.html' if post else 'form.html' if site else 'error.html'
