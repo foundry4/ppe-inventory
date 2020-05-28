@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    <div class="row" style="margin-top: 30px; width: 100%">
+    <div class="row" style="width: 100%">
         <div class="nhsuk-grid-column-one-quarter filter-container">
             <div class="filter-heading"><h4>Filter results</h4>
             {% if selected_boroughs or selected_service_types %}
@@ -72,9 +72,8 @@
             {% endif %}
 
         </div>
-        <div class="nhsuk-grid-column-three-quarters">
-              {% block content %}{% endblock %}
-        </div>
+
+        {% block content %}{% endblock %}
     </div>
 <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 

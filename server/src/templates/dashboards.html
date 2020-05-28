@@ -1,8 +1,9 @@
 {% extends "filter_view.html" %}
 
 {% block title %}Dashboard{% endblock %}
-{% block subtitle %}Displaying submissions from the last 7 days{% endblock %}
-{% block header %}PPE Dashboard{% endblock %}
+
+{% block header %}<h1 style="margin-bottom: 0px">PPE Dashboard</h1>
+<p>Displaying submissions from the last 7 days</p>{% endblock %}
 {% block navigation %}
     <div class="nhsuk-width-container">
         <ul class="nhsuk-header__navigation-list">
@@ -41,7 +42,7 @@
 
 
 {% block content %}
-
+<div class="nhsuk-grid-column-three-quarters dashboard-content-container">
     <div class="nhsuk-grid-row">
         <div class="nhsuk-grid-column-full">
             {% for item in items %}
@@ -100,4 +101,5 @@
         {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}

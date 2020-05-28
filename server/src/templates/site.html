@@ -37,25 +37,23 @@
         </ul>
       </div>
 {% endblock %}
+{% block header %}
+    <div class="provider-header">
+        <div>
+            <h1 style="margin-bottom: 0px">{{ site['provider'] }}</h1>
+            <p>{{ site['location'] }}, {{ site['postcode'] }}</p>
+        </div>
+        <div class="nhsuk-panel-with-label">
+            <h3 class="nhsuk-panel-with-label__label">Contact</h3>
+            <p>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </p>
+        </div>
+    </div>
+{% endblock%}
 {% block body %}
-    <table>
-        <tr>
-            <td>
-                <h1 style="margin-top: 40px;margin-bottom: 10px">{{ site['provider'] }}</h1><p>{{ site['location'] }}, {{ site['postcode'] }}</p>
-            </td>
-            <td rowspan="2">
-                <div class="nhsuk-panel-with-label">
-                    <h3 class="nhsuk-panel-with-label__label">Contact</h3>
-                    <p>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </p>
-                </div>
-            </td>
-        </tr>
-    </table>
-
     {% if stock_items and stock_items_count > 0 %}
         <table>
         <!-- Header row -->
-            <tr>
+            <tr class="table-header">
                 <td><b>PPE type</b></td>
                 <td>
                     <div>

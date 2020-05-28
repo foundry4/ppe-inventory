@@ -61,7 +61,7 @@
 
 .filter-container {
     padding-left: 0;
-    margin-top: 30px;
+    margin-top: 80px;
 }
 
 .checkbox-container {
@@ -169,7 +169,6 @@ h1 {
     padding-left: 14px;
 }
 .row {
-    margin-top: 80px;
     float: left;
 }
 
@@ -204,3 +203,27 @@ tr:last-of-type td {border-bottom: 0;}
 .filter-heading a:visited {
     color: #4C6272;
 }
+
+.dashboard-content-container {
+    margin-top: 70px;
+}
+
+.provider-content-container {
+
+}
+
+.provider-header {
+
+}
+
+@media (min-width: 40.0625em) {
+       .provider-content-container {
+            position: relative;
+           top: -30px;
+       }
+        .provider-header {
+        display: flex;
+            margin-bottom: 50px;
+    }
+}
+
