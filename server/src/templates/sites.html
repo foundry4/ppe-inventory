@@ -40,10 +40,10 @@
 {% endblock %}
 {% block content %}
     <div class="nhsuk-form-group" style="float: right">
-      <label class="nhsuk-label" for="date_range">
+      <label class="nhsuk-label nhsuk-u-font-size-16" for="date_range">
         Last updated
       </label>
-      <select class="nhsuk-select" id="date_range" name="date_range" onchange="date_range_onchange()">
+      <select class="nhsuk-select nhsuk-u-font-size-16" id="date_range" name="date_range" onchange="date_range_onchange()">
             <option
                     value="anytime"
                     {% if selected_date_range == 'anytime' %}selected{% endif %}>Anytime</option>
