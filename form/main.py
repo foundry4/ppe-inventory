@@ -14,8 +14,9 @@ def form(request):
     landing = request.args.get('landing')
     name = request.args.get('site')
     code = request.args.get('code')
-    client = datastore.Client()
+    parent=request.args.get('parent')
 
+    client = datastore.Client()
     site = None
     post = False
     sites=[]
@@ -40,7 +41,7 @@ def form(request):
     form_action = f'https://{domain}/form?site={name}&code={code}'
     dashboard_link = f'https://{domain}/dashboard'
 
-    if post and landing:
+    if post and parent:
         print(1, file=sys.stderr)
         template = 'success.html'
         landing_page = f'https://{domain}/form?landing=true&code={code}'
@@ -52,7 +53,7 @@ def form(request):
         template = 'landing.html'
         form_action = f'https://{domain}/form?landing=true&code={code}'
         sites = get_child_sites(code)
-
+        parent=code
     elif site and 'acute' in site.keys() and site['acute'] == 'yes':
         print(4, file=sys.stderr)
         template = 'form.html'
@@ -71,6 +72,7 @@ def form(request):
                                              sites=sites,
                                              form_action=form_action,
                                              landingPage=landing_page,
+                                             parent=parent,
                                              dashboard_link=dashboard_link,
                                              currentTime=datetime.datetime.now().strftime('%H:%M %d %B %y'),
                                              assets='https://storage.googleapis.com/ppe-inventory',
