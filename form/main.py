@@ -14,7 +14,7 @@ def form(request):
     landing = request.args.get('landing')
     name = request.args.get('site')
     code = request.args.get('code')
-    parent=request.args.get('parent')
+    parent = request.args.get('parent')
 
     client = datastore.Client()
     site = None
@@ -23,6 +23,7 @@ def form(request):
     landing_page = ''
     print(f'request method: {request.method}', file=sys.stderr)
     print(f'name:{name};code:{code}')
+    print(f'parent:{parent}')
     if name and code:
         print(1, file=sys.stderr)
         site = get_site(name, code, client)
