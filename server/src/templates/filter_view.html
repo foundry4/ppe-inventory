@@ -52,7 +52,7 @@
                 </details>
             {% endif %}
 
-            {% if 'Primary Care - GP Federation' in selected_service_types %}
+            {% if 'Primary Care - GP Federation' in selected_service_types  or 'Primary Care' in selected_service_types %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details2"  {% if selected_pcns %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
                         <span class="nhsuk-details__summary-text">
