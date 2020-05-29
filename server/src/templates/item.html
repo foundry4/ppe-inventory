@@ -84,7 +84,7 @@
     <div id="piechart"></div>
 
 
-
+    {% if stock_items %}
     <table>
         <!-- Header row -->
         <tr class="table-header">
@@ -107,4 +107,7 @@
             </tr>
         {% endfor %}
     </table>
+    {% else %}
+        <div class="no-data-message">No data for {{ item_names[item] }} available</div>
+    {% endif %}
 {% endblock %}
