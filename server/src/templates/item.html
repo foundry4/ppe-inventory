@@ -1,12 +1,10 @@
 {% extends "layout.html" %}
 
 {% block title %}{{ item }}{% endblock %}
-
-{% block body %}
-
-    <h1>{{ item_names[item] }}</h1>
-    <div id="piechart"></div>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+{% block header %}<h1 style="margin-bottom: 0px">{{ item_names[item] }}</h1>
+<p>Displaying results from the last 7 days {% if selected_boroughs or selected_service_types or selected_pcns %}for{% endif %}{% for borough in selected_boroughs %} {{ borough }}{{';' if not loop.last }}{% endfor %}{% if selected_boroughs and (selected_service_types or selected_pcns) %}; {% endif %}{% for service_type in selected_service_types %} {{ service_type }}{{";" if not loop.last }}{% endfor %}{% if selected_service_types and selected_pcns %}; {% endif %}{% for pcn in selected_pcns %}{{ pcn }}{{"; " if not loop.last }}{% endfor %}</p>{% endblock %}
+{% block html_head %}
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
         // Load google charts
@@ -16,7 +14,7 @@
         // Draw the chart and set the chart values
         function drawChart() {
               var data = google.visualization.arrayToDataTable([
-              ['Task', 'Hours per Day'],
+              ['Rag', 'Number of Items'],
               ['Under 1 day', {{ rag_item_sums['under_one'] }}],
               ['1-2 days', {{ rag_item_sums['one_two'] }}],
               ['2-3 days', {{ rag_item_sums['two_three'] }}],
@@ -25,38 +23,88 @@
             ]);
 
               // Optional; add a title and set the width and height of the chart
-              var options = {'width':300,
+              var options = {'width':350,
                             'height':300,
                             colors: ['#951d14', '#d5281b', '#ffa620', '#65eba3', '#2AB369'],
                             'chartArea': {'width': '100%', 'height': '80%'},
                             backgroundColor: { fill:'transparent' },
                             pieSliceTextStyle: {fontSize:14},
-                            titleTextStyle: {fontSize:16},
+                            titleTextStyle: {fontSize:19},
                             legend: {fontSize:14},
                             tooltip: { textStyle: { fontSize: 14 } },
-                            'title':'Current Stock Assessment Ratings'
+                            // title:'Current Stock Assessment Ratings'
                             };
 
               var chart = new google.visualization.PieChart(document.getElementById('piechart'));
               chart.draw(data, options);
         }
     </script>
+{% endblock %}
+{% block navigation %}
+    <div class="nhsuk-width-container">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item app-header__navigation-item__item--current">
+            <a class="nhsuk-header__navigation-link" href="/dashboards?{{ request.query_string.decode() }}">
+              Dashboard
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/sites?{{ request.query_string.decode() }}">
+              Providers
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+{% endblock %}
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Dashboard</a>
+                </li>
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/dashboards/items/{{ item }}{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">{{ item_names[item] }}</a>
+                </li>
+            </ol>
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}
+<!--    <style>-->
+<!--        svg > g > g:last-child { pointer-events: none}-->
+<!--    </style>-->
+
+    <div id="piechart"></div>
+
+
 
     <table>
-    <!-- Header row -->
-    <tr>
-        <td><b>Provider</b></td>
-        <td><b>Current Stock level</b></td>
-        <td><b>Used last week</b><br>Estimated figures</td>
-        <td><b>RAG</b><br>Stock assessment rating</td>
-    </tr>
-    {% for item in stock_items %}
-        <tr>
-            <td>{{item['provider']}}</td>
-            <td>{{item['stock-levels']}}</td>
-            <td>{{item['quantity_used']}}</td>
-            <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
+        <!-- Header row -->
+        <tr class="table-header">
+            <td><b>Provider</b></td>
+            <td><b>Current stock level</b></td>
+            <td><div><b>Used last 24 hrs</b></div><div class="text-gray nhsuk-u-font-size-16">Estimated figures</div></td>
+            <td><div><b>RAG</b></div><div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div></td>
         </tr>
-    {% endfor %}
+        {% for item in stock_items %}
+            <tr>
+                <td><a href="../../sites/{{item['code']}}">{{item['provider']}}</a></td>
+                <td>{{item['stock-levels']}}</td>
+                <td>{{item['quantity_used']}}</td>
+                <td>
+                    <div class="rag-rating">
+                        <span class="dot highlight-{{color_codes[item['rag']]}}"></span>
+                        <span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}

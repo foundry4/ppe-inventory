@@ -2,18 +2,17 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block html_head %}
-
-{% endblock %}
+{% block html_head %}{% endblock %}
 
 {% block body %}
-    <h1 style="margin-bottom: 0px">PPE Dashboard</h1>
-<p>{% block subtitle %}{% endblock %}</p>
-    <div class="row" style="margin-top: 30px">
-        <div class="nhsuk-grid-column-one-quarter">
-            <a href="{{request.path}}">clear filters</a>
-            <br>
-            <br>
+
+    <div class="row" style="width: 100%">
+        <div class="nhsuk-grid-column-one-quarter filter-container">
+            <div class="filter-heading"><h4>Filter results</h4>
+            {% if selected_boroughs or selected_service_types %}
+            <a href=" {{request.path}}" class="text-gray nhsuk-u-font-size-14">Clear filters</a>
+
+            {% endif %}</div>
             {% if boroughs %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details0" {% if selected_boroughs %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="false">
@@ -23,10 +22,11 @@
                     </summary>
                     <div class="nhsuk-details__text" id="nhsuk-details__text0" aria-hidden="true">
                         {% for borough in boroughs %}
-                            <div>
+                            <div class="checkbox-container">
                                 <label>
-                                    <input style="font-size: 12px" onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
-                                </label>{{ borough }}
+                                    <input style="font-size: 12px" onclick="update_filter('{{ baseUrl }}')" type="checkbox" name="borough" value="{{ borough }}" {% if borough in selected_boroughs %}checked{% endif %}>
+                                </label>
+                                <span>{{ borough }}</span>
                             </div>
                         {% endfor %}
                     </div>
@@ -37,22 +37,22 @@
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details1" {% if selected_service_types %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
                         <span class="nhsuk-details__summary-text">
-                            Service Types
+                            Service types
                         </span>
                     </summary>
                     <div class="nhsuk-details__text" id="nhsuk-details__text1" aria-hidden="false">
                         {% for service_type in service_types %}
-                            <div>
+                            <div class="checkbox-container">
                                 <label>
-                                    <input onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
-                                </label>{{ service_type }}
+                                    <input onclick="update_filter('{{ baseUrl }}')" type="checkbox" name="service_type" value="{{ service_type }}" {% if service_type in selected_service_types %}checked{% endif %}>
+                                </label><span>{{ service_type }}</span>
                             </div>
                         {% endfor %}
                     </div>
                 </details>
             {% endif %}
 
-            {% if selected_boroughs %}
+            {% if 'Primary Care - GP Federation' in selected_service_types %}
                 <details class="nhsuk-details nhsuk-expander" nhsuk-polyfilled="true" id="nhsuk-details2"  {% if selected_pcns %}open{% endif %}>
                     <summary class="nhsuk-details__summary" role="button" aria-controls="nhsuk-details__text0" tabindex="0" aria-expanded="true">
                         <span class="nhsuk-details__summary-text">
@@ -61,10 +61,10 @@
                     </summary>
                     <div class="nhsuk-details__text" id="nhsuk-details__text2" aria-hidden="true">
                         {% for pcn in pcns %}
-                            <div>
+                            <div class="checkbox-container">
                                 <label>
-                                    <input onclick="update_filter('{{request.path[1:]}}')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
-                                </label>{{ pcn }}
+                                    <input onclick="update_filter('{{ baseUrl }}')" type="checkbox" name="pcn" value="{{ pcn }}" {% if pcn in selected_pcns %}checked{% endif %}>
+                                </label><span>{{ pcn }}</span>
                             </div>
                         {% endfor %}
                     </div>
@@ -72,9 +72,8 @@
             {% endif %}
 
         </div>
-        <div class="nhsuk-grid-column-three-quarters">
-              {% block content %}{% endblock %}
-        </div>
+
+        {% block content %}{% endblock %}
     </div>
 <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 

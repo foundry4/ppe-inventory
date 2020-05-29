@@ -1,37 +1,96 @@
 {% extends "layout.html" %}
 
 {% block title %}Site Page{% endblock %}
-
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/sites?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Providers</a>
+                </li>
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/sites/{{site['code']}}?request.query_string.decode()" class="nhsuk-breadcrumb__link">{{site['provider']}}</a>
+                </li>
+            </ol>
+        </div>
+    </nav>
+{% endblock %}
+{% block navigation %}
+    <div class="nhsuk-width-container">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/dashboards?{{ request.query_string.decode() }}">
+              Dashboard
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="nhsuk-header__navigation-item app-header__navigation-item__item--current">
+            <a class="nhsuk-header__navigation-link" href="/sites?{{ request.query_string.decode() }}">
+              Providers
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+{% endblock %}
+{% block header %}
+    <div class="provider-header">
+        <div>
+            <h1 style="margin-bottom: 0px">{{ site['provider'] }}</h1>
+            <p>{{ site['location'] }}, {{ site['postcode'] }}</p>
+        </div>
+        <div class="nhsuk-panel-with-label">
+            <h3 class="nhsuk-panel-with-label__label">Contact</h3>
+            <p>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </p>
+        </div>
+    </div>
+{% endblock%}
 {% block body %}
-    <table>
-        <tr>
-            <td>
-                <h1 style="margin-top: 40px;margin-bottom: 10px">{{ site['provider'] }}</h1><p>{{ site['location'] }}, {{ site['postcode'] }}</p>
-            </td>
-            <td rowspan="2">
-                <div class="nhsuk-panel-with-label">
-                    <h3 class="nhsuk-panel-with-label__label">Contact</h3>
-                    <p>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </p>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <table>
-    <!-- Header row -->
-    <tr>
-        <td><b>PPE type</b></td>
-        <td><b>Current Stock level</b><br>Last updated: {{site['last_updated']}}</td>
-        <td><b>Used last week</b><br>Estimated figures</td>
-        <td><b>RAG</b><br>Stock assessment rating</td>
-    </tr>
-    {% for item in stock_items %}
-        <tr>
-            <td>{{item_names[item['item_name']]}}</td>
-            <td>{{item['stock-levels']}}</td>
-            <td>{{item['quantity_used']}}</td>
-            <td><span class="dot highlight-{{color_codes[item['rag']]}}"></span>    {{rag_labels[item['rag']]}}</td>
-        </tr>
-    {% endfor %}
-    </table>
+    {% if stock_items and stock_items_count > 0 %}
+        <table>
+        <!-- Header row -->
+            <tr class="table-header">
+                <td><b>PPE type</b></td>
+                <td>
+                    <div>
+                        <b>Current stock level</b>
+                    </div>
+                    {% if site['last_update'] %}
+                        <div class="text-gray nhsuk-u-font-size-16">Last updated: {{site['last_update'].strftime('%H:%M, %a %d %B %Y') }}</div>
+                    {% endif %}
+                </td>
+                <td>
+                    <div>
+                        <b>Used last 24 hrs</b>
+                    </div>
+                    <div class="text-gray nhsuk-u-font-size-16">Estimated figures</div>
+                </td>
+                <td>
+                    <div>
+                        <b>RAG</b>
+                    </div>
+                    <div class="text-gray nhsuk-u-font-size-16">Stock assessment rating</div>
+                </td>
+            </tr>
+            {% for item in stock_items %}
+                <tr>
+                    <td>{{item_names[item['item_name']]}}</td>
+                    <td>{{item['stock-levels']}}</td>
+                    <td>{{item['quantity_used']}}</td>
+                    <td>
+                        <div class="rag-rating">
+                            <span class="dot highlight-{{color_codes[item['rag']]}}"></span>
+                            <span class="text-gray  nhsuk-u-font-size-14 rag-rating_label">{{rag_labels[item['rag']]}}</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <div class="no-data-message">No data for {{ site['provider'] }} available</div>
+    {% endif %}
 {% endblock %}

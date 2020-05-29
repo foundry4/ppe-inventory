@@ -5794,10 +5794,10 @@ b {
 
     .nhsuk-header__navigation-list {
         border-top: 1px solid rgba(255, 255, 255, 0.2);
-        display: -ms-flexbox;
+        /*display: -ms-flexbox;*/
         /* [14] */
-        display: flex;
-        justify-content: space-between;
+        /*display: flex;*/
+        /*justify-content: space-between;*/
         padding: 0;
         width: 100%;
     }

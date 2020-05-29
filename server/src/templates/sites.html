@@ -1,31 +1,83 @@
 {% extends "filter_view.html" %}
 
-{% block title %}Sites{% endblock %}
-
-{% block content %}
-    <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-one-third">
-            <a href="/dashboards?{{ request.query_string.decode() }}">Overview</a>
-            View by provider
+{% block title %}Providers{% endblock %}
+{% block header %}<h1 style="margin-bottom: 0px">Providers</h1>
+<p>
+    Showing results from {{ filtered_sites_count }} out of {{ all_site_count }} providers
+</p>
+{% endblock %}
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/Dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Providers</a>
+                </li>
+            </ol>
         </div>
-        <br>
-        <br>
+    </nav>
+{% endblock %}
+{% block navigation %}
+    <div class="nhsuk-width-container">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/dashboards?{{ request.query_string.decode() }}">
+              Dashboard
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="nhsuk-header__navigation-item app-header__navigation-item__item--current">
+            <a class="nhsuk-header__navigation-link" href="/sites?{{ request.query_string.decode() }}">
+              Providers
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+{% endblock %}
+{% block content %}
+        <div class="nhsuk-grid-column-three-quarters provider-content-container">
+    <div class="nhsuk-form-group" style="float: right">
+      <label class="nhsuk-label nhsuk-u-font-size-16" for="date_range">
+        Last updated
+      </label>
+      <select class="nhsuk-select nhsuk-u-font-size-16" id="date_range" name="date_range" onchange="date_range_onchange()">
+            <option
+                    value="anytime"
+                    {% if selected_date_range == 'anytime' %}selected{% endif %}>Anytime</option>
+            <option
+                    value="last_seven_days"
+                    {% if selected_date_range == 'last_seven_days' %}selected{% endif %}>In the last 7 days</option>
+            <option
+                    value="more_than_seven_days"
+                    {% if selected_date_range == 'more_than_seven_days' %}selected{% endif %}>More than 7 days ago</option>
+      </select>
+    </div>
+
+
+    <br>
+    <div class="nhsuk-grid-row">
     {% if sites %}
         <table>
             <!-- Header row -->
-            <tr>
-                <td>Provider (A-Z)</td>
-                <td>Contact details</td>
-                <td>Last Updated</td>
+            <tr class="table-header">
+                <td class="text-gray nhsuk-u-font-size-16">Provider (A-Z)</td>
+                <td class="text-gray nhsuk-u-font-size-16">Contact details</td>
+                <td class="text-gray nhsuk-u-font-size-16">Last updated</td>
             </tr>
             {% for site in sites %}
             <tr>
-                <td><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
-                <td>{{ site['contact_name_1'] }}<br>{{ site['telephone'] }}<br><a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }}</a> </td>
-                <td>{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M %d %B %y') }}{% endif %}</td>
+                <td class="provider-name"><a href="sites/{{ site['code'] }}">{{ site['provider'] }}</a></td>
+                <td class="provider-contact nhsuk-u-font-size-16">{% if site['contact_name_1'] %}{{ site['contact_name_1'] }}<br>{% endif %} {% if site['telephone'] %}{{ site['telephone'] }}<br>{% endif %}{% if site['telephone'] %}<a href="mailto:{{ site['email_1'] }}">{{ site['email_1'] }} {% endif %}</a> </td>
+                <td class="provider-updated text-gray nhsuk-u-font-size-14">{% if site["last_update"] %} {{ site["last_update"].strftime('%H:%M, %a %d %B %Y') }}{% else %}No data available{% endif %}</td>
             </tr>
             {% endfor %}
         </table>
     {% endif %}
     </div>
+        </div>
 {% endblock %}

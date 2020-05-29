@@ -11,6 +11,7 @@ from google.cloud import datastore
 from okta import UsersClient
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
+import sys
 
 users = {
     os.getenv('USER_NAME'): generate_password_hash(os.getenv('PASSWORD'))
@@ -31,7 +32,7 @@ client_secrets = {'web': {
     'token_uri': f'{os.getenv("OKTA_ORG_URL")}/oauth2/default/v1/token',
     'issuer': f'{os.getenv("OKTA_ORG_URL")}/oauth2/default',
     'userinfo_uri': f'{os.getenv("OKTA_ORG_URL")}/oauth2/default/v1/userinfo',
-    'redirect_uris': os.getenv('OIDC_REDIRECT_URIS')
+    'redirects_uris': os.getenv('OIDC_REDIRECT_URIS')
 }}
 with open('client_secrets.json', 'w') as fp:
     json.dump(client_secrets, fp)
@@ -56,6 +57,7 @@ logging_client = google.cloud.logging.Client()
 logging_client.get_default_handler()
 logging_client.setup_logging()
 
+
 @auth.verify_password
 def verify_password(username, password):
     if username in users and \
@@ -70,10 +72,23 @@ def dashboard_items(item_param, request_param=request):
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
+    selected_date_range = 'anytime'
 
+    query = datastore_client.query(kind='Site')
+    all_sites = list(query.fetch())
+    boroughs = get_boroughs(all_sites)
+    service_types = get_service_types(all_sites)
+    pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
     stock_items = get_stock_items_by_item_name_from_db(item_param)
 
-    filtered_stock_items = get_filtered_sites(stock_items, selected_boroughs, selected_service_types, selected_pcns)
+    filtered_stock_items = \
+        get_filtered_sites(
+            stock_items,
+            selected_boroughs,
+            selected_service_types,
+            selected_pcns,
+            selected_date_range)
+
     rags = ('', 'under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
     filtered_stock_items.sort(key=lambda x: rags.index(x.get('rag')))
 
@@ -107,7 +122,15 @@ def dashboard_items(item_param, request_param=request):
                                rag_item_sums=rag_item_sums,
                                item_names=item_names,
                                color_codes=rag_color_codes,
-                               rag_labels=rag_labels)
+                               rag_labels=rag_labels,
+                               boroughs=boroughs,
+                               selected_boroughs=selected_boroughs,
+                               service_types=service_types,
+                               selected_service_types=selected_service_types,
+                               pcns=pcns,
+                               selected_pcns=selected_pcns,
+                               baseUrl=item_param
+                               )
     else:
         flash(f'No stock_items of {item_param} can be found', 'error')
         return redirect(url_for('index'))
@@ -133,9 +156,15 @@ def dashboards(client=datastore_client, request_param=request):
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
+    selected_date_range = 'anytime'
 
     sites = get_sites(datastore_client)
-    filtered_sites = get_filtered_sites(sites, selected_boroughs, selected_service_types, selected_pcns)
+    filtered_sites = get_filtered_sites(
+        sites,
+        selected_boroughs,
+        selected_service_types,
+        selected_pcns,
+        selected_date_range)
 
     updated_sites = [site.get('last_update') for site in filtered_sites if
                      site.get('last_update') and site.get('last_update').date() >= (
@@ -150,7 +179,12 @@ def dashboards(client=datastore_client, request_param=request):
 
     db_items = get_ppe_items_from_db(datastore_client)
     print(f"db items: {db_items}")
-    results = get_filtered_sites(db_items, selected_boroughs, selected_service_types, selected_pcns)
+    results = get_filtered_sites(
+        db_items,
+        selected_boroughs,
+        selected_service_types,
+        selected_pcns,
+        'anytime')
 
     ppe_items = get_ppe_items(item_names, results)
 
@@ -167,7 +201,8 @@ def dashboards(client=datastore_client, request_param=request):
                                              service_types=service_types,
                                              selected_service_types=selected_service_types,
                                              pcns=pcns,
-                                             selected_pcns=selected_pcns
+                                             selected_pcns=selected_pcns,
+                                             baseUrl='dashboards'
                                              ))
     return response
 
@@ -180,16 +215,21 @@ def sites(client=datastore_client, request_param=request):
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
-
+    selected_date_range = request_args.get('date_range','last_seven_days')
+    print(f'selected_date_range:{selected_date_range}', file=sys.stderr)
     # Get all sites, boroughs, service_types and pcns
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
+    # query = client.query(kind='Site')
+    all_sites = get_sites(datastore_client)
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
 
     # Get filtered sites
-    results = get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns)
+    results = get_filtered_sites(all_sites,
+                                 selected_boroughs,
+                                 selected_service_types,
+                                 selected_pcns,
+                                 selected_date_range)
 
     # Construct collection of representations of sites to pass to template
     seven_days_ago = datetime.datetime.utcnow().replace(tzinfo=pytz.timezone('Europe/London')) - datetime.timedelta(
@@ -197,12 +237,16 @@ def sites(client=datastore_client, request_param=request):
 
     response = make_response(render_template('sites.html',
                                              sites=results,
+                                             all_site_count = len(all_sites),
+                                             filtered_sites_count = len(results),
                                              boroughs=boroughs,
                                              selected_boroughs=selected_boroughs,
                                              service_types=service_types,
                                              selected_service_types=selected_service_types,
                                              pcns=pcns,
-                                             selected_pcns=selected_pcns))
+                                             selected_pcns=selected_pcns,
+                                             selected_date_range=selected_date_range,
+                                             baseUrl=sites))
     return response
 
 
@@ -211,16 +255,17 @@ def sites(client=datastore_client, request_param=request):
 def site(site_param):
     provider = get_provider_by_code_from_db(site_param)
     stock_items = get_stock_items_by_provider_from_db(provider)
-    rags = ('','under_one', 'one_two', 'two_three', 'less-than-week', 'more-than-week')
-    stock_items.sort(key=lambda x: rags.index(x.get('rag')))
+    rag_labels= get_rag_labels()
+    stock_items.sort(key=lambda x: list(rag_labels).index(x.get('rag')))
 
     if provider:
         return render_template('site.html',
                                site=provider,
-                               stock_items=stock_items,
+                               stock_items= [item for item in stock_items if item['quantity_used'] > 0],
+                               stock_items_count=len(stock_items),
                                item_names=get_item_names(),
                                color_codes=get_rag_color_codes(),
-                               rag_labels=get_rag_labels())
+                               rag_labels=rag_labels)
     else:
         flash(f'The site with code: {site_param} cannot be found', 'error')
         return redirect(url_for('index'))
@@ -294,10 +339,9 @@ if __name__ == '__main__':
 def get_sites(client):
     query = client.query(kind='Site')
     query.add_filter('acute', '=', 'no')
+    db_sites = list(query.fetch())
 
-    sites = list(query.fetch())
-
-    return sites
+    return db_sites
 
 
 def get_site(code, client):
@@ -334,13 +378,11 @@ def get_ppe_item(item_names, item_name, items):
         ppe_item = {
             'name': item_name,
             'display_name': item_names[item_name],
-            'under_one': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count),
-            'one_two': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count),
-            'two_three': '{:.0%}'.format(sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count),
-            'less-than-week': '{:.0%}'.format(
-                sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count),
-            'more-than-week': '{:.0%}'.format(
-                sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count),
+            'under_one': sum(1 for item in named_items if item.get('rag') == 'under_one') / item_count,
+            'one_two': sum(1 for item in named_items if item.get('rag') == 'one_two') / item_count,
+            'two_three': sum(1 for item in named_items if item.get('rag') == 'two_three') / item_count,
+            'less-than-week': sum(1 for item in named_items if item.get('rag') == 'less-than-week') / item_count,
+            'more-than-week': sum(1 for item in named_items if item.get('rag') == 'more-than-week') / item_count,
         }
 
         max_item = 'under_one'
@@ -354,11 +396,11 @@ def get_ppe_item(item_names, item_name, items):
     return {
         'name': item_name,
         'display_name': item_names[item_name],
-        'under_one': '{:.0%}'.format(0),
-        'one_two': '{:.0%}'.format(0),
-        'two_three': '{:.0%}'.format(0),
-        'less-than-week': '{:.0%}'.format(0),
-        'more-than-week': '{:.0%}'.format(0),
+        'under_one': 0,
+        'one_two': 0,
+        'two_three': 0,
+        'less-than-week': 0,
+        'more-than-week': 0,
         'highlight': 'under_one'}
 
 
@@ -426,7 +468,7 @@ def get_pcns(all_sites, selected_boroughs, selected_service_types):
     return sorted(pcns)
 
 
-def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns):
+def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, selected_pcns, selected_date_range):
     results = []
     # Apply filter for all optional query params
     for s in all_sites:
@@ -449,6 +491,9 @@ def get_filtered_sites(all_sites, selected_boroughs, selected_service_types, sel
                     passed_filter = False
             else:
                 passed_filter = False
+        if selected_date_range:
+            if not is_site_in_date_range(s, selected_date_range):
+                passed_filter = False
         if passed_filter:
             results.append(s)
     return results
@@ -461,6 +506,28 @@ def get_filter_result(site_to_filter, field, values):
     else:
         return False
 
+
+def is_site_in_date_range(site, selected_date_range):
+    if selected_date_range == 'anytime':
+        return True
+
+    seven_days_ago = datetime.datetime.utcnow() \
+        .replace(tzinfo=pytz.timezone('Europe/London')) \
+        - datetime.timedelta(days=7)
+
+    if selected_date_range == 'last_seven_days' \
+            and site \
+            and site.get('last_update') \
+            and site.get('last_update') >= seven_days_ago:
+        return True
+
+    if selected_date_range == 'more_than_seven_days' \
+            and site \
+            and site.get('last_update') \
+            and site.get('last_update') < seven_days_ago:
+        return True
+
+    return False
 
 def get_item_names():
     item_names = {'face-visors': 'Face Visors',

@@ -1,62 +1,94 @@
 {% extends "filter_view.html" %}
 
 {% block title %}Dashboard{% endblock %}
-{% block subtitle %}Displaying data submitted within the last  7 days from <u>{{ updated_site_count }} out of {{ site_count }}</u> Primary & Community sites.
-{% endblock %}
-{% block content %}
 
-    <div class="nhsuk-grid-row">
-        <div class="nhsuk-grid-column-one-third">
-            Overview
-            <a href="/sites?{{ request.query_string.decode() }}">View by provider</a>
+{% block header %}<h1 style="margin-bottom: 0px">PPE Dashboard</h1>
+<p>Displaying submissions from the last 7 days</p>{% endblock %}
+{% block navigation %}
+    <div class="nhsuk-width-container">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item app-header__navigation-item__item--current">
+            <a class="nhsuk-header__navigation-link" href="/dashboards?{{ request.query_string.decode() }}">
+              Dashboard
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+          <li class="nhsuk-header__navigation-item">
+            <a class="nhsuk-header__navigation-link" href="/sites?{{ request.query_string.decode() }}">
+              Providers
+              <svg class="nhsuk-icon nhsuk-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z"></path>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="nhsuk-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item">
+                    <a href="/dashboards?{{request.query_string.decode()}}" class="nhsuk-breadcrumb__link">Dashboard</a>
+                </li>
+            </ol>
         </div>
-        <br>
-        <br>
+    </nav>
+{% endblock %}
+
+
+
+{% block content %}
+<div class="nhsuk-grid-column-three-quarters dashboard-content-container">
+    <div class="nhsuk-grid-row">
         <div class="nhsuk-grid-column-full">
             {% for item in items %}
                 {% if loop.index % 3 == 1 %}
                     <div class="nhsuk-grid-row" style="">
                 {% endif %}
                 <div class="nhsuk-grid-column-one-third">
-                    <div style="background-color:white; padding:0x 10px">
+                    <div class="dashboard-card">
                         <table>
                             <tr>
-                                <td colspan="2">
+                                <td class="dashboard-card__title" colspan="2">
                                     <b>{{item['display_name']}}</b>
                                 </td>
                             </tr>
                             {% if item['highlight']=='under_one' %}
                                 <tr class="highlight-maroon" >{% else %}<tr>
                             {% endif %}
-                                <td>Under 1 day</td>
-                                <td>{{item['under_one']}}</td>
+                                <td class="dashboard-card__time">Under 1 day</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['under_one'])}}</td>
                             </tr>
                             {% if item['highlight']=='one_two' %}
                                 <tr class="highlight-red" >{% else %}<tr>
                             {% endif %}
-                                <td>1-2 days</td>
-                                <td>{{item['one_two']}}</td>
+                                <td class="dashboard-card__time">1-2 days</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['one_two'])}}</td>
                             </tr>
                             {% if item['highlight']=='two_three' %}
                                 <tr class="highlight-amber" >{% else %}<tr>
                             {% endif %}
-                                <td>2-3 days</td>
-                                <td>{{item['two_three']}}</td>
+                                <td class="dashboard-card__time">2-3 days</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['two_three'])}}</td>
                             </tr>
                             {% if item['highlight']=='less-than-week' %}
                                 <tr class="highlight-lightgreen" >{% else %}<tr>
                             {% endif %}
-                                <td>3-7 days</td>
-                                <td>{{item['less-than-week']}}</td>
+                                <td class="dashboard-card__time">3-7 days</td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['less-than-week'])}}</td>
                             </tr>
                             {% if item['highlight']=='more-than-week' %}
                                 <tr class="highlight-green" >{% else %}<tr>
                             {% endif %}
-                                <td>Over 1 week </td>
-                                <td>{{item['more-than-week']}}</td>
+                                <td class="dashboard-card__time">Over 1 week </td>
+                                <td class="dashboard-card__percentage">{{'{:.0%}'.format(item['more-than-week'])}}</td>
                             </tr>
                             <tr>
-                                <td colspan="2">
+                                <td class="dashboard-card__link" colspan="2">
                                     <a href="/dashboards/items/{{item['name']}}?{{ request.query_string.decode() }}">View report</a>
                                 </td>
                             </tr>
@@ -69,4 +101,5 @@
         {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}

@@ -15,7 +15,7 @@
     <link type="font/woff2" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" rel="preload" as="font" crossorigin>
 
     <link href="{{ assets }}/assets/nhsuk.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ppe.css') }}">
     <script src="{{ assets }}/assets/nhsuk.js" defer></script>
 
     <link rel="shortcut icon" href="{{ assets }}/assets/favicons/favicon.ico" type="image/x-icon">
@@ -45,16 +45,18 @@
   <body class="">
 
   <header class="nhsuk-header" role="banner">
-    <div class="nhsuk-width-container nhsuk-header__container">
-      <div class="nhsuk-header__logo"><a class="nhsuk-header__link" href="/" aria-label="NHS homepage">
-          <svg class="nhsuk-logo" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" viewBox="0 0 40 16">
-            <path class="nhsuk-logo__background" d="M0 0h40v16H0z"></path>
-            <path class="nhsuk-logo__text" d="M3.9 1.5h4.4l2.6 9h.1l1.8-9h3.3l-2.8 13H9l-2.7-9h-.1l-1.8 9H1.1M17.3 1.5h3.6l-1 4.9h4L25 1.5h3.5l-2.7 13h-3.5l1.1-5.6h-4.1l-1.2 5.6h-3.4M37.7 4.4c-.7-.3-1.6-.6-2.9-.6-1.4 0-2.5.2-2.5 1.3 0 1.8 5.1 1.2 5.1 5.1 0 3.6-3.3 4.5-6.4 4.5-1.3 0-2.9-.3-4-.7l.8-2.7c.7.4 2.1.7 3.2.7s2.8-.2 2.8-1.5c0-2.1-5.1-1.3-5.1-5 0-3.4 2.9-4.4 5.8-4.4 1.6 0 3.1.2 4 .6"></path>
-            <image src="https://assets.nhs.uk/images/nhs-logo.png" xlink:href=""></image>
-          </svg>
-        </a>
-      </div>
-    </div>
+            <div class="nhsuk-width-container nhsuk-header__container">
+            <div class="nhsuk-header__logo"><a class="nhsuk-header__link nhsuk-header__link--service " href="/" aria-label="NHS digital service manual homepage">
+                <svg class="nhsuk-logo" xmlns="http://www.w3.org/2000/svg" role="presentation" focusable="false" viewBox="0 0 40 16">
+                  <path class="nhsuk-logo__background" d="M0 0h40v16H0z"></path>
+                  <path class="nhsuk-logo__text" d="M3.9 1.5h4.4l2.6 9h.1l1.8-9h3.3l-2.8 13H9l-2.7-9h-.1l-1.8 9H1.1M17.3 1.5h3.6l-1 4.9h4L25 1.5h3.5l-2.7 13h-3.5l1.1-5.6h-4.1l-1.2 5.6h-3.4M37.7 4.4c-.7-.3-1.6-.6-2.9-.6-1.4 0-2.5.2-2.5 1.3 0 1.8 5.1 1.2 5.1 5.1 0 3.6-3.3 4.5-6.4 4.5-1.3 0-2.9-.3-4-.7l.8-2.7c.7.4 2.1.7 3.2.7s2.8-.2 2.8-1.5c0-2.1-5.1-1.3-5.1-5 0-3.4 2.9-4.4 5.8-4.4 1.6 0 3.1.2 4 .6"></path>
+                  <image src="https://assets.nhs.uk/images/nhs-logo.png" xlink:href=""></image>
+                </svg>
+                <span class="nhsuk-header__service-name">
+                    North East London PPE Reporting</span>
+              </a>
+            </div>
+        </div>
   </header>
 
 
@@ -64,7 +66,7 @@
 <div class="nhsuk-grid-column-full">
 
 
-    <h1 class="govuk-heading-xl">
+    <h1 class="nhsuk-u-font-size-64">
       {{ site.key.name }}
     </h1>
 
@@ -72,7 +74,7 @@
   <h3 class="nhsuk-panel-with-label__label">How to use this page</h3>
 <p>Update your PPE stock levels each day using the form below. </p>
 </div>
-
+<div class="nhsuk-grid-column-two-thirds" style="padding-left: 0">
     <form id="" action="{{ form_action }}" method="post" class="form">
 
 
@@ -142,7 +144,7 @@
 <!-- Apron -->
 
 <!-- Gloves -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Gloves
@@ -215,7 +217,7 @@
 
 
 <!-- Masks - IIR -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Masks - IIR
@@ -277,7 +279,7 @@
 <!-- Masks - IIR -->
 
 <!-- Hand hygiene -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Hand hygiene
@@ -349,7 +351,7 @@
 <!-- Hand hygiene -->
 
 <!-- Face visors -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Face visors
@@ -411,7 +413,7 @@
 <!-- Face visors -->
 
 <!-- Goggles -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Goggles
@@ -483,7 +485,7 @@
 <!-- Goggles -->
 
 <!-- Masks - FFP3 -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Masks - FFP3
@@ -545,7 +547,7 @@
 <!-- Masks - FFP3 -->
 
 <!-- Masks - FFP2 -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Masks - FFP2
@@ -607,7 +609,7 @@
 <!-- Masks - FFP2 -->
 
 <!-- Gowns -->
-<fieldset class="nhsuk-fieldset">
+<fieldset class="nhsuk-fieldset form-fieldset">
 
   <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--xl">
     Gowns
@@ -677,6 +679,7 @@
         </div>
 
     </form>
+</div>
 
 
 </div>
@@ -689,15 +692,6 @@
       <footer role="contentinfo">
         <div class="nhsuk-footer" id="nhsuk-footer">
           <div class="nhsuk-width-container">
-            <h2 class="nhsuk-u-visually-hidden">Support links</h2>
-            <ul class="nhsuk-footer__list">
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/nhs-sites">NHS sites</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/about-us">About us</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/contact-us/">Contact us</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/about-us/sitemap/">Sitemap</a></li>
-              <li class="nhsuk-footer__list-item"><a class="nhsuk-footer__list-item-link" href="https://www.nhs.uk/our-policies/">Our policies</a></li>
-            </ul>
-
             <p class="nhsuk-footer__copyright">&copy; Crown copyright</p>
           </div>
         </div>
