@@ -151,16 +151,14 @@ def dashboards(client=datastore_client, request_param=request):
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
 
     # Get all sites, boroughs, service_types and pcns
-    query = client.query(kind='Site')
-    all_sites = list(query.fetch())
+    all_sites = get_sites(datastore_client)
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
     selected_date_range = 'anytime'
 
-    sites = get_sites(datastore_client)
     filtered_sites = get_filtered_sites(
-        sites,
+        all_sites,
         selected_boroughs,
         selected_service_types,
         selected_pcns,
