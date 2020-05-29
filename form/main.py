@@ -25,11 +25,11 @@ def form(request):
     print(f'name:{name};code:{code}')
     print(f'parent:{parent}')
     if name and code:
-        print(1, file=sys.stderr)
+        print(1)
         site = get_site(name, code, client)
         print(site.get('code'), file=sys.stderr)
     if site and request.method == 'POST':
-        print(2, file=sys.stderr)
+        print(2)
         print("data are being updated.", file=sys.stderr)
         update_site(site, client, request, code)
         update_ppe_item(site, client)
@@ -43,26 +43,26 @@ def form(request):
     dashboard_link = f'https://{domain}/dashboard'
 
     if post and parent:
-        print(1, file=sys.stderr)
+        print(3)
         template = 'success.html'
         landing_page = f'https://{domain}/form?landing=true&code={code}'
     elif post:
-        print(2, file=sys.stderr)
+        print(4)
         template = 'success.html'
     elif landing and code:
-        print(3, file=sys.stderr)
+        print(5)
         template = 'landing.html'
         form_action = f'https://{domain}/form?landing=true&code={code}'
         sites = get_child_sites(code)
         parent=code
     elif site and 'acute' in site.keys() and site['acute'] == 'yes':
-        print(4, file=sys.stderr)
+        print(6)
         template = 'form.html'
     elif site:
-        print(5, file=sys.stderr)
+        print(7)
         template = 'community_form.html'
     else:
-        print(6, file=sys.stderr)
+        print(8)
         template = 'error.html'
 
     # template = 'success.html' if post else 'form.html' if site else 'error.html'
@@ -81,7 +81,7 @@ def form(request):
                                              ))
 
     if site:
-        print(8, file=sys.stderr)
+        print(9, file=sys.stderr)
         # Refresh the cookie
         expire_date = datetime.datetime.now() + datetime.timedelta(days=90)
         response.set_cookie('site', site.key.name, expires=expire_date, secure=True)
