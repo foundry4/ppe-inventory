@@ -246,7 +246,7 @@ def sites(client=datastore_client, request_param=request):
                                              pcns=pcns,
                                              selected_pcns=selected_pcns,
                                              selected_date_range=selected_date_range,
-                                             baseUrl=sites))
+                                             baseUrl='sites'))
     return response
 
 
