@@ -1,4 +1,4 @@
-@pipeline
+@manual
 Feature: Redirect from registration page
   The user should be redirected to the Form page from the Registration page.
 
