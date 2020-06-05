@@ -34,9 +34,16 @@ fi
 
 base=$PWD
 
+# Google Cloud login email
 account=$(cat account.txt)
+
+# GCP Projeect ID
 project_id=$(cat project_id.txt)
+
+# The ID of the Google spreadsheet to use for output
 sheet_id=$(cat sheet-id.txt)
+
+# The name of the worksheet in the spreadsheet to use for output
 worksheet_name=$(cat worksheet-name.txt)
 
 gcloud config set account $account
@@ -57,9 +64,11 @@ gcloud pubsub topics create form-submissions
 
 # Static content
 
-#gsutil mb gs://ppe-inventory
-gsutil rsync -r static gs://ppe-inventory
-gsutil iam ch allUsers:objectViewer gs://ppe-inventory
+bucket=${project_id}-static
+gsutil ls -b gs://${bucket} || \
+gsutil mb gs://${bucket}
+gsutil rsync -r static gs://${bucket}
+gsutil iam ch allUsers:objectViewer gs://${bucket}
 
 
 # Web form function
