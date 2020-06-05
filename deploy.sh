@@ -128,7 +128,7 @@ wait
 cd $base/server
 options="--platform managed --region europe-west1  --allow-unauthenticated"
 gcloud builds submit --tag gcr.io/${project_id}/${project_id}
-gcloud run deploy ${project_id} --image gcr.io/${project_id}/${project_id} ${options}
+gcloud run deploy ${project_id} --image gcr.io/${project_id}/${project_id} --set-env-vars=USERNAME=ppe,PASSWORD=password ${options}
 
 
 # Report back
