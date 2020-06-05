@@ -2,12 +2,21 @@ PPE Inventory
 
 Helping track personal protective equipment stocks to support distribution.
 
+## Demo environment
 
-### Setup
+If you'd like to see this system in action, a demonstration environment is available as follows:
+
+ * Daahboard spreadsheet: [TODO]
+ * Registration links: 
+   * [TODO]
+   * [TODO]
+ * Portal: [TODO]
+
+## Setup
 
 If you'd like to set up a copy of this system for yourself, here are the steps:
 
-## Prerequisites
+### Prerequisites
 
 To deploy this repo you'll need to be set up for developing with [Google Cloud](https://cloud.google.com/):
 
@@ -20,7 +29,9 @@ To deploy this repo you'll need to be set up for developing with [Google Cloud](
  * Install the [Google Cloud SDK](https://cloud.google.com/sdk/install)
  * Log in to the Google Cloud SDK using `gcloud auth login` on your command-line using your google identity (e.g. example@gmail.com). This will pop up a browser for you to authorise access. For more information see: https://cloud.google.com/sdk/gcloud/reference/auth/login
 
-## Deployment
+### Deployment
+
+The following steps walk through deploying a copy of this repo to your GCP project:
 
  * Start by cloning this repo
  * Create a Google Spreadsheet (e.g. via https://drive.google.com) - this will serve as your dashboard. Make a note of the sheet ID (e.g. for `https://docs.google.com/spreadsheets/d/1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18/edit#gid=0` the sheet ID is `1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18`)
@@ -36,12 +47,22 @@ To deploy this repo you'll need to be set up for developing with [Google Cloud](
 
 ### Post-deployment steps
 
+Once you have successfully deployed, the following additional steps need to be completed:
+
  * Navigate to Datastore in the GCP console (https://console.cloud.google.com/datastore). If this is not yet enabled, click on "Select datastore mode" and select a region (e.g. `europe-west2 (London)`)
  * Grant edit permissions on your Google Spreadsheet to [`project_id`]@appspot.gserviceaccount.com (e.g. `ppe-inventory-123456@appspot.gserviceaccount.com`)"
- * You should now be able to navigate to the URL of the deployed functions and see an "access denied" message, e.g. 
+
+### Creating sites
+
+After completing the steps above you'll be able to create sites to test with [TODO].
+
+To verify a successful setup check the following work for you:
+
+ * You should now be able to navigate to the URL of the deployed function and see an "access denied" message (e.g. https://europe-west2-ppe-demo-123456.cloudfunctions.net/form)
+ * You should also be able to navigate to the URL of the deployed portal (e.g. https://ppe-demo-123456-abcdefghij-kl.a.run.app)
 
 
-### Tests
+## Tests
 
 BDD tests are provided in the `features` directory. Those tagged with `@pipeline` will run automatically during CI/CD build deployment.
 
