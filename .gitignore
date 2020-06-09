@@ -4,7 +4,7 @@ exclude/sheet-id.txt
 exclude/worksheet-name.txt
 .gcloudignore
 /.idea/
-/exclude/.env
+/exclude
 /behave.ini
 /barts/app.py
 /register/app.py

@@ -69,6 +69,7 @@ gcloud pubsub topics create form-submissions
 
 # Static content
 
+
 bucket_name=${project_id}-static
 gsutil ls -b gs://${bucket_name} || \
 gsutil mb gs://${bucket_name}
