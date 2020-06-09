@@ -72,7 +72,7 @@ def dashboard_items(item_param, request_param=request):
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
-    selected_date_range = 'anytime'
+    selected_date_range = 'last_seven_days'
 
     query = datastore_client.query(kind='Site')
     all_sites = list(query.fetch())
@@ -155,7 +155,7 @@ def dashboards(client=datastore_client, request_param=request):
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
-    selected_date_range = 'anytime'
+    selected_date_range = 'last_seven_days'
 
     filtered_sites = get_filtered_sites(
         all_sites,
@@ -182,7 +182,7 @@ def dashboards(client=datastore_client, request_param=request):
         selected_boroughs,
         selected_service_types,
         selected_pcns,
-        'anytime')
+        'last_seven_days')
 
     ppe_items = get_ppe_items(item_names, results)
 
