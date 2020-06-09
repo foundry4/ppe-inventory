@@ -72,7 +72,7 @@ def dashboard_items(item_param, request_param=request):
     selected_boroughs = get_set_from_args_str(request_args.get('borough', ''))
     selected_service_types = get_set_from_args_str(request_args.get('service_type', ''))
     selected_pcns = get_set_from_args_str(request_args.get('pcn', ''))
-    selected_date_range = 'anytime'
+    selected_date_range = 'last_seven_days'
 
     query = datastore_client.query(kind='Site')
     all_sites = list(query.fetch())
