@@ -182,7 +182,7 @@ def dashboards(client=datastore_client, request_param=request):
         selected_boroughs,
         selected_service_types,
         selected_pcns,
-        'anytime')
+        'last_seven_days')
 
     ppe_items = get_ppe_items(item_names, results)
 
