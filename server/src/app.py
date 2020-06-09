@@ -155,7 +155,7 @@ def dashboards(client=datastore_client, request_param=request):
     boroughs = get_boroughs(all_sites)
     service_types = get_service_types(all_sites)
     pcns = get_pcns(all_sites, selected_boroughs, selected_service_types)
-    selected_date_range = 'anytime'
+    selected_date_range = 'last_seven_days'
 
     filtered_sites = get_filtered_sites(
         all_sites,
