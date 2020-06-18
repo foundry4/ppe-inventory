@@ -86,5 +86,5 @@ export GOOGLE_APPLICATION_CREDENTIALS="ppe-inventory-dev.json"
 
 ## Screenshots
 
-![Dashboard](wiki/images/form.png)
+![Dashboard](/wiki/images/form.png)
 
