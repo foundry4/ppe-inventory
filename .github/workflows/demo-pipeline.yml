@@ -1,5 +1,5 @@
 # This is a basic workflow to create, configure and deploy artefacts and resources
-# for the PPE Inventory project in the PRODUCTION environment
+# for the PPE Inventory project in the DEMO environment
 
 name: CI/CD Demo
 
@@ -8,20 +8,21 @@ on:
     branches: [ test ]
 
 env:
-  ENVIRONMENT: 'PRODUCTION'
+  # In this pipeline some of the values that are secrets in the other pipelines are expanded in the clear to help you set up your own environment.
+  # These values are public in REAME.md. Other values should be relatively simple to reproduce. 
+  # NB the deployment service account key needs to be Base-64 encoded (see https://github.com/GoogleCloudPlatform/github-actions/tree/master/setup-gcloud).
+  ENVIRONMENT: 'DEMO'
   SA_EMAIL: ${{ secrets.DEMO_SA_EMAIL }}
   SA_KEY: ${{ secrets.DEMO_SA_KEY }}
   PROJECT_ID: ${{ secrets.DEMO_PROJECT_ID }}
   BUCKET_NAME: ${{ secrets.DEMO_BUCKET_NAME }}
   DOMAIN: "europe-west2-${{ secrets.DEMO_PROJECT_ID }}.cloudfunctions.net"
-  PORTAL: ${{ secrets.PROD_PORTAL }}
-  PORTAL_URL: ${{ secrets.PROD_PORTAL_URL }}
+  PORTAL: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app
   APP_SECRET_KEY: ${{ secrets.DEMO_APP_SECRET_KEY }}
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: "1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ"
   COMMUNITY_SHEET_ID: "1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8"
   WORKSHEET_NAME: "Status"
-  OPTIONS_MAX_ONE: "--region=europe-west2 --memory=256MB --allow-unauthenticated --max-instances=1"
   VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
   VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
   USER_NAME: demo 
@@ -42,7 +43,7 @@ jobs:
       - run: echo "Deploying to ${{ env.ENVIRONMENT }} environment"
       - uses: actions/checkout@v2
       # Setup gcloud CLI
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - uses: @master
         with:
           version: '286.0.0'
           service_account_email: ${{ env.SA_EMAIL }}
@@ -122,7 +123,7 @@ jobs:
       - name: Deploy sheets function
         run: |
           cd sheets
-          gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS_MAX_ONE }}
+          gcloud functions deploy sheets --runtime=python37 --trigger-topic=form-submissions --max-instances=1 --set-env-vars=COMMUNITY_SHEET_ID=${{ env.COMMUNITY_SHEET_ID }},SHEET_ID=${{ env.SHEET_ID }},WORKSHEET_NAME=${{ env.WORKSHEET_NAME }},BUCKET_NAME=${{ env.BUCKET_NAME }} ${{ env.OPTIONS }}
           gcloud functions describe form --region=europe-west2 | grep url
 
   deploy-barts-function:
