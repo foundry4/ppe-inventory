@@ -10,15 +10,16 @@ To see more screens from the application, please head to the [wiki](https://gith
 
 If you'd like to see this system in action, a demonstration environment is available as follows:
 
- * Daahboard spreadsheet: [TODO]
+ * Portal: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/ (username: demo, password: password)
+ * Daahboard spreadsheet: https://docs.google.com/spreadsheets/d/1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ
+ * Community spreadsheet: https://docs.google.com/spreadsheets/d/1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8
  * Registration links: 
    * [TODO]
    * [TODO]
- * Portal: [TODO]
 
 ## Setup
 
-If you'd like to set up a copy of this system for yourself, here are the steps:
+If you'd like to set up a copy of this system for yourself, here are the steps. Please also refer to this [Github Actions workflow](https://github.com/notbinary/ppe-inventory/blob/test/.github/workflows/demo-pipeline.yml)
 
 ### Prerequisites
 
