@@ -14,7 +14,7 @@ env:
   ENVIRONMENT: 'DEMO'
   SA_KEY: ${{ secrets.DEMO_SA_KEY }}
   PROJECT_ID: ppe-inventory-demo
-  BUCKET_NAME: ${{ secrets.DEMO_BUCKET_NAME }}
+  BUCKET_NAME: ppe-inventory-demo
   DOMAIN: "europe-west2-ppe-inventory-demo.cloudfunctions.net"
   PORTAL: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app
   APP_SECRET_KEY: ${{ secrets.DEMO_APP_SECRET_KEY }}
@@ -23,8 +23,6 @@ env:
   SHEET_ID: "1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ"
   COMMUNITY_SHEET_ID: "1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8"
   WORKSHEET_NAME: "Status"
-  VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
-  VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
   USER_NAME: demo 
   PASSWORD: password
 
