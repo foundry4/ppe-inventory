@@ -13,7 +13,7 @@ If you'd like to see this system in action, a demonstration environment is avail
  * Portal: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/ (username: demo, password: password)
  * Dashboard spreadsheet: https://docs.google.com/spreadsheets/d/1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ
  * Community spreadsheet: https://docs.google.com/spreadsheets/d/1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8
- * Registration links: 
+ * Data entry registration links: 
    * [TODO]
    * [TODO]
 
