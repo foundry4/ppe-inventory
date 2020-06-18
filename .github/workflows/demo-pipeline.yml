@@ -12,11 +12,10 @@ env:
   # These values are public in REAME.md. Other values should be relatively simple to reproduce. 
   # NB the deployment service account key needs to be Base-64 encoded (see https://github.com/GoogleCloudPlatform/github-actions/tree/master/setup-gcloud).
   ENVIRONMENT: 'DEMO'
-  SA_EMAIL: ${{ secrets.DEMO_SA_EMAIL }}
   SA_KEY: ${{ secrets.DEMO_SA_KEY }}
-  PROJECT_ID: ${{ secrets.DEMO_PROJECT_ID }}
+  PROJECT_ID: ppe-inventory-demo
   BUCKET_NAME: ${{ secrets.DEMO_BUCKET_NAME }}
-  DOMAIN: "europe-west2-${{ secrets.DEMO_PROJECT_ID }}.cloudfunctions.net"
+  DOMAIN: "europe-west2-ppe-inventory-demo.cloudfunctions.net"
   PORTAL: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app
   APP_SECRET_KEY: ${{ secrets.DEMO_APP_SECRET_KEY }}
   SECRET_KEY: ${{ secrets.DEMO_SECRET_KEY }}
@@ -47,7 +46,6 @@ jobs:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '286.0.0'
-          service_account_email: ${{ env.SA_EMAIL }}
           service_account_key: ${{ env.SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
