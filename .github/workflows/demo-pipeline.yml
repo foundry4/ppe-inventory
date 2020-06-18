@@ -5,7 +5,7 @@ name: CI/CD Demo
 
 on:
   push:
-    branches: [ test ]
+    branches: [ master ]
 
 env:
   # In this pipeline some of the values that are secrets in the other pipelines are expanded in the clear to help you set up your own environment.
