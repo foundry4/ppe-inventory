@@ -1,8 +1,10 @@
 ## PPE Inventory stock monitoring
 
+This repository contains the code for the NELCA ppe stock management system, helping track personal protective equipment stocks to support distribution. 
+
 ![Stock levels input form](https://raw.githubusercontent.com/wiki/notbinary/ppe-inventory/images/form.png)
 
-Helping track personal protective equipment stocks to support distribution.
+To see more screens from the application, please head to the [wiki](https://github.com/notbinary/ppe-inventory/wiki)
 
 ## Demo environment
 
@@ -85,8 +87,4 @@ Also, this test will need valid `gcloud` configuration e.g.
 export GOOGLE_APPLICATION_CREDENTIALS="ppe-inventory-dev.json"
 ```
 
-
-## Screenshots
-
-![Dashboard](/wiki/images/form.png)
 
