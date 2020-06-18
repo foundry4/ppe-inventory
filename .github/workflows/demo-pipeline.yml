@@ -19,6 +19,7 @@ env:
   DOMAIN: "europe-west2-${{ secrets.DEMO_PROJECT_ID }}.cloudfunctions.net"
   PORTAL: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app
   APP_SECRET_KEY: ${{ secrets.DEMO_APP_SECRET_KEY }}
+  SECRET_KEY: ${{ secrets.DEMO_SECRET_KEY }}
   OPTIONS: "--region=europe-west2 --memory=256MB --allow-unauthenticated"
   SHEET_ID: "1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ"
   COMMUNITY_SHEET_ID: "1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8"
@@ -205,7 +206,21 @@ jobs:
           cd server
           gcloud info
           gcloud builds submit --tag gcr.io/${{ env.PROJECT_ID }}/${{ env.PROJECT_ID }}
-          gcloud run deploy ${{ env.PROJECT_ID }} --image gcr.io/${{ env.PROJECT_ID }}/${{ env.PROJECT_ID }} --platform managed --region europe-west1
+          gcloud run deploy ${{ env.PROJECT_ID }} --image gcr.io/${{ env.PROJECT_ID }}/${{ env.PROJECT_ID }} --platform managed --region europe-west1 --allow-unauthenticated --update-env-vars=PROJECT_ID=${{ env.PROJECT_ID }},USER_NAME=${{ env.USER_NAME }},PASSWORD=${{ env.PASSWORD }},APP_SECRET_KEY=${{ env.APP_SECRET_KEY }},SECRET_KEY=${{ env.SECRET_KEY }}
+      # NB For portal, you'll need to add the following variables to the deployment using
+      # "Edit and deploy new revision" in Cloud Run 
+      # (the values below are examples to help you get the format right)
+      # OIDC_COOKIE_SECURE=False
+      # OIDC_CALLBACK_ROUTE=/oidc/callback
+      # OKTA_ORG_URL=https://demo-123456.okta.com
+      # OKTA_AUTH_TOKEN=AbCdefGHijKlMnoPQ1234567890
+      # OKTA_CLIENT_ID=Abc123
+      # OIDC_AUTH_URI=https://demo-123456.okta.com/oauth2/default/v1/authorize
+      # OKTA_CLIENT_SECRET=AbCdefGHijKlMnoPQ1234567890
+      # OIDC_ISSUER=https://demo-123456.okta.com//oauth2/default
+      # OIDC_REDIRECT_URIS=[https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/oidc/callback]
+      # OIDC_TOKEN_URI=https://demo-123456.okta.com/oauth2/default/v1/token
+      # OIDC_USERINFO_URI=https://demo-123456.okta.com/oauth2/default/userinfo
 
   tests:
     needs: [deploy-form-function, deploy-register-function, deploy-sheets-function, deploy-barts-function, deploy-dashboard-function, deploy-search-function, deploy-portal]
