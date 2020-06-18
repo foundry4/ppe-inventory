@@ -11,7 +11,7 @@ To see more screens from the application, please head to the [wiki](https://gith
 If you'd like to see this system in action, a demonstration environment is available as follows:
 
  * Portal: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/ (username: demo, password: password)
- * Daahboard spreadsheet: https://docs.google.com/spreadsheets/d/1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ
+ * Dashboard spreadsheet: https://docs.google.com/spreadsheets/d/1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ
  * Community spreadsheet: https://docs.google.com/spreadsheets/d/1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8
  * Registration links: 
    * [TODO]
