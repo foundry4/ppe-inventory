@@ -1,4 +1,6 @@
-PPE Inventory
+## PPE Inventory stock monitoring
+
+![Stock levels input form](https://raw.githubusercontent.com/wiki/notbinary/ppe-inventory/images/form.png)
 
 Helping track personal protective equipment stocks to support distribution.
 
