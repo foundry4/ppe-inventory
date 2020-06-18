@@ -1,7 +1,7 @@
 # This is a basic workflow to create, configure and deploy artefacts and resources
 # for the PPE Inventory project in the DEVELOPMENT environment
 
-name: CI/CD
+name: CI/CD Dev
 
 on:
   push:
