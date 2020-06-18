@@ -23,6 +23,8 @@ env:
   SHEET_ID: "1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ"
   COMMUNITY_SHEET_ID: "1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8"
   WORKSHEET_NAME: "Status"
+  VALID_PROVIDER_NAME: ${{ secrets.VALID_PROVIDER_NAME }}
+  VALID_PROVIDER_CODE: ${{ secrets.VALID_PROVIDER_CODE }}
   USER_NAME: demo 
   PASSWORD: password
 
