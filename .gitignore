@@ -11,3 +11,4 @@ exclude/worksheet-name.txt
 /dashboard/app.py
 /exclude/
 /.run/
+env.txt
