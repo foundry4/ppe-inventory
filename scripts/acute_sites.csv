@@ -1,0 +1,13 @@
+TEST,12345,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=TEST&code=12345,,TEST
+East London NHS Foundation Trust,24b2c453-fd14-4cbb-86cb-221e61e57937,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=East+London+NHS+Foundation+Trust&code=24b2c453-fd14-4cbb-86cb-221e61e57937,NEL Trusts,East London NHS Foundation Trust
+Homerton,f27a3683-f6c1-465d-b919-7d73c9e94f7f,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Homerton&code=f27a3683-f6c1-465d-b919-7d73c9e94f7f,NEL Trusts,Homerton
+Mile End Hospital,70180369-a332-4a67-8950-fede24f98fec,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Mile+End+Hospital&code=70180369-a332-4a67-8950-fede24f98fec,NEL Trusts,Mile End Hospital
+NEL Emergency Store,105082a9-c2d9-498c-87b5-520e4f2dcaf6,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=NEL+Emergency+Store&code=105082a9-c2d9-498c-87b5-520e4f2dcaf6,NEL Trusts,NEL Emergency Store
+NELFT,59356fba-9229-4158-a855-bb7027126455,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=NELFT&code=59356fba-9229-4158-a855-bb7027126455,NEL Trusts,NELFT
+Newham Hospital,ff6dbf7a-73e9-4550-8aa1-7b05ed518494,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Newham+Hospital&code=ff6dbf7a-73e9-4550-8aa1-7b05ed518494,NEL Trusts,Newham Hospital
+Nightingale Hospital,d309c7a5-8848-4633-b15e-49e16c3074bd,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Nightingale+Hospital&code=d309c7a5-8848-4633-b15e-49e16c3074bd,NEL Trusts,Nightingale Hospital
+Queens,425a5916-de4e-4c40-b820-c644da97fb71,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Queens&code=425a5916-de4e-4c40-b820-c644da97fb71,NEL Trusts,Queens
+Queens and King George,2259bb54-860c-41d3-9add-f1d609faa2f6,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Queens+and+King+George&code=2259bb54-860c-41d3-9add-f1d609faa2f6,NEL Trusts,Queens and King George
+Royal London Hospital,8f8f9735-5267-40e0-b676-ea3088679556,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Royal+London+Hospital&code=8f8f9735-5267-40e0-b676-ea3088679556,NEL Trusts,Royal London Hospital
+St Bartholomew,2ead53e9-b695-4ed3-a96c-01804daca322,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=St+Bartholomew&code=2ead53e9-b695-4ed3-a96c-01804daca322,NEL Trusts,St Bartholomew
+Whipps Cross Hospital,6f35a5c2-3783-4f6f-9432-0a1b753be07d,https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Whipps+Cross+Hospital&code=6f35a5c2-3783-4f6f-9432-0a1b753be07d,NEL Trusts,Whipps Cross Hospital

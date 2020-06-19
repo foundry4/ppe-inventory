@@ -1,0 +1,8 @@
+Flask
+markdown
+google-cloud-datastore
+google-cloud-pubsub
+pandas
+email-validator
+xlrd
+openpyxl

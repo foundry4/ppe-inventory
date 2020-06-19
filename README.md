@@ -44,6 +44,9 @@ The following steps walk through deploying a copy of this repo to your GCP proje
  * locate the `.github/workflows/` folder and examine the `test-pipeline.yml` Github Actions workflow file. The `demo-pipeline.yml` workflow provides additional reference information.
  * If you'd like to use Github actions for deployment, you'll need to set Github secrets on your copy of this repo. If you'd like to deploy to your GCP project using another mechanism, you'll need to adapt the deployment steps from workflow files.
  * NB you'll need to sign up for an [Okta](https://www.okta.com/) account to generate some of the values needed to successfully run the `portal` component.
+ * You'll need to create a service account (https://console.cloud.google.com/iam-admin/serviceaccounts). This is used for deployment from Github Actions and for running scripts that populate the database (see below). Once you've created the service account you'll be able to create and download a Json-format key
+ * To use the service account key locally, set a `GOOGLE_APPLICATION_CREDENTIALS` environment variable that references the file.
+ * To use the service account key in the Github actions workflows, you'll need to Base-64 encode it, as described in the [setup-gcloud documentation](https://github.com/GoogleCloudPlatform/github-actions/tree/master/setup-gcloud)
 
 ### Post-deployment steps
 
@@ -54,12 +57,21 @@ Once you have successfully deployed, the following additional steps need to be c
 
 ### Creating sites
 
-After completing the steps above you'll be able to create sites to test with [TODO].
+After completing the steps above you'll be able to create sites to test with.
+
+ * To create acute sites, run `scripts/create-acute-and-test-sites.py` - you'll need to provide your cloud functions domain as a parameter
+ * To create community sites, run `scripts/add-providers.py` - you'll need to provide your cloud functions domain and `provider_sites.csv` as parameters
+
+NB you'll need a service account key from GCP to run these scripts. For example:
+
+    GOOGLE_APPLICATION_CREDENTIALS=ppe-inventory-demo-abc123.json python create-acute-and-test-sites.py europe-west2-ppe-inventory-demo.cloudfunctions.net
+    GOOGLE_APPLICATION_CREDENTIALS=ppe-inventory-demo-abc123.json python add-providers.py europe-west2-ppe-inventory-demo.cloudfunctions.net provider_sites.csv
 
 To verify a successful setup check the following work for you:
 
- * You should now be able to navigate to the URL of the deployed function and see an "access denied" message (e.g. https://europe-west2-ppe-demo-123456.cloudfunctions.net/form)
- * You should also be able to navigate to the URL of the deployed portal (e.g. https://ppe-demo-123456-abcdefghij-kl.a.run.app)
+ * You should now be able to log in using one of the registration links, e.g.: https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Avon%20Road%20Surgery%20RM14%201RG&code=9ec4f625-82d3-4757-a43d-655cb7ce1ce1
+ * Once logged in, you should be able to access the data entry form directly: https://europe-west2-ppe-inventory-demo.cloudfunctions.net/form
+ * You should also be able to navigate to the portal: https://demo:password@ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app
 
 
 ## Tests
