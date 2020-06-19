@@ -10,12 +10,12 @@ To see more screens from the application, please head to the [wiki](https://gith
 
 If you'd like to see this system in action, a demonstration environment is available as follows:
 
- * Portal: https://ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/ (username: demo, password: password)
+ * Portal: https://demo:password@ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/ (username: demo, password: password)
  * Dashboard spreadsheet: https://docs.google.com/spreadsheets/d/1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ
  * Community spreadsheet: https://docs.google.com/spreadsheets/d/1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8
- * Data entry registration links: 
-   * [TODO]
-   * [TODO]
+ * Example data entry registration links: 
+   * [Mile End Hospital](https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Mile+End+Hospital&code=70180369-a332-4a67-8950-fede24f98fec) (the full list of demo sites is available in [acute_sites.csv](https://github.com/notbinary/ppe-inventory/blob/test/scripts/acute_sites.csv))
+   * [Abbey Medical Centre](https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Abbey+Medical+Centre+IG11+8RJ&code=c8b0b20d-dc57-40ee-8bb9-66df0a5cbc19) (the full list of community provider sites is available in [acute_sites.csv](https://github.com/notbinary/ppe-inventory/blob/test/scripts/provider_sites.csv))
 
 ## Setup
 
