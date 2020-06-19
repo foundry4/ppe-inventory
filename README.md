@@ -53,7 +53,7 @@ The following steps walk through deploying a copy of this repo to your GCP proje
 Once you have successfully deployed, the following additional steps need to be completed:
 
  * Navigate to Datastore in the GCP console (https://console.cloud.google.com/datastore). If this is not yet enabled, click on "Select datastore mode" and select a region (e.g. `europe-west2 (London)`)
- * Grant edit permissions on your Google Spreadsheet to [`project_id`]@appspot.gserviceaccount.com (e.g. `ppe-inventory-123456@appspot.gserviceaccount.com`)"
+ * Grant edit permissions on your Google Spreadsheet to [`project_id`]@appspot.gserviceaccount.com (e.g. `ppe-inventory-demo@appspot.gserviceaccount.com`)"
 
 ### Creating sites
 
