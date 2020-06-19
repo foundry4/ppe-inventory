@@ -38,17 +38,12 @@ To deploy this repo you'll need to be set up for developing with [Google Cloud](
 
 The following steps walk through deploying a copy of this repo to your GCP project:
 
- * Start by cloning this repo
- * Create a Google Spreadsheet (e.g. via https://drive.google.com) - this will serve as your dashboard. Make a note of the sheet ID (e.g. for `https://docs.google.com/spreadsheets/d/1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18/edit#gid=0` the sheet ID is `1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18`)
- * Make a note of the name of one of the worksheets in your spreadsheet (e.g. `Sheet1`) - this is where data will be reported.
- * Create a directory called `exclude` in the root of the repo.
- * Create the following one-line text files (these are named explicitly in `.gitignore` as a reminder):
-   * `exclude/account.txt` - your Google identity (e.g. `example@gmail.com`)
-   * `exclude/project_id.txt` - your project ID, from the projects drop-down in the [Google Cloud Console](https://console.cloud.google.com/)
-   * `exclude/sheet-id.txt` - the ID of the Google spreadsheet you created (e.g. `1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18`)
-   * `exclude/worksheet-name.txt` - the name of the worksheet in the spreadsheet that you want to use.
- * locate the and run the `deploy.sh` script in the root directory. This should work for Mac and Linux users. If you're using Windows you may be able to translate the commands for your environment.
- * You'll see one or two error messages as the deployment script checks for resources that don't yet exist. It should create them successfully after the errors are printed out. Subsequent runs should go through cleanly.
+ * Start by cloning or forking this repo
+ * Create two Google Spreadsheets (e.g. via https://drive.google.com, or by taking a copy of the spreadsheets from the demo environment) - these will serve as your acute and comunity dashboards. Make a note of the sheet ID (e.g. for `https://docs.google.com/spreadsheets/d/1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18/edit#gid=0` the sheet ID is `1A-HL1x1s81ZGCgg_cmYK27NNPk1uQjAZcwd8O6yrJ18`)
+ * Make a note of the name of one of the worksheets in your spreadsheet (e.g. `Sheet1` or `Status`) - this is where data will be reported.
+ * locate the `.github/workflows/` folder and examine the `test-pipeline.yml` Github Actions workflow file. The `demo-pipeline.yml` workflow provides additional reference information.
+ * If you'd like to use Github actions for deployment, you'll need to set Github secrets on your copy of this repo. If you'd like to deploy to your GCP project using another mechanism, you'll need to adapt the deployment steps from workflow files.
+ * NB you'll need to sign up for an [Okta](https://www.okta.com/) account to generate some of the values needed to successfully run the `portal` component.
 
 ### Post-deployment steps
 
@@ -83,7 +78,7 @@ export DOMAIN=**************************.cloudfunctions.net
 export VALID_PROVIDER_NAME=********
 export VALID_PROVIDER_CODE=********
 ```
-Also, this test will need valid `gcloud` configuration e.g.
+Also, this test will need valid `gcloud` configuration to run locally e.g.
 ```
 export GOOGLE_APPLICATION_CREDENTIALS="ppe-inventory-dev.json"
 ```
