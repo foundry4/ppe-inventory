@@ -25,8 +25,8 @@ This service is partially compliant with the [Web Content Accessibility Guidelin
 We know some parts of this website may not be fully accessible:
 
 *   This system was developed as a rapid response to the COVID-19 pandemic 
-*   The system is built using the [NHS.UK frontend](https://github.com/nhsuk/nhsuk-frontend) design system, which provides a good starting point for accessibility,owever, the design system cannot cover all aspects of accessibility
-*   It has not been possible to do a formal accessibility assessment of this system in the time available, so please do get in touch if you have any issues using it
+*   The system is built using the [NHS.UK frontend](https://github.com/nhsuk/nhsuk-frontend) design system, which provides a good starting point for accessibility. However, the design system cannot cover all aspects of accessibility.
+*   It has not been possible to do a formal accessibility assessment of this system in the time available, so please do get in touch if you have any issues using it or submit a pull request with suggested fixes
 
 
 ## What to do if you have difficulty using the PPE Inventory Stock Tracking system
