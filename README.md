@@ -11,7 +11,7 @@ To see more screens from the application, please head to the [wiki](https://gith
 If you'd like to see this system in action, a demonstration environment is available as follows:
 
  * Portal: https://demo:password@ppe-inventory-demo-mf2rj3t7eq-ew.a.run.app/ (username: demo, password: password)
- * Dashboard spreadsheet: https://docs.google.com/spreadsheets/d/1csuprj90P3EutWy05lcKsfl2QDTtNQhz0Jj97oum0jQ
+ * Dashboard spreadsheet: https://docs.google.com/spreadsheets/d/1tlKO3GH1lXRZklDW6xJFT9xyMciqm10tsfE3QVVm2TM
  * Community spreadsheet: https://docs.google.com/spreadsheets/d/1NIoqxTiiqi2p2zXGDIu1jMAeoni-jL4SWJ3zlidfdw8
  * Example data entry registration links: 
    * [Mile End Hospital](https://europe-west2-ppe-inventory-demo.cloudfunctions.net/register?site=Mile+End+Hospital&code=70180369-a332-4a67-8950-fede24f98fec) (the full list of demo sites is available in [acute_sites.csv](https://github.com/notbinary/ppe-inventory/blob/test/scripts/acute_sites.csv))
